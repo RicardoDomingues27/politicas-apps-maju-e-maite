@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidade — Jogo da Velha Maju e Maitê</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #fbf9fc;
+    --surface: #ffffff;
+    --text: #241c2e;
+    --text-muted: #6b6178;
+    --accent: #7c45d6;
+    --accent-ink: #4a2b8f;
+    --accent-soft: #f1e9fb;
+    --border: #e4deec;
+    --good: #2f8f6f;
+    --good-soft: #e6f5ef;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17121f;
+      --surface: #1f1929;
+      --text: #efe9f5;
+      --text-muted: #b3a8c2;
+      --accent: #c7a6f5;
+      --accent-ink: #e4d3ff;
+      --accent-soft: #2c2340;
+      --border: #362b47;
+      --good: #7fd6b8;
+      --good-soft: #1c3630;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #17121f;
+    --surface: #1f1929;
+    --text: #efe9f5;
+    --text-muted: #b3a8c2;
+    --accent: #c7a6f5;
+    --accent-ink: #e4d3ff;
+    --accent-soft: #2c2340;
+    --border: #362b47;
+    --good: #7fd6b8;
+    --good-soft: #1c3630;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { background: var(--bg); }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+  }
+
+  .page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  header.doc-head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 40px;
+  }
+
+  .mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mark svg { display: block; }
+
+  .mark span {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(28px, 4.4vw, 38px);
+    line-height: 1.15;
+    margin: 0;
+    text-wrap: balance;
+    color: var(--text);
+  }
+
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .doc-meta strong { color: var(--text); font-weight: 600; }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 13px;
+    border-radius: 100px;
+    background: var(--good-soft);
+    color: var(--good);
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid transparent;
+  }
+
+  .badge svg { flex: none; }
+
+  .callout {
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin: 8px 0 44px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .callout svg { flex: none; margin-top: 3px; }
+
+  .callout p {
+    margin: 0;
+    font-size: 16px;
+    color: var(--text);
+  }
+
+  .callout strong { color: var(--accent-ink); }
+
+  section {
+    margin-bottom: 34px;
+  }
+
+  section:last-of-type { margin-bottom: 0; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .section-num {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent);
+    min-width: 22px;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 21px;
+    margin: 0;
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  section p, section li {
+    font-size: 16px;
+    color: var(--text);
+    max-width: 62ch;
+  }
+
+  section p + p { margin-top: 12px; }
+
+  section ul {
+    margin: 10px 0 0;
+    padding-left: 22px;
+  }
+
+  section li + li { margin-top: 8px; }
+
+  .muted { color: var(--text-muted); }
+
+  code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.9em;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    padding: 0.1em 0.4em;
+    border-radius: 5px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  .contact-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 32px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .contact-card .who {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+
+  .contact-card a {
+    color: var(--accent-ink);
+    font-weight: 600;
+    font-size: 17px;
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--accent);
+  }
+
+  .contact-card a:hover { opacity: 0.8; }
+
+  footer {
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-head">
+    <div class="mark">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8.5 5.2c-2.6 0-4.7 2.1-4.7 4.8 0 4.3 4.9 7.9 8.9 11.3.7.6 1.9.6 2.6 0 4-3.4 8.9-7 8.9-11.3 0-2.7-2.1-4.8-4.7-4.8-1.8 0-3.3 1-4.1 2.5-.8-1.5-2.3-2.5-4.1-2.5z" fill="var(--accent)"/>
+      </svg>
+      <span>Maju &amp; Maitê</span>
+    </div>
+
+    <h1>Política de Privacidade do Jogo da Velha</h1>
+
+    <div class="doc-meta">
+      <span>Última atualização: <strong>12 de setembro de 2026</strong></span>
+      <span>Pacote: <strong>com.majuemaite.jogodavelha</strong></span>
+    </div>
+
+    <div class="badges">
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5 5.5 11 12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sem cadastro ou login
+      </span>
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5 5.5 11 12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sem anúncios hoje
+      </span>
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5 5.5 11 12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Feito para crianças
+      </span>
+    </div>
+  </header>
+
+  <div class="callout">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <circle cx="11" cy="11" r="9.25" stroke="var(--accent)" stroke-width="1.5"/>
+      <path d="M11 7.2v.01M11 10v4.6" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <p><strong>Resumo rápido:</strong> o Jogo da Velha — Maju e Maitê não pede cadastro, não tem login e não coleta nenhum dado pessoal de quem joga, seja criança ou adulto. O placar fica guardado só no próprio aparelho.</p>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">1</span>
+      <h2>Quem somos</h2>
+    </div>
+    <p>Este aplicativo é desenvolvido de forma independente, associado ao canal do YouTube da Maju e da Maitê. Esta política vale para o app <strong>Jogo da Velha — Maju e Maitê</strong>, disponível na Google Play Store.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">2</span>
+      <h2>Dados que o app coleta</h2>
+    </div>
+    <p>Nenhum. O app não pede nome, e-mail, foto, localização ou qualquer outro dado pessoal. Não existe criação de conta, login ou conexão com redes sociais.</p>
+    <p>O único "dado" gerado é o <strong>placar do jogo</strong> (quantas vezes cada jogadora venceu), guardado em um arquivo de configuração dentro do próprio aparelho (<code>user://config.cfg</code>). Esse arquivo nunca sai do dispositivo, não é enviado para nenhum servidor, e é apagado automaticamente se o app for desinstalado.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">3</span>
+      <h2>Uso por crianças</h2>
+    </div>
+    <p>O jogo foi desenhado para ser usado por crianças, com um visual e uma dinâmica simples de jogo da velha. Por isso, seguimos os princípios do programa <strong>Designed for Families</strong> da Google Play:</p>
+    <ul>
+      <li>Não coletamos, de forma consciente, nenhuma informação pessoal de crianças.</li>
+      <li>Não existe chat, rede social ou qualquer forma de comunicação com outras pessoas dentro do app.</li>
+      <li>Qualquer ação que leve para fora do app (como um link para o canal do YouTube) passa antes por um <strong>portal dos pais</strong> — uma continha simples de matemática que uma criança pequena normalmente não resolve sozinha. Essa conta não coleta nem armazena nenhuma resposta; ela só existe para confirmar que um adulto está por perto.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">4</span>
+      <h2>Anúncios e compras</h2>
+    </div>
+    <p>Na versão atual, o app <strong>não exibe anúncios e não possui compras dentro do aplicativo</strong>. Se isso mudar em uma atualização futura, os anúncios serão configurados para o público infantil (tratamento direcionado a crianças, sem anúncios personalizados), como exige a Google Play — e esta página será atualizada com a data da mudança antes de entrar no ar.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">5</span>
+      <h2>Compartilhamento com terceiros</h2>
+    </div>
+    <p>Como o app não coleta dados, não há nada para compartilhar, vender ou transferir a terceiros, incluindo anunciantes, redes de publicidade ou outras empresas.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">6</span>
+      <h2>Alterações nesta política</h2>
+    </div>
+    <p>Se o app passar a coletar algum tipo de dado no futuro (por exemplo, ao ativar anúncios), esta página será atualizada antes da mudança valer, com uma nova data de "última atualização" no topo.</p>
+  </section>
+
+  <hr>
+
+  <div class="contact-card">
+    <div>
+      <p class="who">Dúvidas sobre privacidade</p>
+      <a href="mailto:ricardo.domingues27@gmail.com">ricardo.domingues27@gmail.com</a>
+    </div>
+    <p class="muted" style="margin:0; font-size: 14px; max-width: 30ch;">Pais e responsáveis podem escrever a qualquer momento com perguntas sobre este app.</p>
+  </div>
+
+  <footer>
+    Jogo da Velha — Maju e Maitê · Política de Privacidade
+  </footer>
+
+</div>
+</body>
+</html>

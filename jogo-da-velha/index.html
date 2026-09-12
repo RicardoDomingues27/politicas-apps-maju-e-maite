@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jogo da Velha — Maju e Maitê</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #fbf9fc;
+    --surface: #ffffff;
+    --text: #241c2e;
+    --text-muted: #6b6178;
+    --accent: #7c45d6;
+    --accent-ink: #4a2b8f;
+    --accent-soft: #f1e9fb;
+    --pink: #e0356f;
+    --pink-soft: #fdeaf1;
+    --border: #e4deec;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17121f; --surface: #1f1929; --text: #efe9f5; --text-muted: #b3a8c2;
+      --accent: #c7a6f5; --accent-ink: #e4d3ff; --accent-soft: #2c2340;
+      --pink: #f5789e; --pink-soft: #331b28; --border: #362b47;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17121f; --surface: #1f1929; --text: #efe9f5; --text-muted: #b3a8c2;
+    --accent: #c7a6f5; --accent-ink: #e4d3ff; --accent-soft: #2c2340;
+    --pink: #f5789e; --pink-soft: #331b28; --border: #362b47;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+
+  a.back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--text-muted); text-decoration: none; margin-bottom: 28px;
+  }
+  a.back:hover { color: var(--accent-ink); }
+
+  .hero {
+    display: flex; align-items: center; gap: 32px;
+    padding: 12px 0 40px;
+  }
+  .hero img.icon {
+    width: 128px; height: auto; flex: none;
+    filter: drop-shadow(0 10px 24px rgba(74, 43, 143, 0.22));
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(28px, 4.6vw, 40px); line-height: 1.1; margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--text-muted); font-size: 17px; margin: 0; max-width: 40ch; }
+
+  .pair {
+    display: flex; align-items: center; gap: 10px; margin: 22px 0 44px;
+    font-family: var(--font-display); font-size: 15px; color: var(--text-muted);
+  }
+  .pair img { width: 26px; height: 26px; }
+  .pair .vs { font-weight: 600; color: var(--accent); }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 22px;
+    margin: 0 0 14px; text-wrap: balance;
+  }
+  section { margin-bottom: 40px; }
+  section p { font-size: 16px; max-width: 62ch; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .feature {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .feature .label {
+    font-weight: 600; font-size: 15px; margin: 0 0 4px; display: flex; align-items: center; gap: 8px;
+  }
+  .feature .label img { width: 18px; height: 18px; }
+  .feature p { margin: 0; font-size: 14px; color: var(--text-muted); }
+
+  .cards-preview {
+    display: flex; gap: 18px; justify-content: center; padding: 8px 0 4px;
+  }
+  .cards-preview img {
+    width: 42%; max-width: 220px; height: auto;
+    filter: drop-shadow(0 8px 18px rgba(74, 43, 143, 0.18));
+  }
+
+  .status-note {
+    background: var(--pink-soft); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 22px; font-size: 15px; color: var(--text);
+  }
+  .status-note strong { color: var(--pink); }
+
+  footer {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; align-items: center;
+    font-size: 14px; color: var(--text-muted);
+  }
+  footer a { color: var(--accent-ink); font-weight: 600; text-decoration: none; }
+  footer a:hover { opacity: 0.8; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Todos os apps</a>
+
+  <div class="hero">
+    <img class="icon" src="assets/card_velha.webp" alt="Ícone do Jogo da Velha — Maju e Maitê">
+    <div>
+      <h1>Jogo da Velha</h1>
+      <p class="tagline">Um clássico jogo da velha, do jeitinho da Maju e da Maitê — feito pra crianças pequenas jogarem sozinhas ou em dupla.</p>
+    </div>
+  </div>
+
+  <div class="pair">
+    <img src="assets/icon_heart.webp" alt="Coração da Maju">
+    <span>Maju</span>
+    <span class="vs">×</span>
+    <img src="assets/icon_star.webp" alt="Estrela da Maitê">
+    <span>Maitê</span>
+  </div>
+
+  <section>
+    <h2>Sobre o jogo</h2>
+    <p>Cada jogadora escolhe seu símbolo — coração rosa pra Maju, estrela roxa pra Maitê — e reveza jogadas no tabuleiro 3×3 até alguém formar uma linha. Visual colorido, botões grandes e sons animados, pensado pra ser fácil de entender de primeira, sem precisar ler nada.</p>
+  </section>
+
+  <section>
+    <h2>Como jogar</h2>
+    <div class="grid">
+      <div class="feature">
+        <p class="label"><img src="assets/icon_heart.webp" alt="">Duas jogadoras</p>
+        <p>Revezem o tabuleiro no mesmo aparelho — ótimo pra jogar em dupla.</p>
+      </div>
+      <div class="feature">
+        <p class="label"><img src="assets/icon_star.webp" alt="">Contra o computador</p>
+        <p>Modo fácil pra treinar, ou difícil — nesse, o computador não perde uma partida.</p>
+      </div>
+      <div class="feature">
+        <p class="label"><img src="assets/icon_heart.webp" alt="">Placar guardado</p>
+        <p>O placar de vitórias fica salvo no aparelho, mesmo depois de fechar o app.</p>
+      </div>
+      <div class="feature">
+        <p class="label"><img src="assets/icon_star.webp" alt="">Comemoração animada</p>
+        <p>Toda vitória vem com uma festinha de estrelinhas na linha vencedora.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Um segundo jogo, no mesmo app</h2>
+    <div class="cards-preview">
+      <img src="assets/card_velha.webp" alt="Card do Jogo da Velha">
+      <img src="assets/card_memoria.webp" alt="Card do Jogo da Memória">
+    </div>
+    <p style="text-align:center; margin-top: 16px;">O app também traz um <strong>jogo da memória</strong> com 8 pares de cartas — cachorro, gato, coelho, urso, borboleta, sol, arco-íris e estrela — pensado pra crianças de 3 a 5 anos: sem tempo, sem "perder", só achar os pares no próprio ritmo.</p>
+  </section>
+
+  <section>
+    <div class="status-note">
+      <strong>Disponibilidade:</strong> o app está em preparação para a Google Play Store. Assim que estiver publicado, o link fica disponível aqui.
+    </div>
+  </section>
+
+  <footer>
+    <span>Feito pro canal da Maju e da Maitê</span>
+    <a href="privacidade.html">Política de Privacidade →</a>
+  </footer>
+
+</div>
+</body>
+</html>

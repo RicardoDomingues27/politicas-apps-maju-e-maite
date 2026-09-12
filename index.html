@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Políticas dos apps — Maju e Maitê</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Libre+Franklin:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #fbf9fc;
+    --surface: #ffffff;
+    --text: #241c2e;
+    --text-muted: #6b6178;
+    --accent: #7c45d6;
+    --accent-ink: #4a2b8f;
+    --border: #e4deec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17121f; --surface: #1f1929; --text: #efe9f5;
+      --text-muted: #b3a8c2; --accent: #c7a6f5; --accent-ink: #e4d3ff; --border: #362b47;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17121f; --surface: #1f1929; --text: #efe9f5;
+    --text-muted: #b3a8c2; --accent: #c7a6f5; --accent-ink: #e4d3ff; --border: #362b47;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: 'Libre Franklin', -apple-system, sans-serif; line-height: 1.6;
+  }
+  .page { max-width: 640px; margin: 0 auto; padding: 64px 24px 96px; }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600;
+    font-size: clamp(26px, 4vw, 34px); margin: 0 0 8px; text-wrap: balance;
+  }
+  .lede { color: var(--text-muted); margin: 0 0 40px; font-size: 16px; max-width: 52ch; }
+  .apps { display: flex; flex-direction: column; gap: 12px; }
+  .app-card {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px 20px; text-decoration: none; color: var(--text);
+  }
+  .app-card .name { font-weight: 600; font-size: 16px; }
+  .app-card .link { color: var(--accent-ink); font-size: 14px; font-weight: 600; }
+  .app-card:hover { border-color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Políticas dos apps</h1>
+  <p class="lede">Páginas públicas de privacidade dos aplicativos do canal Maju e Maitê.</p>
+  <div class="apps">
+    <a class="app-card" href="jogo-da-velha/">
+      <span class="name">Jogo da Velha — Maju e Maitê</span>
+      <span class="link">Ver página →</span>
+    </a>
+  </div>
+</div>
+</body>
+</html>
