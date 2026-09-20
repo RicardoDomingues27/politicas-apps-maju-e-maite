@@ -1,7 +1,7 @@
-# Páginas públicas dos apps — Maju e Maitê
+# Páginas públicas dos apps
 
 Repositório público com a página "sobre" e a política de privacidade de cada
-app do canal Maju e Maitê. Publicado via GitHub Pages.
+app. Publicado via GitHub Pages.
 
 Uma pasta por app:
 
@@ -11,6 +11,10 @@ jogo-da-velha/
   privacidade.html     ← política de privacidade
   assets/              ← imagens usadas nessas páginas (recortadas/otimizadas
                           a partir da arte do próprio jogo)
+japamala/
+  index.html          ← página "sobre" o Japamala (contador de mantras)
+  privacidade.html     ← política de privacidade (ainda não criada)
+  assets/              ← ícone, lótus e logo do app, em WebP
 ```
 
 ## Adicionar um novo app

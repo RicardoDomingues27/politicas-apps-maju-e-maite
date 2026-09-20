@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Japamala — Mais presença em cada repetição</title>
+<meta name="description" content="Japamala é um contador de mantras com colar de 108 contas, histórico de práticas e sons de fundo relaxantes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #f8f1e5;
+    --surface: #fbf6ee;
+    --text: #1e3222;
+    --text-muted: #6b6455;
+    --accent: #35563a;
+    --accent-ink: #26402b;
+    --accent-soft: #eee4d6;
+    --gold: #b8893b;
+    --gold-soft: #f3e7cf;
+    --border: #e6dbc9;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141c15; --surface: #1c261d; --text: #ece5d6; --text-muted: #b3ad9a;
+      --accent: #9fc4a3; --accent-ink: #cfe6d1; --accent-soft: #263528;
+      --gold: #d9b166; --gold-soft: #2f2a1b; --border: #2d3a2e;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141c15; --surface: #1c261d; --text: #ece5d6; --text-muted: #b3ad9a;
+    --accent: #9fc4a3; --accent-ink: #cfe6d1; --accent-soft: #263528;
+    --gold: #d9b166; --gold-soft: #2f2a1b; --border: #2d3a2e;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+
+  a.back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--text-muted); text-decoration: none; margin-bottom: 28px;
+  }
+  a.back:hover { color: var(--accent-ink); }
+
+  .hero { display: flex; align-items: center; gap: 32px; padding: 12px 0 40px; }
+  .hero img.icon {
+    width: 128px; height: 128px; flex: none; border-radius: 28px;
+    box-shadow: 0 10px 24px rgba(38, 64, 43, 0.28);
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(30px, 4.8vw, 44px); line-height: 1.1; margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--text-muted); font-size: 17px; margin: 0; max-width: 40ch; }
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin: 0 0 8px;
+  }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 22px;
+    margin: 0 0 14px; text-wrap: balance;
+  }
+  section { margin-bottom: 40px; }
+  section p { font-size: 16px; max-width: 62ch; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+  }
+  .feature {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .feature .label { font-weight: 600; font-size: 15px; margin: 0 0 4px; color: var(--accent-ink); }
+  .feature p { margin: 0; font-size: 14px; color: var(--text-muted); }
+
+  .lotus { display: flex; justify-content: center; padding: 4px 0 8px; }
+  .lotus img {
+    width: min(320px, 70%); height: auto;
+    filter: drop-shadow(0 12px 24px rgba(38, 64, 43, 0.18));
+  }
+
+  .status-note {
+    background: var(--gold-soft); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 22px; font-size: 15px; color: var(--text);
+  }
+  .status-note strong { color: var(--gold); }
+
+  footer {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; align-items: center;
+    font-size: 14px; color: var(--text-muted);
+  }
+  @media (max-width: 520px) {
+    .hero { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Todos os apps</a>
+
+  <div class="hero">
+    <img class="icon" src="assets/icon.webp" alt="Ícone do Japamala: colar de 108 contas com um lótus dourado">
+    <div>
+      <p class="eyebrow">Mais presença em cada repetição</p>
+      <h1>Japamala</h1>
+      <p class="tagline">Um contador de mantras inspirado no colar de 108 contas, para praticar com calma e acompanhar sua jornada.</p>
+    </div>
+  </div>
+
+  <section>
+    <h2>Sobre o app</h2>
+    <p>O japamala é o colar de 108 contas usado para contar as repetições de um mantra. O app traz essa prática para o celular: você conta cada repetição com um toque, vê o colar se preencher conta a conta e guarda o histórico das suas práticas — sem pressa e sem distrações.</p>
+  </section>
+
+  <div class="lotus">
+    <img src="assets/lotus.webp" alt="Flor de lótus sobre uma pedra">
+  </div>
+
+  <section>
+    <h2>O que você encontra</h2>
+    <div class="grid">
+      <div class="feature">
+        <p class="label">Dois modos de contagem</p>
+        <p>Numérico, com o número grande e claro, ou visual, com o colar de 108 contas.</p>
+      </div>
+      <div class="feature">
+        <p class="label">O motivo da sua prática</p>
+        <p>Escolha entre Om Mani Padme Hum, Gratidão e Autocuidado, ou crie a sua.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Histórico</p>
+        <p>Acompanhe suas práticas por semana, mês ou ano: repetições, voltas e tempo.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Sons para praticar</p>
+        <p>Som de fundo relaxante e um toque suave a cada conta, que você pode ajustar ou desligar.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Suas práticas ficam com você</p>
+        <p>O histórico é guardado no seu aparelho, sem precisar criar conta.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Para Android e iOS</p>
+        <p>Um só app, com o mesmo visual sereno nos dois sistemas.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="status-note">
+      <strong>Disponibilidade:</strong> o app está em desenvolvimento e ainda não foi publicado nas lojas. Assim que estiver disponível, os links aparecem aqui.
+    </div>
+  </section>
+
+  <footer>
+    <span>Japamala</span>
+    <span>Política de privacidade: em breve nesta página</span>
+  </footer>
+
+</div>
+</body>
+</html>
