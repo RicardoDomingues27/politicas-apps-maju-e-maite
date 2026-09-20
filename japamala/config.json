@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "premium": {
+    "promo": {
+      "active": false,
+      "badge": "-30%",
+      "title": "Promoção de lançamento",
+      "message": "Desbloqueie todos os temas e sons com desconto por tempo limitado.",
+      "originalPriceLabel": "R$ 27,90",
+      "startsAt": "2026-10-01T00:00:00-03:00",
+      "endsAt": "2026-10-08T23:59:59-03:00"
+    }
+  }
+}
