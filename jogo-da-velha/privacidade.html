@@ -303,7 +303,7 @@
       <circle cx="11" cy="11" r="9.25" stroke="var(--accent)" stroke-width="1.5"/>
       <path d="M11 7.2v.01M11 10v4.6" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"/>
     </svg>
-    <p><strong>Resumo rápido:</strong> o Jogo da Velha — Maju e Maitê não pede cadastro, não tem login e não coleta dados pessoais de quem joga, seja criança ou adulto (nome, e-mail, foto ou localização). O placar fica guardado só no próprio aparelho. O app usa apenas medição básica e anônima de uso e mostra anúncios não personalizados, como explicado abaixo.</p>
+    <p><strong>Resumo rápido:</strong> o Jogo da Velha — Maju e Maitê não pede cadastro, não tem login e não coleta dados pessoais de quem joga, seja criança ou adulto (nome, e-mail, foto ou localização exata). O placar fica guardado só no próprio aparelho. O app usa apenas medição básica e anônima de uso e de falhas (Google Firebase) e mostra um banner de anúncios não personalizados (Google AdMob), como explicado abaixo.</p>
   </div>
 
   <section>
@@ -319,8 +319,16 @@
       <span class="section-num">2</span>
       <h2>Dados que o app coleta</h2>
     </div>
-    <p>O app não pede nome, e-mail, foto, localização ou qualquer outro dado pessoal. Não existe criação de conta, login ou conexão com redes sociais.</p>
-    <p>Para saber como o app é usado e melhorá-lo, usamos o <strong>Google Analytics para Firebase</strong> só para <strong>medição básica e anônima de uso</strong>: quais botões e telas são tocados, tipo e modelo do aparelho, versão do Android, versão do app e país aproximado. Esses dados são associados a um identificador anônimo da instalação do app — nunca a uma pessoa. O <strong>ID de publicidade não é usado</strong> e os recursos de anúncios e personalização do Analytics ficam desativados.</p>
+    <p>O app não pede nome, e-mail, foto, localização exata ou qualquer outro dado pessoal. Não existe criação de conta, login ou conexão com redes sociais.</p>
+    <p>Para saber como o app é usado e melhorá-lo, usamos o <strong>Google Analytics para Firebase</strong> só para <strong>medição básica e anônima de uso</strong>: quais botões e telas são tocados, tipo e modelo do aparelho, versão do Android, versão do app, informações técnicas quando o app trava ou apresenta erros e o país aproximado (deduzido do endereço IP, sem localização exata). Esses dados são associados a um identificador anônimo da instalação do app — nunca a uma pessoa. Os recursos de anúncios e de personalização do Analytics ficam <strong>desativados</strong>: não usamos o ID de publicidade para personalizar nada.</p>
+    <p>Resumo do que é tratado, no mesmo formato declarado na Google Play (seção "Segurança dos dados"):</p>
+    <ul>
+      <li><strong>Interações com o app</strong> (toques em botões e telas) — para análise de uso.</li>
+      <li><strong>Falhas e diagnóstico</strong> (informações técnicas de travamentos e desempenho) — para análise e correção de problemas.</li>
+      <li><strong>Local aproximado</strong> (país/região, pelo IP) — para análise e para exibição de anúncios.</li>
+      <li><strong>Identificadores do dispositivo e outros IDs</strong> (o identificador anônimo da instalação e, para os anúncios, o ID do aparelho/ID de publicidade tratado pelo AdMob) — para análise e para exibição e medição de anúncios não personalizados.</li>
+    </ul>
+    <p>Esses dados são coletados automaticamente, não são vendidos, são tratados pela Google (Firebase e AdMob) e não dão para identificar uma pessoa.</p>
     <p>O único "dado" gerado é o <strong>placar do jogo</strong> (quantas vezes cada jogadora venceu), guardado em um arquivo de configuração dentro do próprio aparelho (<code>user://config.cfg</code>). Nesse mesmo arquivo ficam as preferências de som e de música, o número de partidas jogadas e quantas vezes o pedido de avaliação (descrito abaixo) já apareceu — só para o app saber quando mostrá-lo de novo. Esse arquivo nunca sai do dispositivo, não é enviado para nenhum servidor, e é apagado automaticamente se o app for desinstalado.</p>
   </section>
 
@@ -343,7 +351,7 @@
       <span class="section-num">4</span>
       <h2>Anúncios e compras</h2>
     </div>
-    <p>O app exibe um <strong>banner de anúncio</strong> discreto na parte de baixo das telas de jogo, fornecido pelo <strong>Google AdMob</strong>. Por ser um app para crianças, os anúncios são configurados com <strong>tratamento direcionado a crianças</strong>: são <strong>não personalizados</strong> e com classificação de conteúdo livre (G). Para exibir e medir anúncios, o AdMob pode tratar dados técnicos do aparelho, conforme a <a href="https://policies.google.com/privacy">política de privacidade do Google</a>. O app não possui compras dentro do aplicativo. Se isso mudar, esta página será atualizada antes.</p>
+    <p>O app exibe um <strong>banner de anúncio</strong> discreto na parte de baixo das telas de jogo, fornecido pelo <strong>Google AdMob</strong>. Por ser um app para crianças, os anúncios são configurados com <strong>tratamento direcionado a crianças</strong>: são <strong>não personalizados</strong> e com classificação de conteúdo livre (G). Para exibir e medir anúncios e evitar fraudes, o AdMob pode tratar dados técnicos do aparelho e identificadores (como o ID de publicidade), sem usá-los para personalizar anúncios, conforme a <a href="https://policies.google.com/privacy">política de privacidade do Google</a>. O app não possui compras dentro do aplicativo. Se isso mudar, esta página será atualizada antes.</p>
   </section>
 
   <section>
@@ -351,7 +359,7 @@
       <span class="section-num">5</span>
       <h2>Compartilhamento com terceiros</h2>
     </div>
-    <p>Não vendemos nem compartilhamos dados com terceiros para fins de marketing. Os únicos serviços que recebem dados técnicos do app são o <strong>Google Analytics para Firebase</strong> (medição básica de uso) e o <strong>Google AdMob</strong> (exibição de anúncios não personalizados), ambos da Google e nos termos descritos acima.</p>
+    <p>Não vendemos dados e não os usamos para marketing personalizado. Os únicos serviços que recebem dados técnicos do app são o <strong>Google Analytics para Firebase</strong> (medição básica de uso e de falhas) e o <strong>Google AdMob</strong> (exibição e medição de anúncios não personalizados), ambos da Google e nos termos descritos acima.</p>
   </section>
 
   <section>
