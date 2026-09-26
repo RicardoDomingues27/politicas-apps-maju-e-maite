@@ -75,6 +75,9 @@
     display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
     color: var(--soon); background: var(--soon-soft); border-radius: 999px; padding: 3px 10px;
   }
+  .status.live { color: #17803d; background: #e6f6ec; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .status.live { color: #6fd39a; background: #14261b; } }
+  :root[data-theme="dark"] .status.live { color: #6fd39a; background: #14261b; }
   .app p { margin: 0; color: var(--text-muted); font-size: 15px; }
   .links { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: auto; padding-top: 4px; }
   .links a { color: var(--accent-ink); font-weight: 600; font-size: 14.5px; text-decoration: none; }
@@ -116,7 +119,7 @@
         <div class="app-icon"><img src="jogo-da-velha/assets/card_velha.webp" alt="Ícone do Jogo da Velha — Maju e Maitê"></div>
         <div>
           <h2>Jogo da Velha — Maju e Maitê</h2>
-          <span class="status">Disponível na Google Play</span>
+          <span class="status live">Disponível na Google Play</span>
         </div>
       </div>
       <p>Jogo da velha e jogo da memória para crianças pequenas, do jeitinho da Maju e da Maitê: botões grandes, sons animados e nada para ler.</p>

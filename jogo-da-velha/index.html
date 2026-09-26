@@ -118,14 +118,24 @@
     padding: 18px 22px; font-size: 15px; color: var(--text);
   }
   .status-note strong { color: var(--pink); }
+  /* Disponibilidade: verde (é uma boa notícia, não um alerta) */
+  .status-note.ok { background: #e6f6ec; border-color: #b7e2c6; }
+  .status-note.ok strong { color: #17803d; }
+  /* Anúncios e privacidade: lilás, informativo */
+  .status-note.info { background: var(--accent-soft); }
+  .status-note.info strong { color: var(--accent-ink); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .status-note.ok { background: #14261b; border-color: #22432f; }
+    :root:not([data-theme="light"]) .status-note.ok strong { color: #6fd39a; }
+  }
+  :root[data-theme="dark"] .status-note.ok { background: #14261b; border-color: #22432f; }
+  :root[data-theme="dark"] .status-note.ok strong { color: #6fd39a; }
   .status-note a:not(.play-link) { color: var(--accent-ink); font-weight: 600; }
   .play-link {
-    display: inline-block; margin-top: 8px; padding: 8px 16px; border-radius: 999px;
-    background: var(--accent); color: #fff; font-weight: 600; font-size: 14.5px; text-decoration: none;
+    display: inline-block; margin-top: 8px; padding: 9px 18px; border-radius: 999px;
+    background: #1f9d55; color: #fff; font-weight: 600; font-size: 14.5px; text-decoration: none;
   }
-  :root[data-theme="dark"] .play-link { color: #17121f; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .play-link { color: #17121f; } }
-  .play-link:hover { opacity: 0.9; }
+  .play-link:hover { background: #17803d; }
 
   footer {
     margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
@@ -216,10 +226,10 @@
   </section>
 
   <section>
-    <div class="status-note">
+    <div class="status-note ok">
       <strong>Disponibilidade:</strong> o app já está disponível na Google Play Store, de graça. <a class="play-link" href="https://play.google.com/store/apps/details?id=com.majuemaite.jogodavelha" target="_blank" rel="noopener">Baixar na Google Play →</a>
     </div>
-    <div class="status-note" style="margin-top: 12px;">
+    <div class="status-note info" style="margin-top: 12px;">
       <strong>Anúncios e privacidade:</strong> o app tem um banner de anúncio discreto na parte de baixo (Google AdMob, sempre não personalizado e próprio para crianças) e usa medição básica e anônima de uso (Google Firebase). Não tem cadastro nem login. Saiba mais na <a href="privacidade.html">Política de Privacidade</a>.
     </div>
   </section>
