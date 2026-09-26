@@ -100,6 +100,19 @@
     filter: drop-shadow(0 8px 18px rgba(74, 43, 143, 0.18));
   }
 
+
+  .prints {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px;
+    margin: 4px 0 0; padding: 0; list-style: none;
+  }
+  .prints figure { margin: 0; text-align: center; }
+  .prints img {
+    width: 100%; height: auto; display: block; border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 24px rgba(74, 43, 143, 0.16);
+  }
+  .prints figcaption { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.35; }
+
   .status-note {
     background: var(--pink-soft); border: 1px solid var(--border); border-radius: 14px;
     padding: 18px 22px; font-size: 15px; color: var(--text);
@@ -160,6 +173,28 @@
         <p class="label"><img src="assets/icon_star.webp" alt="">Comemoração animada</p>
         <p>Toda vitória vem com uma festinha de estrelinhas na linha vencedora.</p>
       </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Veja o jogo</h2>
+    <div class="prints">
+      <figure>
+        <img src="assets/print_inicial.webp" width="360" height="640" loading="lazy" alt="Tela inicial do app, com a Maju e a Maitê e os cards para escolher o jogo da velha ou o jogo da memória">
+        <figcaption>Tela inicial: escolha o jogo</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_velha.webp" width="360" height="640" loading="lazy" alt="Jogo da velha em andamento, com corações e estrelas no tabuleiro">
+        <figcaption>Jogo da velha, em dupla ou contra o computador</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_memoria.webp" width="360" height="640" loading="lazy" alt="Jogo da memória com cartas de bichinhos viradas">
+        <figcaption>Jogo da memória: ache os 8 pares</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_pais.webp" width="360" height="640" loading="lazy" alt="Portal dos pais, com uma continha de soma e teclado de números">
+        <figcaption>Portal dos pais: uma continha antes de sair do app</figcaption>
+      </figure>
     </div>
   </section>
 
