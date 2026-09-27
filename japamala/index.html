@@ -95,6 +95,31 @@
     padding: 18px 22px; font-size: 15px; color: var(--text);
   }
   .status-note strong { color: var(--gold); }
+  .status-note.ok { background: #e6f6ec; border-color: #b7e2c6; }
+  .status-note.ok strong { color: #17803d; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .status-note.ok { background: #14261b; border-color: #22432f; }
+    :root:not([data-theme="light"]) .status-note.ok strong { color: #6fd39a; }
+  }
+  :root[data-theme="dark"] .status-note.ok { background: #14261b; border-color: #22432f; }
+  :root[data-theme="dark"] .status-note.ok strong { color: #6fd39a; }
+  .play-link {
+    display: inline-block; margin-top: 8px; padding: 9px 18px; border-radius: 999px;
+    background: #1f9d55; color: #fff; font-weight: 600; font-size: 14.5px; text-decoration: none;
+  }
+  .play-link:hover { background: #17803d; }
+
+  .prints {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px;
+    margin: 4px 0 0; padding: 0; list-style: none;
+  }
+  .prints figure { margin: 0; text-align: center; }
+  .prints img {
+    width: 100%; height: auto; display: block; border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 24px rgba(38, 64, 43, 0.18);
+  }
+  .prints figcaption { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.35; }
 
   footer {
     margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
@@ -160,10 +185,37 @@
   </section>
 
   <section>
-    <div class="status-note">
-      <strong>Disponibilidade:</strong> o app está em desenvolvimento e ainda não foi publicado nas lojas. Assim que estiver disponível, os links aparecem aqui.
+    <h2>Veja o app</h2>
+    <div class="prints">
+      <figure>
+        <img src="assets/print_inicio.webp" width="480" height="1067" loading="lazy" alt="Tela inicial do Japamala, com o lótus e o botão Iniciar contagem">
+        <figcaption>Tela inicial</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_visual.webp" width="480" height="1067" loading="lazy" alt="Modo Visual da contagem, com o colar de 108 contas na tela">
+        <figcaption>Modo Visual: acompanhe o colar</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_temas.webp" width="480" height="1067" loading="lazy" alt="Tela de temas, com seis opções de paleta e ilustração">
+        <figcaption>Seis temas para escolher</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_premium.webp" width="480" height="1067" loading="lazy" alt="Tela do Japamala Premium, com os benefícios exclusivos">
+        <figcaption>Japamala Premium</figcaption>
+      </figure>
     </div>
   </section>
+
+  <section>
+    <div class="status-note">
+      <strong>Disponibilidade:</strong> o app está em fase de testes e ainda não foi publicado para todo mundo. Assim que estiver disponível, o link para baixar aparece aqui.
+    </div>
+  </section>
+  <!-- Quando publicar na Produção, trocar o bloco acima por:
+  <div class="status-note ok">
+    <strong>Disponibilidade:</strong> o app já está disponível na Google Play Store, de graça. <a class="play-link" href="https://play.google.com/store/apps/details?id=com.libraniumtech.japamala108" target="_blank" rel="noopener">Baixar na Google Play →</a>
+  </div>
+  -->
 
   <footer>
     <span>Japamala</span>
