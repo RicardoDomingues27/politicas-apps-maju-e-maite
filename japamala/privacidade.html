@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidade — Japamala</title>
+<meta name="description" content="Como o app Japamala trata dados: histórico local, medição anônima de uso (Firebase) e anúncios (AdMob).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #f8f1e5;
+    --surface: #fbf6ee;
+    --text: #1e3222;
+    --text-muted: #6b6455;
+    --accent: #35563a;
+    --accent-ink: #26402b;
+    --accent-soft: #eee4d6;
+    --gold: #b8893b;
+    --gold-soft: #f3e7cf;
+    --border: #e6dbc9;
+    --good: #2f8f6f;
+    --good-soft: #e6f5ef;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141c15; --surface: #1c261d; --text: #ece5d6; --text-muted: #b3ad9a;
+      --accent: #9fc4a3; --accent-ink: #cfe6d1; --accent-soft: #263528;
+      --gold: #d9b166; --gold-soft: #2f2a1b; --border: #2d3a2e;
+      --good: #7fd6b8; --good-soft: #1c3630;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #141c15; --surface: #1c261d; --text: #ece5d6; --text-muted: #b3ad9a;
+    --accent: #9fc4a3; --accent-ink: #cfe6d1; --accent-soft: #263528;
+    --gold: #d9b166; --gold-soft: #2f2a1b; --border: #2d3a2e;
+    --good: #7fd6b8; --good-soft: #1c3630;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+  }
+
+  .page { max-width: 700px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  a.back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--text-muted); text-decoration: none; margin-bottom: 28px;
+  }
+  a.back:hover { color: var(--accent-ink); }
+
+  header.doc-head {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 18px;
+    margin-bottom: 40px;
+  }
+
+  .mark { display: flex; align-items: center; gap: 10px; }
+  .mark img { display: block; width: 30px; height: 30px; border-radius: 8px; }
+  .mark span {
+    font-family: var(--font-body); font-weight: 700; font-size: 14px;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted);
+  }
+
+  h1 {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: clamp(28px, 4.4vw, 38px); line-height: 1.15; margin: 0;
+    text-wrap: balance; color: var(--text);
+  }
+
+  .doc-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--text-muted); }
+  .doc-meta strong { color: var(--text); font-weight: 600; }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 13px; border-radius: 100px;
+    background: var(--good-soft); color: var(--good);
+    font-size: 13px; font-weight: 600; border: 1px solid transparent;
+  }
+  .badge svg { flex: none; }
+
+  .callout {
+    background: var(--accent-soft); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 24px; margin: 8px 0 44px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .callout svg { flex: none; margin-top: 3px; }
+  .callout p { margin: 0; font-size: 16px; color: var(--text); }
+  .callout strong { color: var(--accent-ink); }
+
+  section { margin-bottom: 34px; }
+  section:last-of-type { margin-bottom: 0; }
+
+  .section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+  .section-num {
+    font-family: var(--font-display); font-size: 15px; font-weight: 500;
+    color: var(--accent); min-width: 22px;
+  }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 21px;
+    margin: 0; color: var(--text); text-wrap: balance;
+  }
+
+  section p, section li { font-size: 16px; color: var(--text); max-width: 62ch; }
+  section p + p { margin-top: 12px; }
+  section ul { margin: 10px 0 0; padding-left: 22px; }
+  section li + li { margin-top: 8px; }
+
+  .muted { color: var(--text-muted); }
+
+  code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 0.9em;
+    background: var(--accent-soft); color: var(--accent-ink);
+    padding: 0.1em 0.4em; border-radius: 5px;
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  .contact-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 24px; display: flex; flex-wrap: wrap; gap: 20px 32px;
+    align-items: center; justify-content: space-between;
+  }
+  .contact-card .who {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-muted); margin: 0 0 4px; font-weight: 600;
+  }
+  .contact-card a {
+    color: var(--accent-ink); font-weight: 600; font-size: 17px;
+    text-decoration: none; border-bottom: 1.5px solid var(--accent);
+  }
+  .contact-card a:hover { opacity: 0.8; }
+
+  footer { margin-top: 48px; font-size: 13px; color: var(--text-muted); text-align: center; }
+
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="./">&larr; Voltar para o Japamala</a>
+
+  <header class="doc-head">
+    <div class="mark">
+      <img src="assets/icon.webp" alt="">
+      <span>Japamala</span>
+    </div>
+
+    <h1>Política de Privacidade do Japamala</h1>
+
+    <div class="doc-meta">
+      <span>Última atualização: <strong>27 de setembro de 2026</strong></span>
+      <span>Pacote: <strong>com.libraniumtech.japamala108</strong></span>
+    </div>
+
+    <div class="badges">
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5 5.5 11 12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sem cadastro ou login
+      </span>
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5 5.5 11 12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Histórico fica só no aparelho
+      </span>
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5 5.5 11 12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Uso anônimo, você pode desligar
+      </span>
+    </div>
+  </header>
+
+  <div class="callout">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <circle cx="11" cy="11" r="9.25" stroke="var(--accent)" stroke-width="1.5"/>
+      <path d="M11 7.2v.01M11 10v4.6" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <p><strong>Resumo rápido:</strong> o Japamala não pede cadastro nem login. Suas práticas e seu histórico de contagem ficam só no seu aparelho. Para entender o uso do app e melhorá-lo, usamos uma medição básica e anônima (Google Firebase), que você pode desligar a qualquer momento em Config &rarr; Privacidade. O app mostra um banner de anúncios (Google AdMob) e tem um recurso Premium opcional, pago através da Google Play ou da App Store.</p>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">1</span>
+      <h2>Quem somos</h2>
+    </div>
+    <p>Esta política vale para o app <strong>Japamala</strong>, um contador de mantras com colar virtual de 108 contas, desenvolvido pela Libranium Tech e disponível na Google Play Store (e futuramente na App Store).</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">2</span>
+      <h2>Dados que ficam só no seu aparelho</h2>
+    </div>
+    <p>O app não pede nome, e-mail, foto ou qualquer dado pessoal, e não existe criação de conta, login ou conexão com redes sociais.</p>
+    <p>O <strong>histórico de práticas</strong> (quando você contou, quantas repetições, qual mantra ou motivo escolheu) fica guardado só no seu aparelho, em um espaço de configuração do próprio sistema. Isso vale também para os <strong>nomes de práticas personalizadas</strong> que você criar: eles nunca são enviados para fora do aparelho. Você pode apagar esse histórico a qualquer momento (Histórico &rarr; Apagar histórico), e ele some se você desinstalar o app.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">3</span>
+      <h2>Medição anônima de uso (Google Analytics para Firebase)</h2>
+    </div>
+    <p>Para entender quais telas e recursos são usados e melhorar o app, usamos o <strong>Google Analytics para Firebase</strong>. Ele registra apenas o uso do app em si: telas visitadas, modo de contagem escolhido, troca de tema, sons ouvidos, se um lembrete foi ativado, e informações técnicas do aparelho (modelo, versão do sistema, versão do app). Nunca enviamos nome, e-mail nem o texto das suas práticas personalizadas — só uma marca genérica ("prática personalizada"), sem o nome que você digitou.</p>
+    <p>Esses dados são associados a um identificador anônimo da instalação do app, não a uma pessoa. Resumo do que é tratado, no formato declarado na Google Play ("Segurança dos dados"):</p>
+    <ul>
+      <li><strong>Interações com o app</strong> (telas, botões, recursos usados) — para análise de uso.</li>
+      <li><strong>Falhas e diagnóstico</strong> (informações técnicas de travamentos e desempenho) — para análise e correção de problemas.</li>
+      <li><strong>Identificadores do dispositivo e outros IDs</strong> (identificador anônimo da instalação e, para os anúncios, o ID de publicidade tratado pelo AdMob) — para análise e para exibição e medição de anúncios.</li>
+    </ul>
+    <p><strong>Você pode desligar essa medição a qualquer momento</strong>, em Config &rarr; Privacidade &rarr; "Dados de uso anônimos". Com a opção desligada, nenhum desses dados é enviado.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">4</span>
+      <h2>Anúncios e o recurso Premium</h2>
+    </div>
+    <p>O app exibe um <strong>banner de anúncio</strong> discreto, fornecido pelo <strong>Google AdMob</strong>. Para exibir, personalizar e medir anúncios e evitar fraudes, o AdMob pode tratar dados técnicos do aparelho e identificadores (como o ID de publicidade e o local aproximado, deduzido do endereço IP), conforme a <a href="https://policies.google.com/privacy">política de privacidade do Google</a>. O aparelho e o sistema oferecem formas de limitar isso (por exemplo, "Delimitar o rastreamento de anúncios" no Android/iOS).</p>
+    <p>O app tem um recurso opcional e pago, o <strong>Premium</strong> (compra única, que libera temas, sons e recursos extras). Essa compra é processada inteiramente pela <strong>Google Play</strong> ou pela <strong>App Store</strong>: não vemos nem guardamos o número do seu cartão ou outros dados de pagamento.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">5</span>
+      <h2>Lembretes</h2>
+    </div>
+    <p>Se você ativar um lembrete diário, o app pede a permissão de notificação do sistema e agenda o alerta <strong>localmente, no próprio aparelho</strong>. Nenhum dado sobre o horário escolhido sai do aparelho ou é enviado a nós ou a terceiros.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">6</span>
+      <h2>Promoções (configuração remota)</h2>
+    </div>
+    <p>Ao abrir o app (no máximo a cada 10 minutos), ele consulta um arquivo público de configuração para saber se há alguma promoção do Premium em andamento. Esse arquivo é hospedado no GitHub Pages e não contém nenhum dado seu; o GitHub recebe apenas o endereço IP do seu aparelho ao baixar o arquivo, como qualquer acesso a uma página da internet.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">7</span>
+      <h2>Compartilhamento com terceiros</h2>
+    </div>
+    <p>Não vendemos dados. Os únicos serviços que recebem dados técnicos do app são o <strong>Google Analytics para Firebase</strong> (medição anônima de uso), o <strong>Google AdMob</strong> (exibição e medição de anúncios), o <strong>GitHub Pages</strong> (arquivo público de promoções, seção 6) e, quando você compra o Premium, a <strong>Google Play</strong> ou a <strong>App Store</strong> (pagamento).</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">8</span>
+      <h2>Alterações nesta política</h2>
+    </div>
+    <p>Se o app passar a coletar algum tipo de dado novo no futuro, esta página será atualizada antes da mudança valer, com uma nova data de "última atualização" no topo.</p>
+  </section>
+
+  <hr>
+
+  <div class="contact-card">
+    <div>
+      <p class="who">Dúvidas sobre privacidade</p>
+      <a href="mailto:libraniumtech@gmail.com">libraniumtech@gmail.com</a>
+    </div>
+    <p class="muted" style="margin:0; font-size: 14px; max-width: 30ch;">Escreva a qualquer momento com perguntas sobre este app.</p>
+  </div>
+
+  <footer>
+    Japamala · Política de Privacidade
+  </footer>
+
+</div>
+</body>
+</html>
