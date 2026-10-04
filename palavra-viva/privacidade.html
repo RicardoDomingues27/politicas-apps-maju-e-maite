@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidade — Palavra Viva</title>
+<meta name="description" content="Como o app Palavra Viva trata dados: sem cadastro, sem anúncios e sem coleta. Favoritos e lembretes ficam só no aparelho.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #f7f3ea;
+    --surface: #fffdf8;
+    --text: #1c2a20;
+    --text-muted: #6a6e63;
+    --accent: #1e3a26;
+    --accent-ink: #1e3a26;
+    --accent-soft: #efe9dc;
+    --gold: #b98f35;
+    --gold-soft: #f4ead2;
+    --border: #e3dccb;
+    --good: #2f8f6f;
+    --good-soft: #e6f5ef;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1811; --surface: #17241b; --text: #ede7da; --text-muted: #a5ab9c;
+      --accent: #9fc4a3; --accent-ink: #cfe6d1; --accent-soft: #1f2f24;
+      --gold: #d9b865; --gold-soft: #2f2a1b; --border: #2a3a2f;
+      --good: #7fd6b8; --good-soft: #1c3630;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0e1811; --surface: #17241b; --text: #ede7da; --text-muted: #a5ab9c;
+    --accent: #9fc4a3; --accent-ink: #cfe6d1; --accent-soft: #1f2f24;
+    --gold: #d9b865; --gold-soft: #2f2a1b; --border: #2a3a2f;
+    --good: #7fd6b8; --good-soft: #1c3630;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+  }
+
+  .page { max-width: 700px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  a.back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--text-muted); text-decoration: none; margin-bottom: 28px;
+  }
+  a.back:hover { color: var(--accent-ink); }
+
+  header.doc-head {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 18px;
+    margin-bottom: 40px;
+  }
+
+  .mark { display: flex; align-items: center; gap: 10px; }
+  .mark img { display: block; width: 30px; height: 30px; border-radius: 8px; }
+  .mark span {
+    font-family: var(--font-body); font-weight: 700; font-size: 14px;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted);
+  }
+
+  h1 {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: clamp(28px, 4.4vw, 38px); line-height: 1.15; margin: 0;
+    text-wrap: balance; color: var(--text);
+  }
+
+  .doc-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--text-muted); }
+  .doc-meta strong { color: var(--text); font-weight: 600; }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 13px; border-radius: 100px;
+    background: var(--good-soft); color: var(--good);
+    font-size: 13px; font-weight: 600; border: 1px solid transparent;
+  }
+  .badge svg { flex: none; }
+
+  .callout {
+    background: var(--accent-soft); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 24px; margin: 8px 0 44px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .callout svg { flex: none; margin-top: 3px; }
+  .callout p { margin: 0; font-size: 16px; color: var(--text); }
+  .callout strong { color: var(--accent-ink); }
+
+  section { margin-bottom: 34px; }
+  section:last-of-type { margin-bottom: 0; }
+
+  .section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+  .section-num {
+    font-family: var(--font-display); font-size: 15px; font-weight: 500;
+    color: var(--gold); min-width: 22px;
+  }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 21px;
+    margin: 0; color: var(--text); text-wrap: balance;
+  }
+
+  section p, section li { font-size: 16px; color: var(--text); max-width: 62ch; }
+  section p + p { margin-top: 12px; }
+  section ul { margin: 10px 0 0; padding-left: 22px; }
+  section li + li { margin-top: 8px; }
+  section a { color: var(--accent-ink); }
+
+  .muted { color: var(--text-muted); }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  .contact-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 24px; display: flex; flex-wrap: wrap; gap: 20px 32px;
+    align-items: center; justify-content: space-between;
+  }
+  .contact-card .who {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-muted); margin: 0 0 4px; font-weight: 600;
+  }
+  .contact-card a {
+    color: var(--accent-ink); font-weight: 600; font-size: 17px;
+    text-decoration: none; border-bottom: 1.5px solid var(--gold);
+  }
+  .contact-card a:hover { opacity: 0.8; }
+
+  footer { margin-top: 48px; font-size: 13px; color: var(--text-muted); text-align: center; }
+
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="./">&larr; Voltar para o Palavra Viva</a>
+
+  <header class="doc-head">
+    <div class="mark">
+      <img src="assets/icon.webp" alt="">
+      <span>Palavra Viva</span>
+    </div>
+
+    <h1>Política de Privacidade do Palavra Viva</h1>
+
+    <div class="doc-meta">
+      <span>Última atualização: <strong>3 de outubro de 2026</strong></span>
+      <span>Pacote: <strong>com.libraniumtech.palavraviva</strong></span>
+    </div>
+
+    <div class="badges">
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5 5.5 11 12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sem cadastro ou login
+      </span>
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5 5.5 11 12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Nenhum dado coletado
+      </span>
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5 5.5 11 12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sem anúncios
+      </span>
+    </div>
+  </header>
+
+  <div class="callout">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <circle cx="11" cy="11" r="9.25" stroke="var(--gold)" stroke-width="1.5"/>
+      <path d="M11 7.2v.01M11 10v4.6" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <p><strong>Resumo rápido:</strong> o Palavra Viva não pede cadastro, não mostra anúncios e não coleta nenhum dado seu. A Bíblia já vem dentro do app, que funciona sem internet. Seus favoritos, lembretes e preferências ficam guardados só no seu aparelho e nunca são enviados para nós nem para ninguém.</p>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">1</span>
+      <h2>Quem somos</h2>
+    </div>
+    <p>Esta política vale para o app <strong>Palavra Viva</strong>, um aplicativo de Bíblia com versículo do dia, leitura, busca, favoritos, lembretes e imagens para compartilhar, desenvolvido pela Libranium Tech para Android e iOS.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">2</span>
+      <h2>Dados que ficam só no seu aparelho</h2>
+    </div>
+    <p>O app não pede nome, e-mail, foto ou qualquer dado pessoal, e não existe criação de conta, login ou conexão com redes sociais.</p>
+    <p>O que você guarda no app fica salvo apenas no seu aparelho, em um espaço de configuração do próprio sistema:</p>
+    <ul>
+      <li><strong>Versículos favoritos</strong> e a data em que foram salvos;</li>
+      <li><strong>Lembretes</strong>: se estão ligados, o horário, os dias da semana e a mensagem personalizada que você escreveu;</li>
+      <li><strong>Preferências</strong>: idioma, tema claro ou escuro, tamanho do texto, imagem de fundo e o último capítulo lido.</li>
+    </ul>
+    <p>Nada disso é enviado para fora do aparelho. Você pode apagar os favoritos a qualquer momento (Mais &rarr; Aparência &rarr; Mais configurações &rarr; Apagar todos os favoritos), e todos esses dados somem se você desinstalar o app.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">3</span>
+      <h2>O app não se conecta à internet</h2>
+    </div>
+    <p>O texto bíblico (em português, a <strong>Bíblia Livre</strong>; nos outros idiomas, traduções de domínio público), as imagens de fundo e os versículos do dia já vêm dentro do app. Por isso o Palavra Viva não faz nenhum acesso à internet: não há servidores nossos, medição de uso (analytics), relatórios de falhas enviados automaticamente, anúncios, nem serviços de terceiros embutidos.</p>
+    <p>No formato da Google Play ("Segurança dos dados"), isso significa: <strong>nenhum dado é coletado e nenhum dado é compartilhado</strong>.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">4</span>
+      <h2>Permissões que o app pode pedir</h2>
+    </div>
+    <ul>
+      <li><strong>Notificações</strong> — pedida logo depois da escolha do idioma, porque o lembrete diário (às 7h, com o começo do versículo do dia) já vem ligado. Os avisos são agendados <strong>localmente, no próprio aparelho</strong>; nenhuma informação sobre eles sai do celular. Se você não permitir, o lembrete fica desligado, e você pode desligá-lo a qualquer momento em Mais &rarr; Lembretes.</li>
+      <li><strong>Salvar fotos</strong> — só quando você toca em "Baixar" na tela Compartilhar, para salvar a imagem do versículo na sua galeria. O app apenas adiciona a imagem; ele não lê nem acessa as suas outras fotos.</li>
+    </ul>
+    <p>Você pode negar ou revogar essas permissões a qualquer momento nos ajustes do celular. O restante do app continua funcionando normalmente.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">5</span>
+      <h2>Quando você compartilha</h2>
+    </div>
+    <p>Ao compartilhar um versículo (como texto ou imagem), o app abre o menu de compartilhamento do próprio sistema, e é você quem escolhe para qual app enviar (WhatsApp, Instagram, e-mail etc.). A partir daí, o conteúdo segue as regras de privacidade do app que você escolheu. O Palavra Viva não recebe nem guarda nenhuma informação sobre esse envio.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">6</span>
+      <h2>Crianças</h2>
+    </div>
+    <p>Como o app não coleta nenhum dado pessoal, ele pode ser usado por pessoas de qualquer idade, inclusive crianças acompanhadas pelos pais ou responsáveis.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="section-num">7</span>
+      <h2>Alterações nesta política</h2>
+    </div>
+    <p>Se o app passar a coletar algum tipo de dado no futuro (por exemplo, se ganhar recursos que usem a internet), esta página será atualizada antes da mudança valer, com uma nova data de "última atualização" no topo.</p>
+  </section>
+
+  <hr>
+
+  <div class="contact-card">
+    <div>
+      <p class="who">Dúvidas sobre privacidade</p>
+      <a href="mailto:libraniumtech@gmail.com">libraniumtech@gmail.com</a>
+    </div>
+    <p class="muted" style="margin:0; font-size: 14px; max-width: 30ch;">Escreva a qualquer momento com perguntas sobre este app.</p>
+  </div>
+
+  <footer>
+    Palavra Viva · Política de Privacidade
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palavra Viva — A Bíblia sempre com você</title>
+<meta name="description" content="Palavra Viva é um app de Bíblia com versículo do dia, leitura, busca por temas, favoritos, lembretes e imagens para compartilhar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #f7f3ea;
+    --surface: #fffdf8;
+    --text: #1c2a20;
+    --text-muted: #6a6e63;
+    --accent: #1e3a26;
+    --accent-ink: #1e3a26;
+    --accent-soft: #f0eadd;
+    --gold: #b98f35;
+    --gold-soft: #f4ead2;
+    --border: #e3dccb;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1811; --surface: #17241b; --text: #ede7da; --text-muted: #a5ab9c;
+      --accent: #9fc4a3; --accent-ink: #cfe6d1; --accent-soft: #1f2f24;
+      --gold: #d9b865; --gold-soft: #2f2a1b; --border: #2a3a2f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1811; --surface: #17241b; --text: #ede7da; --text-muted: #a5ab9c;
+    --accent: #9fc4a3; --accent-ink: #cfe6d1; --accent-soft: #1f2f24;
+    --gold: #d9b865; --gold-soft: #2f2a1b; --border: #2a3a2f;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+
+  a.back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--text-muted); text-decoration: none; margin-bottom: 28px;
+  }
+  a.back:hover { color: var(--accent-ink); }
+
+  .hero { display: flex; align-items: center; gap: 32px; padding: 12px 0 40px; }
+  .hero img.icon {
+    width: 128px; height: 128px; flex: none; border-radius: 28px;
+    box-shadow: 0 10px 24px rgba(20, 42, 27, 0.3);
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(30px, 4.8vw, 44px); line-height: 1.1; margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--text-muted); font-size: 17px; margin: 0; max-width: 40ch; }
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin: 0 0 8px;
+  }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 22px;
+    margin: 0 0 14px; text-wrap: balance;
+  }
+  section { margin-bottom: 40px; }
+  section p { font-size: 16px; max-width: 62ch; }
+
+  .verse {
+    margin: 0 0 40px; padding: 26px 28px; border-radius: 18px;
+    background: linear-gradient(160deg, #1e3a26, #142a1b); color: #f6f1e6;
+    box-shadow: 0 10px 24px rgba(20, 42, 27, 0.22);
+  }
+  .verse p {
+    font-family: var(--font-display); font-size: clamp(20px, 3.4vw, 25px); line-height: 1.35;
+    margin: 0 0 10px; max-width: none;
+  }
+  .verse cite { font-style: normal; font-weight: 600; font-size: 14px; color: #d9b865; letter-spacing: 0.04em; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+  }
+  .feature {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .feature .label { font-weight: 600; font-size: 15px; margin: 0 0 4px; color: var(--accent-ink); }
+  .feature p { margin: 0; font-size: 14px; color: var(--text-muted); }
+
+  .status-note {
+    background: var(--gold-soft); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 22px; font-size: 15px; color: var(--text);
+  }
+  .status-note strong { color: var(--gold); }
+
+  .prints {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px;
+    margin: 4px 0 0; padding: 0; list-style: none;
+  }
+  .prints figure { margin: 0; text-align: center; }
+  .prints img {
+    width: 100%; height: auto; display: block; border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 24px rgba(20, 42, 27, 0.18);
+  }
+  .prints figcaption { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.35; }
+
+  footer {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; align-items: center;
+    font-size: 14px; color: var(--text-muted);
+  }
+  footer a { color: var(--accent-ink); }
+  @media (max-width: 520px) {
+    .hero { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Todos os apps</a>
+
+  <div class="hero">
+    <img class="icon" src="assets/icon.webp" alt="Ícone do Palavra Viva: Bíblia aberta com uma cruz dourada e ramos verdes">
+    <div>
+      <p class="eyebrow">A Bíblia sempre com você</p>
+      <h1>Palavra Viva</h1>
+      <p class="tagline">Mais que um aplicativo, uma companhia diária: um versículo novo todos os dias e a Bíblia inteira na palma da mão.</p>
+    </div>
+  </div>
+
+  <section>
+    <h2>Sobre o app</h2>
+    <p>O Palavra Viva foi criado para ajudar você a estar mais perto de Deus todos os dias. Ao abrir o app, você encontra o versículo do dia sobre uma paisagem serena e, com um toque, pode ler o capítulo inteiro, guardar o versículo nos favoritos ou compartilhá-lo como imagem.</p>
+  </section>
+
+  <figure class="verse">
+    <p>“Lâmpada para os meus pés é a tua palavra, e luz para o meu caminho.”</p>
+    <cite>Salmos 119:105</cite>
+  </figure>
+
+  <section>
+    <h2>O que você encontra</h2>
+    <div class="grid">
+      <div class="feature">
+        <p class="label">Versículo do dia</p>
+        <p>Um versículo novo a cada dia, e um calendário para rever os dos dias anteriores.</p>
+      </div>
+      <div class="feature">
+        <p class="label">A Bíblia completa</p>
+        <p>Os 66 livros, do Antigo e do Novo Testamento, com tamanho de letra ajustável e "Continuar leitura".</p>
+      </div>
+      <div class="feature">
+        <p class="label">Busca por palavra e tema</p>
+        <p>Encontre versículos sem se preocupar com acentos, ou escolha um tema: Ansiedade, Paz, Fé, Esperança…</p>
+      </div>
+      <div class="feature">
+        <p class="label">Favoritos</p>
+        <p>Guarde os versículos que tocam você e volte a eles quando quiser.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Lembrete às 7h</p>
+        <p>Todo dia, o começo do versículo do dia chega como aviso. Você escolhe o horário, os dias e a mensagem.</p>
+      </div>
+      <div class="feature">
+        <p class="label">8 idiomas</p>
+        <p>Português, English, Français, Deutsch, Español, 日本語, Italiano e 中文 — o app e a Bíblia no seu idioma.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Imagens para compartilhar</p>
+        <p>Transforme um versículo em imagem, com 12 paisagens, e envie para quem você ama.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Tema claro e escuro</p>
+        <p>Leia com conforto de dia e à noite, ou deixe seguir o celular.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Sem cadastro</p>
+        <p>Sem conta, sem anúncios: seus favoritos e lembretes ficam só no seu aparelho.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Veja o app</h2>
+    <div class="prints">
+      <figure>
+        <img src="assets/print_hoje.webp" width="480" height="1067" loading="lazy" alt="Tela Hoje, com o versículo do dia sobre uma paisagem de montanhas ao amanhecer">
+        <figcaption>Versículo do dia</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_idioma.webp" width="480" height="1067" loading="lazy" alt="Tela de escolha do idioma, com oito idiomas">
+        <figcaption>Escolha o idioma</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_biblia.webp" width="480" height="1067" loading="lazy" alt="Lista dos livros do Antigo Testamento, com o atalho Continuar leitura">
+        <figcaption>Livros da Bíblia</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_leitura.webp" width="480" height="1067" loading="lazy" alt="Leitura do Salmo 23, com os versículos numerados">
+        <figcaption>Leitura do capítulo</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_favoritos.webp" width="480" height="1067" loading="lazy" alt="Tela Meus Favoritos, com quatro versículos salvos">
+        <figcaption>Seus versículos salvos</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_fundos.webp" width="480" height="1067" loading="lazy" alt="Tela de imagens de fundo, com paisagens de natureza">
+        <figcaption>Imagens de fundo</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_compartilhar.webp" width="480" height="1067" loading="lazy" alt="Tela Compartilhar, com o versículo do Salmo 23 sobre uma paisagem">
+        <figcaption>Compartilhe como imagem</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_lembretes.webp" width="480" height="1067" loading="lazy" alt="Tela de lembretes, ativada às 7h todos os dias">
+        <figcaption>Lembretes diários</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="status-note">
+      <strong>Disponibilidade:</strong> o app está em desenvolvimento e em breve chega à Google Play e à App Store.
+    </div>
+  </section>
+
+  <footer>
+    <span>Palavra Viva · Traduções de domínio público</span>
+    <span><a href="privacidade.html">Política de privacidade</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

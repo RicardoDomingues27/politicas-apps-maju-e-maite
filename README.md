@@ -16,9 +16,14 @@ jogo-da-velha/
                           a partir da arte do próprio jogo)
 japamala/
   index.html          ← página "sobre" o Japamala (contador de mantras)
-  privacidade.html     ← política de privacidade (ainda não criada)
+  privacidade.html     ← política de privacidade
   config.json          ← configuração remota lida pelo app (promoções)
   assets/              ← ícone, lótus e logo do app, em WebP
+palavra-viva/
+  index.html          ← página "sobre" o Palavra Viva (app de Bíblia)
+  privacidade.html     ← política de privacidade
+  assets/              ← ícone e prints das telas, em WebP (os prints são
+                          gerados pelo próprio app: tools/render_prints_test.dart)
 ```
 
 ## Adicionar um novo app
