@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caverna Race — Corrida pré-histórica</title>
+<meta name="description" content="Caverna Race é um jogo de corrida 2D com um homem das cavernas: suba morros no carrinho de troncos, voe de asa-delta e melhore o seu carro na oficina.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #faf4ea;
+    --surface: #fffaf2;
+    --text: #2a1d12;
+    --text-muted: #75614f;
+    --accent: #7a3c0c;
+    --accent-ink: #7a3c0c;
+    --accent-soft: #fbeedd;
+    --gold: #c0661c;
+    --gold-soft: #fbe6cc;
+    --border: #eadfce;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17110b; --surface: #211910; --text: #f5ece1; --text-muted: #c2b09c;
+      --accent: #f2a65a; --accent-ink: #ffd9a8; --accent-soft: #33241a;
+      --gold: #f2a65a; --gold-soft: #33241a; --border: #3d2d20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17110b; --surface: #211910; --text: #f5ece1; --text-muted: #c2b09c;
+    --accent: #f2a65a; --accent-ink: #ffd9a8; --accent-soft: #33241a;
+    --gold: #f2a65a; --gold-soft: #33241a; --border: #3d2d20;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+
+  a.back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--text-muted); text-decoration: none; margin-bottom: 28px;
+  }
+  a.back:hover { color: var(--accent-ink); }
+
+  .hero { display: flex; align-items: center; gap: 32px; padding: 12px 0 40px; }
+  .hero img.icon {
+    width: 128px; height: 128px; flex: none; border-radius: 28px;
+    box-shadow: 0 10px 24px rgba(60, 30, 10, 0.3);
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(30px, 4.8vw, 44px); line-height: 1.1; margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--text-muted); font-size: 17px; margin: 0; max-width: 40ch; }
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin: 0 0 8px;
+  }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 22px;
+    margin: 0 0 14px; text-wrap: balance;
+  }
+  section { margin-bottom: 40px; }
+  section p { font-size: 16px; max-width: 62ch; }
+
+  .verse {
+    margin: 0 0 40px; padding: 26px 28px; border-radius: 18px;
+    background: linear-gradient(160deg, #1e3a26, #142a1b); color: #f6f1e6;
+    box-shadow: 0 10px 24px rgba(60, 30, 10, 0.22);
+  }
+  .verse p {
+    font-family: var(--font-display); font-size: clamp(20px, 3.4vw, 25px); line-height: 1.35;
+    margin: 0 0 10px; max-width: none;
+  }
+  .verse cite { font-style: normal; font-weight: 600; font-size: 14px; color: #f2a65a; letter-spacing: 0.04em; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+  }
+  .feature {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .feature .label { font-weight: 600; font-size: 15px; margin: 0 0 4px; color: var(--accent-ink); }
+  .feature p { margin: 0; font-size: 14px; color: var(--text-muted); }
+
+  .status-note {
+    background: var(--gold-soft); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 22px; font-size: 15px; color: var(--text);
+  }
+  .status-note strong { color: var(--gold); }
+
+  .prints {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px;
+    margin: 4px 0 0; padding: 0; list-style: none;
+  }
+  .prints figure { margin: 0; text-align: center; }
+  .prints img {
+    width: 100%; height: auto; display: block; border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 24px rgba(60, 30, 10, 0.18);
+  }
+  .prints figcaption { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.35; }
+
+  footer {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; align-items: center;
+    font-size: 14px; color: var(--text-muted);
+  }
+  footer a { color: var(--accent-ink); }
+  @media (max-width: 520px) {
+    .hero { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" href="../index.html">← Todos os apps</a>
+
+  <div class="hero">
+    <img class="icon" src="assets/icon.webp" alt="Ícone do Caverna Race: homem das cavernas barbudo num carrinho de tronco com rodas de pedra">
+    <div>
+      <p class="eyebrow">Corrida pré-histórica</p>
+      <h1>Caverna Race</h1>
+      <p class="tagline">Um homem das cavernas, um carrinho de troncos com rodas de pedra e morros cada vez mais altos. Até onde você chega?</p>
+    </div>
+  </div>
+
+  <section>
+    <h2>Sobre o jogo</h2>
+    <p>O Caverna Race é um jogo de corrida 2D, jogado com o celular deitado. O carrinho vai andando na horizontal e você controla só o acelerador e o freio. Pelo caminho aparecem subidas fortes, trechos escorregadios e a fome apertando. Quando o carrinho não aguenta mais, é hora de voltar à oficina, melhorar o motor, os pneus ou a capacidade e tentar chegar mais longe.</p>
+    <p>Ao bater a meta de cada fase, a próxima é liberada, com outro cenário e outros desafios — inclusive uma fase em que o homem das cavernas voa de asa-delta.</p>
+  </section>
+
+  <section>
+    <h2>O que você encontra</h2>
+    <div class="grid">
+      <div class="feature">
+        <p class="label">Corrida na horizontal</p>
+        <p>O carrinho anda sozinho: você só acelera e freia para vencer os morros sem capotar.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Motor de pernas</p>
+        <p>Nada de motor: o homem das cavernas corre com os próprios pés, por um buraco no chão do carrinho.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Coxa de carne é combustível</p>
+        <p>A fome vai apertando. Pegue coxas de carne pelo caminho para continuar correndo.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Oficina</p>
+        <p>Gaste as moedas melhorando motor (subidas), pneus (aderência), capacidade (fôlego) e estabilidade.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Carrinhos e personagens</p>
+        <p>Quatro carrinhos — do Tronco-Móvel ao Safira Turbo — e três homens das cavernas para escolher.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Cinco fases</p>
+        <p>Vale Verde, Deserto de Pedra, Montanha Gelada, Penhasco do Vento e Vulcão Fumegante.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Voo de asa-delta</p>
+        <p>Na fase do penhasco, voe numa asa-delta de couro e bambu e pegue as correntes de ar quente.</p>
+      </div>
+      <div class="feature">
+        <p class="label">Sem cadastro</p>
+        <p>Sem conta e sem internet: o progresso fica só no seu aparelho.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Veja o jogo</h2>
+    <div class="prints">
+      <figure>
+        <img src="assets/print_menu.webp" width="1200" height="540" loading="lazy" alt="Tela inicial do Caverna Race, com o homem das cavernas e o carrinho de troncos">
+        <figcaption>Tela inicial</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_corrida.webp" width="1200" height="540" loading="lazy" alt="Corrida no Vale Verde, com cachoeiras, palmeiras e um vulcão ao fundo">
+        <figcaption>Corrida no Vale Verde</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_oficina.webp" width="1200" height="540" loading="lazy" alt="Oficina com as melhorias de motor, pneus e capacidade e os carrinhos">
+        <figcaption>Oficina</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_asa_delta.webp" width="1200" height="540" loading="lazy" alt="Homem das cavernas voando de asa-delta sobre falésias e o mar">
+        <figcaption>Voo de asa-delta</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_gelo.webp" width="1200" height="540" loading="lazy" alt="Corrida na Montanha Gelada, com chão de neve escorregadio">
+        <figcaption>Montanha Gelada</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/print_fases.webp" width="1200" height="540" loading="lazy" alt="Tela de escolha das cinco fases, com recordes e metas">
+        <figcaption>Escolha a fase</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="status-note">
+      <strong>Disponibilidade:</strong> o jogo está em desenvolvimento e em breve chega à Google Play e à App Store.
+    </div>
+  </section>
+
+  <footer>
+    <span>Caverna Race · Libranium Tech</span>
+    <span><a href="privacidade.html">Política de privacidade</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

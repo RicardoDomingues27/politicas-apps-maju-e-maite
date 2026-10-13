@@ -24,6 +24,10 @@ palavra-viva/
   privacidade.html     ← política de privacidade
   assets/              ← ícone e prints das telas, em WebP (os prints são
                           gerados pelo próprio app: tools/render_prints_test.dart)
+caverna-race/
+  index.html          ← página "sobre" o Caverna Race (jogo de corrida 2D)
+  privacidade.html     ← política de privacidade
+  assets/              ← ícone e prints (paisagem) tirados no emulador, em WebP
 ```
 
 ## Adicionar um novo app
