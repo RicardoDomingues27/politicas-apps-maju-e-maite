@@ -28,6 +28,10 @@ caverna-race/
   index.html          ← página "sobre" o Caverna Race (jogo de corrida 2D)
   privacidade.html     ← política de privacidade
   assets/              ← ícone e prints (paisagem) tirados no emulador, em WebP
+nova-chronicles/
+  index.html          ← página "sobre" o Nova Chronicles (plataforma e ação 2D)
+  privacidade.html     ← política de privacidade
+  assets/              ← ícone e prints (paisagem) tirados no emulador, em WebP
 ```
 
 ## Adicionar um novo app
