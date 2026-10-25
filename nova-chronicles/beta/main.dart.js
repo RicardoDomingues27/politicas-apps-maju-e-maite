@@ -78527,7 +78527,7 @@ return this.a.e=s},
 $S:0}
 A.tk.prototype={
 M(a){var s=null,r=new A.aeM(),q=A.eW(16),p=t.p
-return new A.Eo(B.Xw,A.amZ(A.h_(A.c([B.XB,B.yy,r.$2(B.FO,"Toque em Compartilhar no Safari."),r.$2(B.FH,'Escolha "Adicionar \xe0 Tela de In\xedcio".'),r.$2(B.n_,"Abra pelo \xedcone do Nova Chronicles: o jogo abre em tela cheia e funciona at\xe9 sem internet.")],p),B.b5,B.aK),B.aB),A.c([new A.Ky(new A.aeL(a),s,s,s,s,s,s,!1,s,!0,s,B.Xq,s)],p),B.mv,new A.dl(q,B.A_),s)}}
+return new A.Eo(B.Xw,A.amZ(A.h_(A.c([B.XA,B.yy,r.$2(B.FO,"Toque em Compartilhar no Safari."),r.$2(B.FH,'Escolha "Adicionar \xe0 Tela de In\xedcio".'),r.$2(B.n_,"Abra pelo \xedcone do Nova Chronicles: o jogo abre em tela cheia e funciona at\xe9 sem internet.")],p),B.b5,B.aK),B.aB),A.c([new A.Ky(new A.aeL(a),s,s,s,s,s,s,!1,s,!0,s,B.Xq,s)],p),B.mv,new A.dl(q,B.A_),s)}}
 A.aeM.prototype={
 $2(a,b){var s=null
 return new A.cw(B.Ex,A.fJ(A.c([A.GQ(a,B.cA,s,22),B.yv,A.n4(A.dm(b,s,s,s,B.We,s),1)],t.p),B.ap),s)},
@@ -78652,7 +78652,7 @@ p=a.$4(146,341,452,395)
 p=A.qW(j.$3("CONFIGURA\xc7\xd5ES","ui_icon_gear.png",r.f),p)
 o=a.$4(146,395,452,449)
 o=A.qW(j.$3("CR\xc9DITOS","ui_icon_book.png",r.r),o)
-r=A.o5(8,A.oc(!0,A.e9(k,B.Xx,k,k,new A.cE(B.B,k,k,A.eW(8),k,k,B.ae),k,k,B.EQ,k),B.an,!0),k,k,k,12,k,k)
+r=A.o5(8,A.oc(!0,A.e9(k,B.XB,k,k,new A.cE(B.B,k,k,A.eW(8),k,k,B.ae),k,k,B.EQ,k),B.an,!0),k,k,k,12,k,k)
 j=a.$4(150,450,452,468)
 n=A.ea("assets/images/item_coin.png",B.x,k,k,k,B.L,k,!1,k,k)
 m=A.kF($.aT.a_().a.i(0,"coins"))
@@ -78743,7 +78743,7 @@ s=A.dU($.aT.a_().a.i(0,"sfx_volume"))
 if(s==null)s=0.9
 s=p.NV(B.n0,m!==!1,new A.ag2(p),new A.ag3(p),"Efeitos sonoros",s)
 m=A.ca($.aT.a_().a.i(0,"auto_fire"))
-m=A.asv(new A.ag4(p),B.Xp,B.Xz,m===!0)
+m=A.asv(new A.ag4(p),B.Xp,B.Xy,m===!0)
 r=A.ca($.aT.a_().a.i(0,"easy"))
 r=A.asv(new A.ag5(p),B.XD,B.Xm,r===!0)
 q=A.dU($.aT.a_().a.i(0,"controls_opacity"))
@@ -79084,7 +79084,7 @@ p=p.b
 if(r.d)p="CHEF\xc3O FINAL \xb7 "+p
 s=t.p
 p=A.c([A.o5(0,A.e9(q,A.am0(A.dm(p,q,q,q,A.fi(q,q,n?B.i:B.z,q,q,q,q,q,q,q,q,11,q,q,B.ao,q,q,!0,q,q,q,q,q,q,q,q),q),B.hO),B.im,q,q,q,q,B.EK,q),q,q,0,0,q,q)],s)
-if(o)p.push(A.o5(q,A.e9(q,B.XA,q,q,new A.cE(B.CI,q,q,A.eW(8),q,q,B.ae),q,q,B.EM,q),q,q,q,3,3,q))
+if(o)p.push(A.o5(q,A.e9(q,B.Xz,q,q,new A.cE(B.CI,q,q,A.eW(8),q,q,B.ae),q,q,B.EM,q),q,q,q,3,3,q))
 else if(!n)p.push(A.V4(A.h_(A.c([B.FW,A.dm(r.e?"VEN\xc7A OS 9":"EM BREVE",q,q,q,B.SV,q)],s),B.aC,B.aK),q,q))
 return A.hE(q,A.e9(q,A.eP(B.aG,p,B.O,B.aL),q,q,new A.cE(l,q,j,k,q,q,B.ae),q,q,q,q),B.a5,!1,q,q,q,q,q,q,q,q,q,q,q,q,q,q,m,q,q,q)}}
 A.ac6.prototype={
@@ -79166,7 +79166,7 @@ o=A.ea("assets/images/ui_logo.png",B.x,p,p,p,B.L,p,!1,p,Math.min(o.a.a*0.82,420)
 s=A.Eq(this.gOr(),new A.ahh(this),B.ZQ)
 r=A.eW(20)
 q=t.p
-return A.eP(B.aG,A.c([n,B.DU,A.oc(!0,new A.cw(B.EH,A.h_(A.c([B.yE,o,B.yE,s,B.QE,B.Xv,B.QF,B.Xr,B.QM,A.e9(p,B.Xy,p,p,new A.cE(B.i5,p,A.jq(B.cC,1),r,p,p,B.ae),p,p,B.EC,p)],q),B.aC,B.ap),p),B.an,!0)],q),B.O,B.yF)}}
+return A.eP(B.aG,A.c([n,B.DU,A.oc(!0,new A.cw(B.EH,A.h_(A.c([B.yE,o,B.yE,s,B.QE,B.Xv,B.QF,B.Xr,B.QM,A.e9(p,B.Xx,p,p,new A.cE(B.i5,p,A.jq(B.cC,1),r,p,p,B.ae),p,p,B.EC,p)],q),B.aC,B.ap),p),B.an,!0)],q),B.O,B.yF)}}
 A.ahh.prototype={
 $2(a,b){var s=this.a.gOr()
 return new A.kj(A.aEM(s.b.al(s.a.gm())),B.x,!0,null,b,null)},
@@ -85071,15 +85071,15 @@ B.V5=new A.n(!0,B.i,null,null,null,null,28,B.ao,null,0.5,null,null,null,null,nul
 B.Xv=new A.d2("Vire o celular",null,B.V5,B.da,null,null,null,null)
 B.Tk=new A.n(!0,B.i,null,null,null,null,null,B.ao,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.Xw=new A.d2("Tela cheia no iPhone",null,B.Tk,null,null,null,null,null)
-B.Wb=new A.n(!0,B.cA,null,null,null,null,15,B.bq,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Xx=new A.d2("Vers\xe3o beta 1.0.6 \xb7 25/10 13:56",null,B.Wb,null,null,null,null,null)
 B.TK=new A.n(!0,B.cA,null,null,null,null,14,B.bq,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Xy=new A.d2("Vers\xe3o beta 1.0.6",null,B.TK,null,null,null,null,null)
-B.Xz=new A.d2("Tiro autom\xe1tico",null,B.eD,null,null,null,null,null)
+B.Xx=new A.d2("Vers\xe3o beta 1.0.7",null,B.TK,null,null,null,null,null)
+B.Xy=new A.d2("Tiro autom\xe1tico",null,B.eD,null,null,null,null,null)
 B.SW=new A.n(!0,B.i,null,null,null,null,8,B.ao,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.XA=new A.d2("VENCIDO \u2713",null,B.SW,null,null,null,null,null)
+B.Xz=new A.d2("VENCIDO \u2713",null,B.SW,null,null,null,null,null)
 B.U9=new A.n(!0,B.lO,null,null,null,null,14,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.XB=new A.d2("O Safari do iPhone n\xe3o deixa sites em tela cheia. Mas d\xe1 para instalar o jogo na Tela de In\xedcio:",null,B.U9,null,null,null,null,null)
+B.XA=new A.d2("O Safari do iPhone n\xe3o deixa sites em tela cheia. Mas d\xe1 para instalar o jogo na Tela de In\xedcio:",null,B.U9,null,null,null,null,null)
+B.Wb=new A.n(!0,B.cA,null,null,null,null,15,B.bq,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.XB=new A.d2("Vers\xe3o beta 1.0.7 \xb7 25/10 14:46",null,B.Wb,null,null,null,null,null)
 B.XD=new A.d2("Voc\xea recebe metade do dano",null,B.hm,null,null,null,null,null)
 B.a_z=new A.aaq(0,"system")
 B.Mp=new A.j(0.056,0.024)

@@ -132,14 +132,9 @@
     // internet com o carregamento da primeira vez.
     if ('serviceWorker' in navigator) {
       var startSw = function () {
-        // Versão nova instalada: recarrega uma vez para usar os arquivos novos.
-        var hadController = !!navigator.serviceWorker.controller;
-        var reloaded = false;
-        navigator.serviceWorker.addEventListener('controllerchange', function () {
-          if (!hadController || reloaded) return;
-          reloaded = true;
-          window.location.reload();
-        });
+        // Sem recarregar a página quando uma versão nova termina de baixar:
+        // isso acontecia no meio da fase e reiniciava o jogo. O código já
+        // vem sempre da internet; os arquivos novos valem na próxima vez.
         navigator.serviceWorker.register('sw.js');
       };
       var swStarted = false;
