@@ -82,7 +82,11 @@
         target = Math.max(target, value);
         if (text) msg.textContent = text;
       };
+      var finished = false;
       window.novaLoadingDone = function () {
+        if (finished) return;
+        finished = true;
+        window.dispatchEvent(new Event('nova-ready'));
         target = 1; shown = 1;
         fill.style.width = '100%';
         msg.textContent = 'Pronto!';
@@ -92,10 +96,13 @@
           setTimeout(function () { el.remove(); }, 500);
         }, 350);
       };
+      // O menu já apareceu por baixo, mas o jogo ainda carrega imagens e
+      // sons: a tela só some quando o próprio jogo avisa que está pronto.
       window.addEventListener('flutter-first-frame', function () {
-        // Espera um instante para as imagens do menu aparecerem.
-        setTimeout(window.novaLoadingDone, 300);
+        window.novaLoading(0.3, 'Carregando imagens…');
       });
+      // Segurança: se o aviso nunca chegar, não deixa a pessoa presa aqui.
+      setTimeout(function () { window.novaLoadingDone(); }, 90000);
     })();
   </script>
   <!--
@@ -141,9 +148,7 @@
         swStarted = true;
         setTimeout(startSw, 2500);
       };
-      window.addEventListener('flutter-first-frame', once);
-      // Se o evento não vier por algum motivo, registra mesmo assim.
-      window.addEventListener('load', function () { setTimeout(once, 15000); });
+      window.addEventListener('nova-ready', once);
     }
   </script>
   <script src="flutter_bootstrap.js" async></script>
