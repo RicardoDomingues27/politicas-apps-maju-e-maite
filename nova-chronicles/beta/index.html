@@ -144,6 +144,44 @@
         setTimeout(startSw, 2500);
       };
       window.addEventListener('nova-ready', once);
+
+      // Botão "verificar atualizações" do menu. report(texto, estado, %):
+      // estado 0 = trabalhando, 1 = nada a fazer, 2 = pronto para reiniciar.
+      window.novaCheckUpdate = async function (current, report) {
+        var onMsg = null;
+        try {
+          report('Procurando atualizações…', 0, -1);
+          var r = await fetch('version.json?t=' + Date.now(), {cache: 'no-store'});
+          var v = (await r.json()).version;
+          if (v === current) {
+            report('Você já está com a versão mais recente (' + v + ').', 1, -1);
+            return;
+          }
+          report('Nova versão ' + v + ' encontrada! Baixando…', 0, 0);
+          onMsg = function (e) {
+            if (e.data && e.data.type === 'nova-progress') {
+              report('Baixando a versão ' + v + '… ' + Math.round(e.data.p * 100) + '%', 0, e.data.p);
+            }
+          };
+          navigator.serviceWorker.addEventListener('message', onMsg);
+          var reg = await navigator.serviceWorker.getRegistration();
+          if (!reg) reg = await navigator.serviceWorker.register('sw.js');
+          else await reg.update();
+          var sw = reg.installing || reg.waiting;
+          if (sw && sw.state !== 'activated') {
+            await new Promise(function (res) {
+              sw.addEventListener('statechange', function () {
+                if (sw.state === 'activated' || sw.state === 'redundant') res();
+              });
+            });
+          }
+          report('Versão ' + v + ' pronta! Reinicie o jogo para usar.', 2, 1);
+        } catch (e) {
+          report('Não deu para procurar agora. Confira a internet e tente de novo.', 1, -1);
+        } finally {
+          if (onMsg) navigator.serviceWorker.removeEventListener('message', onMsg);
+        }
+      };
     }
   </script>
   <script src="flutter_bootstrap.js" async></script>
