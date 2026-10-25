@@ -62,6 +62,14 @@
     // Guarda o jogo no aparelho para jogar offline (só funciona em https).
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
+        // Versão nova instalada: recarrega uma vez para usar os arquivos novos.
+        var hadController = !!navigator.serviceWorker.controller;
+        var reloaded = false;
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          if (!hadController || reloaded) return;
+          reloaded = true;
+          window.location.reload();
+        });
         navigator.serviceWorker.register('sw.js');
       });
     }
