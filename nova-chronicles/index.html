@@ -70,6 +70,19 @@
     font-family: var(--font-display); font-weight: 600; font-size: 22px;
     margin: 0 0 14px; text-wrap: balance;
   }
+  .play-beta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px;
+    margin: 20px 0 8px; padding: 18px 20px;
+    background: var(--gold-soft); border: 1px solid var(--gold); border-radius: 14px;
+  }
+  .play-beta .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 999px;
+    background: var(--accent); color: var(--surface); font-weight: 700;
+    font-size: 16px; text-decoration: none; white-space: nowrap;
+  }
+  .play-beta .btn:hover { filter: brightness(1.1); }
+  .play-beta p { margin: 0; font-size: 14px; color: var(--text-muted); flex: 1 1 240px; }
+  .play-beta strong { color: var(--text); }
   section { margin-bottom: 40px; }
   section p { font-size: 16px; max-width: 62ch; }
 
@@ -140,6 +153,10 @@
 
   <section>
     <h2>Sobre o jogo</h2>
+    <div class="play-beta">
+      <a class="btn" href="beta/">▶ Jogar a versão beta no navegador</a>
+      <p><strong>Versão de testes, grátis, direto no navegador</strong> (celular, tablet ou computador). Jogue com o celular deitado. No iPhone, para tela cheia, use Compartilhar → Adicionar à Tela de Início.</p>
+    </div>
     <p>O Nova Chronicles é um jogo de plataforma e ação 2D em pixel art, jogado com o celular deitado. Você controla o Kael, um explorador determinado que usa tecnologia ancestral para proteger o mundo. Pelo caminho há buracos, espinhos, cachoeiras, torres para escalar e inimigos que aparecem aos poucos, para você ir pegando o jeito.</p>
     <p>A primeira fase é a Floresta Tecnológica, uma floresta cheia de ruínas antigas e cachoeiras, que termina na luta contra o Guardião da Floresta: um golem gigante de pedra e musgo com uma árvore nas costas.</p>
   </section>
