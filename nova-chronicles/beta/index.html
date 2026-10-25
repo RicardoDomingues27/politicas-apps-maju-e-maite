@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/politicas-apps-maju-e-maite/nova-chronicles/beta/">
+
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <!-- viewport-fit=cover: ocupa também a área da câmera em tela cheia -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Nova Chronicles">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Nova Chronicles">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Nova Chronicles</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!--
+    You can customize the "flutter_bootstrap.js" script.
+    This is useful to provide a custom configuration to the Flutter loader
+    or to give the user feedback during the initialization process.
+
+    For more details:
+    * https://docs.flutter.dev/platform-integration/web/initialization
+  -->
+  <script>
+    // O Flutter reescreve a meta "viewport" ao iniciar; devolve o
+    // viewport-fit=cover para o jogo ocupar a área da câmera em tela cheia.
+    (function () {
+      function fix() {
+        document.querySelectorAll('meta[name="viewport"]').forEach(function (m) {
+          if (m.content.indexOf('viewport-fit') < 0) m.content += ', viewport-fit=cover';
+        });
+      }
+      new MutationObserver(fix).observe(document.head, {childList: true, subtree: true, attributes: true});
+      fix();
+    })();
+  </script>
+  <script>
+    // Guarda o jogo no aparelho para jogar offline (só funciona em https).
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
