@@ -43,4 +43,11 @@ _flutter.buildConfig = {"engineRevision":"af7e796e161ae0bb1ff0758c71a7105418bd9d
 
 // Sem o service worker padrão do Flutter (ele se desinstala sozinho e
 // derrubaria o nosso, o sw.js, que deixa o jogo funcionar offline).
-_flutter.loader.load();
+_flutter.loader.load({
+  onEntrypointLoaded: async function (engineInitializer) {
+    window.novaLoading && window.novaLoading(0.6, 'Preparando o motor do jogo…');
+    const appRunner = await engineInitializer.initializeEngine();
+    window.novaLoading && window.novaLoading(0.85, 'Abrindo o menu…');
+    await appRunner.runApp();
+  },
+});

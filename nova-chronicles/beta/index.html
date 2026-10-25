@@ -33,10 +33,71 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
+  <style>
+    /* Tela de carregamento: aparece na hora, antes do jogo terminar de baixar. */
+    html, body { margin: 0; height: 100%; background: #050b1a; }
+    #loading {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 22px; padding: 24px; box-sizing: border-box;
+      background: radial-gradient(ellipse at 50% 35%, #1e3a8a 0%, #0b1220 55%, #050b1a 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #e2e8f0; transition: opacity .45s ease;
+    }
+    #loading.done { opacity: 0; pointer-events: none; }
+    #loading img { width: min(72vw, 420px); max-height: 40vh; object-fit: contain;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,.6)); animation: float 2.6s ease-in-out infinite; }
+    @keyframes float { 50% { transform: translateY(-6px); } }
+    #loading .bar { width: min(70vw, 360px); height: 12px; border-radius: 999px;
+      background: #0b1220; border: 2px solid #d4a24c; overflow: hidden; box-sizing: border-box; }
+    #loading .fill { height: 100%; width: 4%; border-radius: 999px;
+      background: linear-gradient(90deg, #38bdf8, #a855f7, #f59e0b);
+      background-size: 200% 100%; animation: shine 1.4s linear infinite; transition: width .35s ease; }
+    @keyframes shine { to { background-position: -200% 0; } }
+    #loading .msg { font-size: 15px; font-weight: 600; letter-spacing: .02em; color: #fde68a; min-height: 1.3em; }
+    #loading .tip { font-size: 13px; color: #94a3b8; text-align: center; max-width: 360px; }
+  </style>
   <title>Nova Chronicles</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <div id="loading">
+    <img src="assets/assets/images/ui_logo.png" alt="Nova Chronicles">
+    <div class="bar"><div class="fill"></div></div>
+    <div class="msg">Carregando o jogo…</div>
+    <div class="tip">Na primeira vez demora um pouco. Depois o jogo abre rápido, até sem internet.</div>
+  </div>
+  <script>
+    // Barra de carregamento: avança sozinha devagar e pula a cada etapa
+    // (código baixado, motor pronto, primeira tela desenhada).
+    (function () {
+      var el = document.getElementById('loading');
+      var fill = el.querySelector('.fill'), msg = el.querySelector('.msg');
+      var shown = 0.04, target = 0.35;
+      var timer = setInterval(function () {
+        shown += (target - shown) * 0.06;
+        fill.style.width = (shown * 100).toFixed(1) + '%';
+      }, 60);
+      window.novaLoading = function (value, text) {
+        target = Math.max(target, value);
+        if (text) msg.textContent = text;
+      };
+      window.novaLoadingDone = function () {
+        target = 1; shown = 1;
+        fill.style.width = '100%';
+        msg.textContent = 'Pronto!';
+        setTimeout(function () {
+          clearInterval(timer);
+          el.classList.add('done');
+          setTimeout(function () { el.remove(); }, 500);
+        }, 350);
+      };
+      window.addEventListener('flutter-first-frame', function () {
+        // Espera um instante para as imagens do menu aparecerem.
+        setTimeout(window.novaLoadingDone, 300);
+      });
+    })();
+  </script>
   <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader
@@ -60,8 +121,10 @@
   </script>
   <script>
     // Guarda o jogo no aparelho para jogar offline (só funciona em https).
+    // Só começa a guardar depois que o jogo abre, para não disputar a
+    // internet com o carregamento da primeira vez.
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
+      var startSw = function () {
         // Versão nova instalada: recarrega uma vez para usar os arquivos novos.
         var hadController = !!navigator.serviceWorker.controller;
         var reloaded = false;
@@ -71,7 +134,16 @@
           window.location.reload();
         });
         navigator.serviceWorker.register('sw.js');
-      });
+      };
+      var swStarted = false;
+      var once = function () {
+        if (swStarted) return;
+        swStarted = true;
+        setTimeout(startSw, 2500);
+      };
+      window.addEventListener('flutter-first-frame', once);
+      // Se o evento não vier por algum motivo, registra mesmo assim.
+      window.addEventListener('load', function () { setTimeout(once, 15000); });
     }
   </script>
   <script src="flutter_bootstrap.js" async></script>
