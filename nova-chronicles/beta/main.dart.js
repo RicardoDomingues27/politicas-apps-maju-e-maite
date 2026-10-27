@@ -76776,14 +76776,14 @@ m=$.awv()
 m.r=s.ay.gm()
 a.bQ(new A.j(0,0,0+n,256),m)
 r=o.gE().p1.ay.ax.r.kT(0).a[0]
-if(o.ax<1&&s.db){m="bg_"+s.cx
+if(s.db){if(o.ax<1){m="bg_"+s.cx
 o.k6(a,m+"_far",r*0.05,-40,0.8,n)
 if(!s.dx){q=$.TR()
 q.sll(B.Gi)
 o.Mp(a,m+"_mid",r*0.16,274,0.5,n)
 q.sll(B.Gg)
 o.Mp(a,m+"_near",r*0.34,296,0.5,n)
-q.sll(null)}}else if(s.a==="forest"){o.k6(a,"bg_far",r*0.08,0,1.15,n)
+q.sll(null)}}}else if(s.a==="forest"){o.k6(a,"bg_far",r*0.08,0,1.15,n)
 o.k6(a,"bg_mid",r*0.2,66,1,n)
 o.k6(a,"bg_near",r*0.4,128,1,n)}else{m=$.TR()
 m.sll(null)
@@ -80764,7 +80764,7 @@ A.pj.prototype={
 aw(){return new A.Se()}}
 A.Se.prototype={
 aQ(){this.b9()
-A.aJj("1.0.19",new A.ajB(this))},
+A.aJj("1.0.20",new A.ajB(this))},
 N(a){var s,r,q=this,p=null,o=A.ev(16),n=t.p,m=A.c([A.df(q.d,p,p,p,B.zJ,p),B.zg],n)
 if(q.e===0){s=A.ev(6)
 r=q.f
@@ -87206,11 +87206,11 @@ B.Gq=new A.GG(1,"italic")
 B.a_u=new A.m(!0,B.Dx,null,null,null,null,11,null,B.Gq,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a3G=new A.cN("Equipe em PERSONAGENS \u2192 PODER. Vale para qualquer her\xf3i.",null,B.a_u,null,null,null,null,null)
 B.a2v=new A.m(!0,B.bh,null,null,null,null,15,B.bQ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.a3H=new A.cN("Vers\xe3o beta 1.0.19 \xb7 26/10 23:03",null,B.a2v,null,null,null,null,null)
+B.a3H=new A.cN("Vers\xe3o beta 1.0.20 \xb7 26/10 23:17",null,B.a2v,null,null,null,null,null)
 B.a3I=new A.cN("Atira sozinho quando h\xe1 um inimigo \xe0 frente",null,B.hy,null,null,null,null,null)
 B.a3J=new A.cN("ENTENDI",null,B.zH,null,null,null,null,null)
 B.a2b=new A.m(!0,B.fo,null,null,null,null,13,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.a3K=new A.cN("Vers\xe3o atual: 1.0.19",null,B.a2b,null,null,null,null,null)
+B.a3K=new A.cN("Vers\xe3o atual: 1.0.20",null,B.a2b,null,null,null,null,null)
 B.a39=new A.m(!0,B.fi,null,null,null,null,15,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a3M=new A.cN("Nova Chronicles \xe9 jogado com o celular deitado.",null,B.a39,B.dh,null,null,null,null)
 B.a3N=new A.cN("Visibilidade dos controles",null,B.eI,null,null,null,null,null)
@@ -87227,7 +87227,7 @@ B.zG=new A.m(!0,B.i,null,null,null,null,null,B.aj,null,null,null,null,null,null,
 B.a3R=new A.cN("Tela cheia no iPhone",null,B.zG,null,null,null,null,null)
 B.a3S=new A.cN("Atualiza\xe7\xf5es",null,B.zG,null,null,null,null,null)
 B.a02=new A.m(!0,B.bh,null,null,null,null,14,B.bQ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.a3T=new A.cN("Vers\xe3o beta 1.0.19",null,B.a02,null,null,null,null,null)
+B.a3T=new A.cN("Vers\xe3o beta 1.0.20",null,B.a02,null,null,null,null,null)
 B.a14=new A.m(!0,null,null,null,null,null,null,B.aj,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a3U=new A.cN("REINICIAR AGORA",null,B.a14,null,null,null,null,null)
 B.a3V=new A.cN("Tiro autom\xe1tico",null,B.eI,null,null,null,null,null)
