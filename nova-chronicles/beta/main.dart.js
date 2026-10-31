@@ -85093,7 +85093,7 @@ A.pT.prototype={
 ar(){return new A.TL()}}
 A.TL.prototype={
 aQ(){this.b6()
-A.aMZ("1.0.30",new A.amv(this))},
+A.aMZ("1.0.31",new A.amv(this))},
 T(a){var s,r,q=this,p=null,o=A.dr(16),n=t.p,m=A.b([A.bo(q.d,p,p,p,B.B5,p),B.Al],n)
 if(q.e===0){s=A.dr(6)
 r=q.f
@@ -92558,11 +92558,11 @@ B.a6Y=new A.n(!0,B.aa,null,null,null,null,13,B.M,null,1.2,null,null,null,null,nu
 B.aaA=new A.cc("CAMINHO DAS FASES",null,B.a6Y,null,null,null,null,null)
 B.aaB=new A.cc("Liberar tudo (modo de teste)",null,B.cj,null,null,null,null,null)
 B.a90=new A.n(!0,B.fZ,null,null,null,null,13,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aaC=new A.cc("Vers\xe3o atual: 1.0.30",null,B.a90,null,null,null,null,null)
+B.aaC=new A.cc("Vers\xe3o atual: 1.0.31",null,B.a90,null,null,null,null,null)
 B.a69=new A.n(!0,B.j1,null,null,null,null,11,null,B.on,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aaD=new A.cc("Equipe em PERSONAGENS \u2192 PODER. Vale para qualquer her\xf3i.",null,B.a69,null,null,null,null,null)
 B.a9n=new A.n(!0,B.aa,null,null,null,null,15,B.b2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aaE=new A.cc("Vers\xe3o beta 1.0.30 \xb7 31/10 16:53",null,B.a9n,null,null,null,null,null)
+B.aaE=new A.cc("Vers\xe3o beta 1.0.31 \xb7 31/10 17:08",null,B.a9n,null,null,null,null,null)
 B.aaF=new A.cc("Atira sozinho quando h\xe1 um inimigo \xe0 frente",null,B.dN,null,null,null,null,null)
 B.aaG=new A.cc("ENTENDI",null,B.B0,null,null,null,null,null)
 B.aa2=new A.n(!0,B.em,null,null,null,null,15,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -92582,7 +92582,7 @@ B.aaO=new A.cc("PAUSA",null,B.a9k,null,null,null,null,null)
 B.aaP=new A.cc("PODERES",null,B.B4,null,null,null,null,null)
 B.aaQ=new A.cc("Atualiza\xe7\xf5es",null,B.B_,null,null,null,null,null)
 B.a6J=new A.n(!0,B.aa,null,null,null,null,14,B.b2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aaR=new A.cc("Vers\xe3o beta 1.0.30",null,B.a6J,null,null,null,null,null)
+B.aaR=new A.cc("Vers\xe3o beta 1.0.31",null,B.a6J,null,null,null,null,null)
 B.a7R=new A.n(!0,null,null,null,null,null,null,B.M,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aaS=new A.cc("REINICIAR AGORA",null,B.a7R,null,null,null,null,null)
 B.aaU=new A.cc("Tiro autom\xe1tico",null,B.cj,null,null,null,null,null)
