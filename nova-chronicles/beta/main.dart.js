@@ -88412,7 +88412,7 @@ A.qp.prototype={
 ar(){return new A.V1()}}
 A.V1.prototype={
 aN(){this.b2()
-A.aQJ("1.0.42",new A.apm(this))},
+A.aQJ("1.0.43",new A.apm(this))},
 T(a){var s,r,q=this,p=null,o=A.cR(16),n=t.p,m=A.b([A.bm(q.d,p,p,p,B.Bw,p),B.AN],n)
 if(q.e===0){s=A.cR(6)
 r=q.f
@@ -96183,10 +96183,10 @@ B.a8d=new A.p(!0,B.h4,null,null,null,null,11,null,B.oM,null,null,null,null,null,
 B.acN=new A.bD("Equipe em PERSONAGENS \u2192 PODER. Vale para qualquer her\xf3i.",null,B.a8d,null,null,null,null,null)
 B.acO=new A.bD("Todas as fases, her\xf3is, poderes, ovos e moedas voltam a ficar bloqueados, e a hist\xf3ria aparece de novo. N\xe3o d\xe1 para desfazer.",null,B.bC,null,null,null,null,null)
 B.abt=new A.p(!0,B.ae,null,null,null,null,15,B.aY,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.acP=new A.bD("Vers\xe3o beta 1.0.42 \xb7 31/10 22:34",null,B.abt,null,null,null,null,null)
+B.acP=new A.bD("Vers\xe3o beta 1.0.43 \xb7 31/10 22:38",null,B.abt,null,null,null,null,null)
 B.acQ=new A.bD("Atira sozinho quando h\xe1 um inimigo \xe0 frente",null,B.bC,null,null,null,null,null)
 B.ab6=new A.p(!0,B.h9,null,null,null,null,13,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.acR=new A.bD("Vers\xe3o atual: 1.0.42",null,B.ab6,null,null,null,null,null)
+B.acR=new A.bD("Vers\xe3o atual: 1.0.43",null,B.ab6,null,null,null,null,null)
 B.acS=new A.bD("ENTENDI",null,B.Br,null,null,null,null,null)
 B.acT=new A.bD("Testar m\xfasicas novas",null,B.bm,null,null,null,null,null)
 B.a8l=new A.p(!0,B.vC,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -96208,7 +96208,7 @@ B.ad2=new A.bD("PAUSA",null,B.abq,null,null,null,null,null)
 B.ad3=new A.bD("PODERES",null,B.Bv,null,null,null,null,null)
 B.ad4=new A.bD("Atualiza\xe7\xf5es",null,B.Bq,null,null,null,null,null)
 B.a8O=new A.p(!0,B.ae,null,null,null,null,14,B.aY,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ad5=new A.bD("Vers\xe3o beta 1.0.42",null,B.a8O,null,null,null,null,null)
+B.ad5=new A.bD("Vers\xe3o beta 1.0.43",null,B.a8O,null,null,null,null,null)
 B.a9X=new A.p(!0,null,null,null,null,null,null,B.P,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.ad6=new A.bD("REINICIAR AGORA",null,B.a9X,null,null,null,null,null)
 B.ad8=new A.bD("Tiro autom\xe1tico",null,B.bm,null,null,null,null,null)
