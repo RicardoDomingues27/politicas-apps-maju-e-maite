@@ -90291,7 +90291,7 @@ A.qD.prototype={
 ap(){return new A.VT()}}
 A.VT.prototype={
 aN(){this.b1()
-A.aTf("1.0.58",new A.arf(this))},
+A.aTf("1.0.59",new A.arf(this))},
 O(a){var s,r,q=this,p=null,o=A.cJ(16),n=t.p,m=A.b([A.bm(q.d,p,p,p,B.CM,p),B.C0],n)
 if(q.e===0){s=A.cJ(6)
 r=q.f
@@ -98568,7 +98568,7 @@ B.adM=new A.q(!0,B.ho,null,null,null,null,11,null,B.kM,null,null,null,null,null,
 B.ain=new A.bu("Equipe em PERSONAGENS \u2192 PODER. Vale para qualquer her\xf3i.",null,B.adM,null,null,null,null,null)
 B.aio=new A.bu("Todas as fases, her\xf3is, poderes, ovos e moedas voltam a ficar bloqueados, e a hist\xf3ria aparece de novo. N\xe3o d\xe1 para desfazer.",null,B.br,null,null,null,null,null)
 B.ah2=new A.q(!0,B.ai,null,null,null,null,15,B.b_,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aip=new A.bu("Vers\xe3o beta 1.0.58 \xb7 02/11 14:33",null,B.ah2,null,null,null,null,null)
+B.aip=new A.bu("Vers\xe3o beta 1.0.59 \xb7 02/11 14:38",null,B.ah2,null,null,null,null,null)
 B.aiq=new A.bu("Atira sozinho quando h\xe1 um inimigo \xe0 frente",null,B.br,null,null,null,null,null)
 B.air=new A.bu("ENTENDI",null,B.CH,null,null,null,null,null)
 B.ais=new A.bu("Testar m\xfasicas novas",null,B.bd,null,null,null,null,null)
@@ -98588,13 +98588,13 @@ B.aiB=new A.bu("Vire o celular",null,B.afP,B.cd,null,null,null,null)
 B.CG=new A.q(!0,B.i,null,null,null,null,null,B.T,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aiC=new A.bu("Tela cheia no iPhone",null,B.CG,null,null,null,null,null)
 B.agG=new A.q(!0,B.hw,null,null,null,null,13,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aiD=new A.bu("Vers\xe3o atual: 1.0.58",null,B.agG,null,null,null,null,null)
+B.aiD=new A.bu("Vers\xe3o atual: 1.0.59",null,B.agG,null,null,null,null,null)
 B.ah_=new A.q(!0,B.i,null,null,null,null,16,B.T,null,4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aiF=new A.bu("PAUSA",null,B.ah_,null,null,null,null,null)
 B.aiG=new A.bu("PODERES",null,B.CL,null,null,null,null,null)
 B.aiH=new A.bu("Atualiza\xe7\xf5es",null,B.CG,null,null,null,null,null)
 B.aem=new A.q(!0,B.ai,null,null,null,null,14,B.b_,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aiI=new A.bu("Vers\xe3o beta 1.0.58",null,B.aem,null,null,null,null,null)
+B.aiI=new A.bu("Vers\xe3o beta 1.0.59",null,B.aem,null,null,null,null,null)
 B.afw=new A.q(!0,null,null,null,null,null,null,B.T,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aiJ=new A.bu("REINICIAR AGORA",null,B.afw,null,null,null,null,null)
 B.aiL=new A.bu("Tiro autom\xe1tico",null,B.bd,null,null,null,null,null)
