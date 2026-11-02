@@ -122,6 +122,22 @@
   @media (max-width: 520px) {
     .hero { flex-direction: column; text-align: center; }
   }
+  .play-beta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px;
+    margin: 20px 0 8px; padding: 18px 20px;
+    background: var(--gold-soft); border: 1px solid var(--gold); border-radius: 14px;
+  }
+  .play-beta .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .play-beta .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 999px;
+    background: var(--accent); color: var(--surface); font-weight: 700;
+    font-size: 16px; text-decoration: none; white-space: nowrap;
+  }
+  .play-beta .btn.alt { background: transparent; color: var(--accent-ink); border: 2px solid var(--accent); }
+  .play-beta .btn:hover { filter: brightness(1.1); }
+  .play-beta p { margin: 0; font-size: 14px; color: var(--text-muted); flex: 1 1 240px; }
+  .play-beta strong { color: var(--text); }
+  .play-beta .version { display: inline-block; margin-bottom: 4px; font-weight: 700; color: var(--gold); }
 </style>
 </head>
 <body>
@@ -140,6 +156,14 @@
 
   <section>
     <h2>Sobre o jogo</h2>
+    <div class="play-beta">
+      <div class="btns">
+        <a class="btn" href="beta/">▶ Jogar a versão beta no navegador</a>
+        <a class="btn alt" href="caverna-race.apk" download>⬇ Baixar para Android (APK)</a>
+      </div>
+      <p><span class="version">Versão disponível: <span class="ver">1.0.1</span></span><br>
+      <strong>Versão de testes, grátis.</strong> No navegador funciona no celular, tablet ou computador; jogue com o celular deitado. No iPhone, para tela cheia, use Compartilhar → Adicionar à Tela de Início. No Android, o APK instala o jogo (permita "instalar apps desconhecidos"). No jogo, o botão <em>Baixar nova versão</em> avisa quando sai uma versão nova.</p>
+    </div>
     <p>O Caverna Race é um jogo de corrida 2D, jogado com o celular deitado. O carrinho vai andando na horizontal e você controla só o acelerador e o freio. Pelo caminho aparecem subidas fortes, trechos escorregadios e a fome apertando. Quando o carrinho não aguenta mais, é hora de voltar à oficina, melhorar o motor, os pneus ou a capacidade e tentar chegar mais longe.</p>
     <p>Ao bater a meta de cada fase, a próxima é liberada, com outro cenário e outros desafios — inclusive uma fase em que o homem das cavernas voa de asa-delta.</p>
   </section>
@@ -218,7 +242,7 @@
 
   <section>
     <div class="status-note">
-      <strong>Disponibilidade:</strong> o jogo está em desenvolvimento e em breve chega à Google Play e à App Store.
+      <strong>Disponibilidade:</strong> o jogo está em desenvolvimento. Enquanto isso, dá para testar a versão beta no navegador ou instalar o APK no Android (veja acima). Em breve na Google Play e na App Store.
     </div>
   </section>
 

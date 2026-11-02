@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/politicas-apps-maju-e-maite/caverna-race/beta/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <!-- viewport-fit=cover: ocupa também a área da câmera em tela cheia -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Caverna Race">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Caverna Race">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <style>
+    /* Tela de carregamento: aparece na hora, antes do jogo terminar de baixar. */
+    html, body { margin: 0; height: 100%; background: #2a1a10; }
+    #loading {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 22px; padding: 24px; box-sizing: border-box;
+      background: radial-gradient(ellipse at 50% 35%, #f2a65a 0%, #8a5a33 55%, #2a1a10 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #fff1d6; transition: opacity .45s ease;
+    }
+    #loading.done { opacity: 0; pointer-events: none; }
+    #loading img { width: min(42vw, 220px); max-height: 40vh; border-radius: 22%; object-fit: contain;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,.6)); animation: float 2.6s ease-in-out infinite; }
+    @keyframes float { 50% { transform: translateY(-6px); } }
+    #loading .bar { width: min(70vw, 360px); height: 12px; border-radius: 999px;
+      background: #2a1a10; border: 2px solid #4a2e18; overflow: hidden; box-sizing: border-box; }
+    #loading .fill { height: 100%; width: 4%; border-radius: 999px;
+      background: linear-gradient(90deg, #6eb04a, #f0a032, #ffe08a);
+      background-size: 200% 100%; animation: shine 1.4s linear infinite; transition: width .35s ease; }
+    @keyframes shine { to { background-position: -200% 0; } }
+    #loading .msg { font-size: 15px; font-weight: 600; letter-spacing: .02em; color: #ffe08a; min-height: 1.3em; }
+    #loading .title { font-size: 30px; font-weight: 900; letter-spacing: .04em; color: #fff1d6;
+      text-shadow: 0 3px 0 #4a2e18, 0 0 12px rgba(0,0,0,.4); }
+    #loading .tip { font-size: 13px; color: #f6e2b8; text-align: center; max-width: 360px; }
+  </style>
+  <title>Caverna Race</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div id="loading">
+    <img src="assets/assets/images/app_icon.png" alt="Caverna Race">
+    <div class="title">CAVERNA RACE</div>
+    <div class="bar"><div class="fill"></div></div>
+    <div class="msg">Carregando o jogo…</div>
+    <div class="tip">Na primeira vez demora um pouco. Depois o jogo abre rápido, até sem internet.</div>
+  </div>
+  <script>
+    // Barra de carregamento: avança sozinha devagar e pula a cada etapa
+    // (código baixado, motor pronto, primeira tela desenhada).
+    (function () {
+      var el = document.getElementById('loading');
+      var fill = el.querySelector('.fill'), msg = el.querySelector('.msg');
+      var shown = 0.04, target = 0.35;
+      var timer = setInterval(function () {
+        shown += (target - shown) * 0.06;
+        fill.style.width = (shown * 100).toFixed(1) + '%';
+      }, 60);
+      window.novaLoading = function (value, text) {
+        target = Math.max(target, value);
+        if (text) msg.textContent = text;
+      };
+      var finished = false;
+      window.novaLoadingDone = function () {
+        if (finished) return;
+        finished = true;
+        window.dispatchEvent(new Event('nova-ready'));
+        target = 1; shown = 1;
+        fill.style.width = '100%';
+        msg.textContent = 'Pronto!';
+        setTimeout(function () {
+          clearInterval(timer);
+          el.classList.add('done');
+          setTimeout(function () { el.remove(); }, 500);
+        }, 350);
+      };
+      // O menu já apareceu por baixo, mas o jogo ainda carrega imagens e
+      // sons: a tela só some quando o próprio jogo avisa que está pronto.
+      window.addEventListener('flutter-first-frame', function () {
+        window.novaLoading(0.3, 'Carregando imagens…');
+      });
+      // Segurança: se o aviso nunca chegar, não deixa a pessoa presa aqui.
+      setTimeout(function () { window.novaLoadingDone(); }, 90000);
+    })();
+  </script>
+  <!--
+    You can customize the "flutter_bootstrap.js" script.
+    This is useful to provide a custom configuration to the Flutter loader
+    or to give the user feedback during the initialization process.
+
+    For more details:
+    * https://docs.flutter.dev/platform-integration/web/initialization
+  -->
+  <script>
+    // O Flutter reescreve a meta "viewport" ao iniciar; devolve o
+    // viewport-fit=cover para o jogo ocupar a área da câmera em tela cheia.
+    (function () {
+      function fix() {
+        document.querySelectorAll('meta[name="viewport"]').forEach(function (m) {
+          if (m.content.indexOf('viewport-fit') < 0) m.content += ', viewport-fit=cover';
+        });
+      }
+      new MutationObserver(fix).observe(document.head, {childList: true, subtree: true, attributes: true});
+      fix();
+    })();
+  </script>
+  <script>
+    // Guarda o jogo no aparelho para jogar offline (só funciona em https).
+    // Só começa a guardar depois que o jogo abre, para não disputar a
+    // internet com o carregamento da primeira vez.
+    if ('serviceWorker' in navigator) {
+      var startSw = function () {
+        // Sem recarregar a página quando uma versão nova termina de baixar:
+        // isso acontecia no meio da fase e reiniciava o jogo. O código já
+        // vem sempre da internet; os arquivos novos valem na próxima vez.
+        navigator.serviceWorker.register('sw.js');
+      };
+      var swStarted = false;
+      var once = function () {
+        if (swStarted) return;
+        swStarted = true;
+        setTimeout(startSw, 2500);
+      };
+      window.addEventListener('nova-ready', once);
+
+      // Botão "verificar atualizações" do menu. report(texto, estado, %):
+      // estado 0 = trabalhando, 1 = nada a fazer, 2 = pronto para reiniciar.
+      window.novaCheckUpdate = async function (current, report) {
+        var onMsg = null;
+        try {
+          report('Procurando atualizações…', 0, -1);
+          var r = await fetch('version.json?t=' + Date.now(), {cache: 'no-store'});
+          var v = (await r.json()).version;
+          if (v === current) {
+            report('Você já está com a versão mais recente (' + v + ').', 1, -1);
+            return;
+          }
+          report('Nova versão ' + v + ' encontrada! Baixando…', 0, 0);
+          onMsg = function (e) {
+            if (e.data && e.data.type === 'nova-progress') {
+              report('Baixando a versão ' + v + '… ' + Math.round(e.data.p * 100) + '%', 0, e.data.p);
+            }
+          };
+          navigator.serviceWorker.addEventListener('message', onMsg);
+          var reg = await navigator.serviceWorker.getRegistration();
+          if (!reg) reg = await navigator.serviceWorker.register('sw.js');
+          else await reg.update();
+          var sw = reg.installing || reg.waiting;
+          if (sw && sw.state !== 'activated') {
+            await new Promise(function (res) {
+              sw.addEventListener('statechange', function () {
+                if (sw.state === 'activated' || sw.state === 'redundant') res();
+              });
+            });
+          }
+          report('Versão ' + v + ' pronta! Reinicie o jogo para usar.', 2, 1);
+        } catch (e) {
+          report('Não deu para procurar agora. Confira a internet e tente de novo.', 1, -1);
+        } finally {
+          if (onMsg) navigator.serviceWorker.removeEventListener('message', onMsg);
+        }
+      };
+    }
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
