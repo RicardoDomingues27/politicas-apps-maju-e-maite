@@ -65,6 +65,46 @@
       }
     }
 
+    // Apaga as linhas de tabela e formulário: traço preto comprido na
+    // horizontal ou na vertical não é letra, e confunde a leitura das linhas
+    // (as descrições dos itens sumiam). Vale para as duas versões.
+    var run = Math.max(40, Math.round(Math.max(w, h) / 32));
+    var erase = new Uint8Array(n);
+    for (yy = 0; yy < h; yy++) {
+      var start = -1;
+      for (xx = 0; xx <= w; xx++) {
+        var dark = xx < w && bin[yy * w + xx] === 0;
+        if (dark && start < 0) start = xx;
+        if (!dark && start >= 0) {
+          if (xx - start >= run) for (var q = start; q < xx; q++) erase[yy * w + q] = 1;
+          start = -1;
+        }
+      }
+    }
+    for (xx = 0; xx < w; xx++) {
+      start = -1;
+      for (yy = 0; yy <= h; yy++) {
+        dark = yy < h && bin[yy * w + xx] === 0;
+        if (dark && start < 0) start = yy;
+        if (!dark && start >= 0) {
+          if (yy - start >= run) for (q = start; q < yy; q++) erase[q * w + xx] = 1;
+          start = -1;
+        }
+      }
+    }
+    // Engrossa um pouco o apagado (a borda da linha às vezes fica cinza).
+    for (j = 0; j < n; j++) {
+      if (erase[j] === 1) {
+        for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) {
+          var k2 = j + dy * w + dx;
+          if (k2 >= 0 && k2 < n && erase[k2] === 0) erase[k2] = 2;
+        }
+      }
+    }
+    for (j = 0; j < n; j++) {
+      if (erase[j]) { bin[j] = 255; gray[j] = 255; }
+    }
+
     function toBlob(px) {
       for (var i = 0, j = 0; j < n; i += 4, j++) d[i] = d[i + 1] = d[i + 2] = px[j];
       g.putImageData(img, 0, 0);
@@ -78,6 +118,21 @@
     var res = await worker.recognize(image);
     return {text: res.data.text || '', conf: res.data.confidence || 0};
   }
+
+  // Reduz a foto para guardar no aparelho (as do celular têm vários MB).
+  window.carroShrink = async function (bytes) {
+    try {
+      var bmp = await createImageBitmap(new Blob([bytes]), {imageOrientation: 'from-image'});
+      var k = Math.min(1, 1800 / Math.max(bmp.width, bmp.height));
+      var c = document.createElement('canvas');
+      c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+      c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+      var blob = await new Promise(function (r) { c.toBlob(r, 'image/jpeg', 0.85); });
+      return new Uint8Array(await blob.arrayBuffer());
+    } catch (e) {
+      return bytes;
+    }
+  };
 
   window.carroOcr = async function (bytes, onStatus) {
     report = onStatus || function () {};
@@ -106,14 +161,14 @@
     }
     // Duas leituras: preto-e-branco como um bloco só (mantém item e preço na
     // mesma linha, mesmo com o preço bem à direita) e tons de cinza em modo
-    // coluna. Fica a que achou mais valores em R$; empate, a mais confiável.
+    // coluna.
     pass = ' (1/2)';
     var a = await read(imgs.bin, '6');
     pass = ' (2/2)';
     var b = await read(imgs.gray, '4');
     pass = '';
-    var money = /\d+[.,]\d{2}(?!\d)/g;
-    function score(r) { return (r.text.match(money) || []).length * 10 + r.conf; }
-    return (score(a) >= score(b) ? a : b).text;
+    // Devolve as duas: o app junta o melhor de cada uma (uma pode pegar a
+    // data e perder os itens, a outra o contrário).
+    return a.text + '\n=====\n' + b.text;
   };
 })();
