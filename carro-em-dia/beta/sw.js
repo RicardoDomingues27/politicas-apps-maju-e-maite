@@ -1,5 +1,5 @@
 // Gerado por tools/make_service_worker.py — não editar à mão.
-const CACHE = 'carro-em-dia-20261103-192221';
+const CACHE = 'carro-em-dia-20261103-193309';
 const CORE = ["./", "index.html", "flutter_bootstrap.js", "flutter.js", "main.dart.js", "manifest.json", "favicon.png", "ocr.js"];
 const FILES = ["assets/AssetManifest.bin", "assets/AssetManifest.bin.json", "assets/FontManifest.json", "assets/NOTICES", "assets/fonts/MaterialIcons-Regular.otf", "assets/fonts/fallback/Roboto-Regular.ttf", "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf", "assets/packages/material_ui/shaders/ink_sparkle.frag", "assets/shaders/ink_sparkle.frag", "assets/shaders/stretch_effect.frag", "canvaskit/canvaskit.js", "canvaskit/canvaskit.wasm", "canvaskit/chromium/canvaskit.js", "canvaskit/chromium/canvaskit.wasm", "icons/Icon-192.png", "icons/Icon-512.png", "icons/Icon-maskable-192.png", "icons/Icon-maskable-512.png", "tesseract/lang/por.traineddata.gz", "tesseract/tesseract-core-lstm.wasm.js", "tesseract/tesseract-core-simd-lstm.wasm.js", "tesseract/tesseract.min.js", "tesseract/worker.min.js"];
 const FRESH = ['', 'index.html', 'flutter_bootstrap.js', 'main.dart.js', 'version.json'];
