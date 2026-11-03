@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carro em Dia — Política de privacidade</title>
+<meta name="description" content="Carro em Dia: tire uma foto da nota da oficina e o app registra a manutenção do seu carro. Tudo fica no seu celular.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #f2f7f8;
+    --surface: #ffffff;
+    --text: #13262b;
+    --text-muted: #4f666c;
+    --accent: #0f5f6e;
+    --accent-ink: #0f5f6e;
+    --accent-soft: #e1eff1;
+    --gold: #d9661a;
+    --gold-soft: #fdebdc;
+    --border: #d6e4e7;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d1a1d; --surface: #13252a; --text: #e7f1f3; --text-muted: #9fb7bd;
+      --accent: #5fc0cf; --accent-ink: #a8e3ec; --accent-soft: #173338;
+      --gold: #5fc0cf; --gold-soft: #173338; --border: #24414a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d1a1d; --surface: #13252a; --text: #e7f1f3; --text-muted: #9fb7bd;
+    --accent: #5fc0cf; --accent-ink: #a8e3ec; --accent-soft: #173338;
+    --gold: #5fc0cf; --gold-soft: #173338; --border: #24414a;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+
+  a.back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--text-muted); text-decoration: none; margin-bottom: 28px;
+  }
+  a.back:hover { color: var(--accent-ink); }
+
+  .hero { display: flex; align-items: center; gap: 32px; padding: 12px 0 40px; }
+  .hero img.icon {
+    width: 128px; height: 128px; flex: none; border-radius: 28px;
+    box-shadow: 0 10px 24px rgba(10, 50, 60, 0.3);
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(30px, 4.8vw, 44px); line-height: 1.1; margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--text-muted); font-size: 17px; margin: 0; max-width: 40ch; }
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin: 0 0 8px;
+  }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 22px;
+    margin: 0 0 14px; text-wrap: balance;
+  }
+  section { margin-bottom: 40px; }
+  section p { font-size: 16px; max-width: 62ch; }
+
+  .verse {
+    margin: 0 0 40px; padding: 26px 28px; border-radius: 18px;
+    background: linear-gradient(160deg, #1e3a26, #142a1b); color: #f6f1e6;
+    box-shadow: 0 10px 24px rgba(10, 50, 60, 0.22);
+  }
+  .verse p {
+    font-family: var(--font-display); font-size: clamp(20px, 3.4vw, 25px); line-height: 1.35;
+    margin: 0 0 10px; max-width: none;
+  }
+  .verse cite { font-style: normal; font-weight: 600; font-size: 14px; color: #5fc0cf; letter-spacing: 0.04em; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+  }
+  .feature {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .feature .label { font-weight: 600; font-size: 15px; margin: 0 0 4px; color: var(--accent-ink); }
+  .feature p { margin: 0; font-size: 14px; color: var(--text-muted); }
+
+  .status-note {
+    background: var(--gold-soft); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 22px; font-size: 15px; color: var(--text);
+  }
+  .status-note strong { color: var(--gold); }
+
+  .prints {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px;
+    margin: 4px 0 0; padding: 0; list-style: none;
+  }
+  .prints figure { margin: 0; text-align: center; }
+  .prints img {
+    width: 100%; height: auto; display: block; border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 24px rgba(10, 50, 60, 0.18);
+  }
+  .prints figcaption { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.35; }
+
+  footer {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; align-items: center;
+    font-size: 14px; color: var(--text-muted);
+  }
+  footer a { color: var(--accent-ink); }
+  @media (max-width: 520px) {
+    .hero { flex-direction: column; text-align: center; }
+  }
+  .play-beta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px;
+    margin: 20px 0 8px; padding: 18px 20px;
+    background: var(--gold-soft); border: 1px solid var(--gold); border-radius: 14px;
+  }
+  .play-beta .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .play-beta .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 999px;
+    background: var(--accent); color: var(--surface); font-weight: 700;
+    font-size: 16px; text-decoration: none; white-space: nowrap;
+  }
+  .play-beta .btn.alt { background: transparent; color: var(--accent-ink); border: 2px solid var(--accent); }
+  .play-beta .btn:hover { filter: brightness(1.1); }
+  .play-beta p { margin: 0; font-size: 14px; color: var(--text-muted); flex: 1 1 240px; }
+  .play-beta strong { color: var(--text); }
+  .play-beta .version { display: inline-block; margin-bottom: 4px; font-weight: 700; color: var(--gold); }
+</style>
+</head>
+<body>
+<main class="page">
+  <a class="back" href="./">← Carro em Dia</a>
+  <h1 style="font-family:var(--font-display)">Política de privacidade</h1>
+  <section>
+    <p>O Carro em Dia guarda as informações dos seus carros, das manutenções e as fotos das notas <strong>somente no seu aparelho</strong>.</p>
+    <p>A leitura do texto das fotos é feita no próprio celular ou navegador. O app não envia fotos, textos nem dados pessoais para servidores, não usa contas e não tem anúncios nem rastreamento.</p>
+    <p>Os dados só saem do aparelho quando você escolhe compartilhar o histórico, e vão apenas para o app ou a pessoa que você escolher.</p>
+    <p>Ao apagar uma manutenção, um carro ou o app, as informações correspondentes são apagadas do aparelho.</p>
+  </section>
+</main>
+</body>
+</html>
