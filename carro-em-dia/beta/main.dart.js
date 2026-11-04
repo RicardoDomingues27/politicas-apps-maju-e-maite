@@ -51951,7 +51951,7 @@ $0(){return this.a.d=this.b},
 $S:0}
 A.a8f.prototype={
 G(a){var s=null,r=A.G(a).ok,q=r.e
-return A.jd(s,s,A.mW(!0,new A.aR(B.Rx,A.cN(A.b([B.ig,B.arC,B.bT,A.ay("Carro em Dia",s,s,s,q==null?s:q.hH(B.ht),s,s,s),B.cV,A.ay("Tire uma foto da nota da oficina e o app registra a manuten\xe7\xe3o para voc\xea. Tudo fica guardado no seu celular.",s,s,s,r.y,B.bF,s,s),B.ig,A.aP5(B.Tl,B.axf,new A.aKs(a),A.R2(s,s,B.arj,s)),B.bT,A.ay("Vers\xe3o 1.4.0 \xb7 03/11/2026 21:42",s,s,s,r.Q,s,s,s)],t.p),B.J,B.z,B.R),s),!1,B.aj,!0),s,s,s)}}
+return A.jd(s,s,A.mW(!0,new A.aR(B.Rx,A.cN(A.b([B.ig,B.arC,B.bT,A.ay("Carro em Dia",s,s,s,q==null?s:q.hH(B.ht),s,s,s),B.cV,A.ay("Tire uma foto da nota da oficina e o app registra a manuten\xe7\xe3o para voc\xea. Tudo fica guardado no seu celular.",s,s,s,r.y,B.bF,s,s),B.ig,A.aP5(B.Tl,B.axf,new A.aKs(a),A.R2(s,s,B.arj,s)),B.bT,A.ay("Vers\xe3o 1.4.1 \xb7 03/11/2026 23:25",s,s,s,r.Q,s,s,s)],t.p),B.J,B.z,B.R),s),!1,B.aj,!0),s,s,s)}}
 A.aKs.prototype={
 $0(){var s=A.hF(new A.aKr(),null,t.z)
 return A.bY(this.a,!1).h5(s)},
@@ -52118,7 +52118,7 @@ case 8:s=11
 return A.E($.eo().ue(p.c),$async$$1)
 case 11:case 9:s=3
 break
-case 7:A.bh3("Carro em Dia","Vers\xe3o 1.4.0 \xb7 03/11/2026 21:42",B.ZB,q.b)
+case 7:A.bh3("Carro em Dia","Vers\xe3o 1.4.1 \xb7 03/11/2026 23:25",B.ZB,q.b)
 s=3
 break
 case 3:return A.L(null,r)}})
@@ -52168,7 +52168,7 @@ var $async$Ay=A.O(function(a,b){if(a===1){p.push(b)
 s=q}for(;;)switch(s){case 0:n.a4(new A.aKm(n))
 q=3
 s=6
-return A.E(A.aMo("1.4.0"),$async$Ay)
+return A.E(A.aMo("1.4.1"),$async$Ay)
 case 6:m=b
 n.a4(new A.aKn(n,m))
 o.push(5)
@@ -52189,9 +52189,9 @@ case 5:return A.L(null,r)
 case 1:return A.K(p.at(-1),r)}})
 return A.M($async$Ay,r)},
 G(a){var s,r,q=this,p=null,o=A.G(a).ok,n=o.x
-n=A.ay("Vers\xe3o 1.4.0",p,p,p,n==null?p:n.hH(B.aV),p,p,p)
+n=A.ay("Vers\xe3o 1.4.1",p,p,p,n==null?p:n.hH(B.aV),p,p,p)
 s=q.d
-if(s==null)s="03/11/2026 21:42"
+if(s==null)s="03/11/2026 23:25"
 r=t.p
 r=A.b([B.SZ,B.lk,A.ec(A.cN(A.b([n,A.ay(s,p,p,p,o.Q,p,p,p)],r),B.be,B.z,B.R),1)],r)
 if(q.e)r.push(B.alR)
