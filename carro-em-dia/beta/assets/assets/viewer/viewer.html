@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<style>
+  html, body { margin: 0; height: 100%; background: #ffffff; overflow: hidden; touch-action: none; }
+  canvas { display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<script>
+// Visualizador 3D do Carro em Dia. O app manda comandos (JSON):
+//   no Android por runJavaScript("carroCmd(...)"), no navegador por postMessage.
+// Respostas para o app: canal CarroApp (Android) ou postMessage para a página pai.
+window.__fila = [];
+window.carroCmd = function (m) { window.__fila.push(m); };
+window.addEventListener('message', function (e) {
+  if (e.data && e.data.carro) window.carroCmd(e.data.carro);
+});
+window.avisar = function (msg) {
+  try {
+    if (window.CarroApp) CarroApp.postMessage(JSON.stringify(msg));
+    else parent.postMessage({ carroViewer: msg }, '*');
+  } catch (e) {}
+};
+window.onerror = function (m) { window.avisar({ tipo: 'erro', msg: String(m) }); };
+
+// Primeiro comando: as bibliotecas (Three.js e o código do visualizador), como
+// texto. Viram módulos por blob: (funciona até em página carregada de string,
+// sem servidor).
+window.carroCmd = function (m) {
+  if (m.cmd !== 'libs') { window.__fila.push(m); return; }
+  var url = function (s) { return URL.createObjectURL(new Blob([s], { type: 'text/javascript' })); };
+  var three = url(m.three);
+  var fix = function (s) { return s.split("from 'three'").join("from '" + three + "'"); };
+  var bgu = url(fix(m.bgu));
+  var gltf = url(fix(m.gltf).split("'../utils/BufferGeometryUtils.js'").join("'" + bgu + "'"));
+  var orbit = url(fix(m.orbit));
+  var room = url(fix(m.room));
+  var main = m.main.split('%THREE%').join(three).split('%GLTF%').join(gltf)
+    .split('%ORBIT%').join(orbit).split('%ROOM%').join(room);
+  import(url(main)).catch(function (e) { window.avisar({ tipo: 'erro', msg: String(e) }); });
+};
+window.avisar({ tipo: 'pronto' });
+</script>
+</body>
+</html>
