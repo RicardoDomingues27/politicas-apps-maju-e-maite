@@ -84,6 +84,9 @@ async function handle(m) {
   } else if (m.cmd === 'estilo') {
     style = m;
     if (carRoot) applyStyle();
+  } else if (m.cmd === 'fundo') {
+    renderer.setClearColor(m.cor, 1);
+    document.body.style.background = css(m.cor);
   } else if (m.cmd === 'girar') {
     controls.autoRotate = !!m.ligado;
   }
