@@ -95262,7 +95262,7 @@ A.r0.prototype={
 av(){return new A.X7()}}
 A.X7.prototype={
 aQ(){this.b1()
-A.aX0("1.0.93",new A.atY(this))},
+A.aX0("1.0.94",new A.atY(this))},
 T(a){var s,r,q=this,p=null,o=A.bM(16),n=t.p,m=A.b([A.aO(q.d,p,p,p,B.DR,p),B.jn],n)
 if(q.e===0){s=A.bM(6)
 r=q.f
@@ -104402,11 +104402,11 @@ B.ap_=new A.be("PULAR \u25b8",null,B.DM,null,null,null,null,null)
 B.ap0=new A.be("PODERES",null,B.DQ,null,null,null,null,null)
 B.ap1=new A.be("Atualiza\xe7\xf5es",null,B.DE,null,null,null,null,null)
 B.anh=new A.p(!0,B.T,null,null,null,null,15,B.b1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ap2=new A.be("Vers\xe3o beta 1.0.93 \xb7 202611072020",null,B.anh,null,null,null,null,null)
+B.ap2=new A.be("Vers\xe3o beta 1.0.94 \xb7 202611072044",null,B.anh,null,null,null,null,null)
 B.akv=new A.p(!0,B.T,null,null,null,null,14,B.b1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ap3=new A.be("Vers\xe3o beta 1.0.93",null,B.akv,null,null,null,null,null)
+B.ap3=new A.be("Vers\xe3o beta 1.0.94",null,B.akv,null,null,null,null,null)
 B.amV=new A.p(!0,B.fk,null,null,null,null,13,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ap4=new A.be("Vers\xe3o atual: 1.0.93",null,B.amV,null,null,null,null,null)
+B.ap4=new A.be("Vers\xe3o atual: 1.0.94",null,B.amV,null,null,null,null,null)
 B.ap5=new A.be("REINICIAR AGORA",null,B.DM,null,null,null,null,null)
 B.ap6=new A.be("COMPRAR MOEDAS",null,B.DN,null,null,null,null,null)
 B.akJ=new A.p(!0,B.T,null,null,null,null,13,B.C,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
