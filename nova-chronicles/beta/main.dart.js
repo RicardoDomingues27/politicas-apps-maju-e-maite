@@ -94137,7 +94137,7 @@ A.qR.prototype={
 av(){return new A.WL()}}
 A.WL.prototype={
 aR(){this.b1()
-A.aVU("1.0.81",new A.asX(this))},
+A.aVU("1.0.82",new A.asX(this))},
 S(a){var s,r,q=this,p=null,o=A.cb(16),n=t.p,m=A.b([A.b3(q.d,p,p,p,B.Di,p),B.mY],n)
 if(q.e===0){s=A.cb(6)
 r=q.f
@@ -102904,9 +102904,9 @@ B.anE=new A.bp("PULAR \u25b8",null,B.De,null,null,null,null,null)
 B.anF=new A.bp("PODERES",null,B.Dh,null,null,null,null,null)
 B.anG=new A.bp("Atualiza\xe7\xf5es",null,B.Da,null,null,null,null,null)
 B.alz=new A.p(!0,B.hO,null,null,null,null,13,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.anH=new A.bp("Vers\xe3o atual: 1.0.81",null,B.alz,null,null,null,null,null)
+B.anH=new A.bp("Vers\xe3o atual: 1.0.82",null,B.alz,null,null,null,null,null)
 B.aja=new A.p(!0,B.Y,null,null,null,null,14,B.aS,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.anI=new A.bp("Vers\xe3o beta 1.0.81",null,B.aja,null,null,null,null,null)
+B.anI=new A.bp("Vers\xe3o beta 1.0.82",null,B.aja,null,null,null,null,null)
 B.anJ=new A.bp("REINICIAR AGORA",null,B.De,null,null,null,null,null)
 B.akD=new A.p(!0,B.Y,null,null,null,null,10,B.I,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.anK=new A.bp("COMPRAR MOEDAS",null,B.akD,null,null,null,null,null)
@@ -102918,7 +102918,7 @@ B.anN=new A.bp("Tiro autom\xe1tico",null,B.by,null,null,null,null,null)
 B.anO=new A.bp("Zerar progresso?",null,B.by,null,null,null,null,null)
 B.anP=new A.bp("Volta tudo ao come\xe7o: fases, her\xf3is, poderes e moedas bloqueados",null,B.bO,null,null,null,null,null)
 B.alW=new A.p(!0,B.Y,null,null,null,null,15,B.aS,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.anQ=new A.bp("Vers\xe3o beta 1.0.81 \xb7 202611071308",null,B.alW,null,null,null,null,null)
+B.anQ=new A.bp("Vers\xe3o beta 1.0.82 \xb7 202611071310",null,B.alW,null,null,null,null,null)
 B.amq=new A.p(!0,B.h,null,null,null,null,17,B.aS,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.anR=new A.bp("Escolha o idioma \xb7 Choose your language \xb7 Elige tu idioma",null,B.amq,B.bg,null,null,null,null)
 B.anS=new A.bp("Todas as fases, her\xf3is, poderes e mascotes, sem precisar jogar",null,B.bO,null,null,null,null,null)
