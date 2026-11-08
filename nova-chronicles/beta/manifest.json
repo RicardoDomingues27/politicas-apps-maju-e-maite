@@ -1,8 +1,10 @@
 {
     "name": "Nova Chronicles",
     "short_name": "Nova Chronicles",
-    "start_url": ".",
-    "display": "fullscreen",
+    "id": "./",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
     "background_color": "#0B1220",
     "theme_color": "#0B1220",
     "description": "Nova Chronicles - aventura de ação em pixel art",
