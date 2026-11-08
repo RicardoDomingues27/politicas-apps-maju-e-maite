@@ -25539,7 +25539,7 @@ a2.ci(j,new A.h(0,0,r,o),new A.h(f,e,f+i,e+h),l)
 m+=g}},
 aWH(a,b,c){var s,r,q,p,o,n,m,l,k,j,i=a.gp().gtV()
 if(i==null||a.gp().fp>=0)return
-s=a.gp().J-8-70-18
+s=a.gp().J-8-18
 r=a.gp().d7
 q=a.gp().fH
 if(q>=0){if(q<1.2){p=B.f.ai(B.c.a_(q/0.2),0,5)
@@ -87558,12 +87558,12 @@ l=new A.p(new Float32Array(2))
 l.X(a3+16,11)
 A.jj(q.jM(""+m)).jK(b5,l,B.z)
 A.aWI(b3,b5)
-a5=b3.gp().J-70-8
-a6=A.hF(new A.h(a5,8,a5+70,34),B.a_A)
+a5=(b3.gp().J-70)/2
+a6=A.hF(new A.h(a5,40,a5+70,64),B.a_A)
 b5.da(a6,s)
 b5.da(a6,r)
-A.aYI(b5,b3.gp().bZ,a5+35,21,17)
-A.aWH(b3,b5,34)
+A.aYI(b5,b3.gp().bZ,a5+35,52,16)
+A.aWH(b3,b5,8)
 a7=b3.gp().hG&&b3.gp().f5!=null
 a8=b3.gp().bR?b3.gp().bd:b4
 r=!0
@@ -95049,7 +95049,7 @@ A.al5.prototype={
 $0(){},
 $S:0}
 A.al4.prototype={
-$2(a,b){var s,r=null,q=A.bG(10),p=A.c7(B.aI,2),o=this.a,n=t.p,m=A.bB(A.b([B.arY,B.bo,A.bn("assets/images/item_coin.png",B.k,r,r,r,r,B.n,r,!1,12,r),B.eG,A.aN(A.r(o.a.amO()),r,r,r,B.aqg,r),B.b7,A.ci(r,B.ND,B.G,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,r,o.a.c,r,r,r,r,r,r)],n),B.p,B.o,B.r,0),l=A.b([],n)
+$2(a,b){var s,r=null,q=A.bG(10),p=A.c7(B.aI,2),o=this.a,n=t.p,m=A.bB(A.b([B.arZ,B.bo,A.bn("assets/images/item_coin.png",B.k,r,r,r,r,B.n,r,!1,12,r),B.eG,A.aN(A.r(o.a.amO()),r,r,r,B.aqg,r),B.b7,A.ci(r,B.ND,B.G,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,r,o.a.c,r,r,r,r,r,r)],n),B.p,B.o,B.r,0),l=A.b([],n)
 for(s=0;s<3;++s)l.push(o.agE(s))
 l=A.bB(l,B.p,B.iF,B.r,0)
 return A.bl(r,A.cj(A.b([m,B.c9,l,B.dE,A.aN($.Hz().a?"Aguarde a Play Store...":o.d,r,r,r,B.ny,B.bb)],n),B.p,B.o,B.a7),B.l,r,r,new A.b6(B.d3,r,p,q,r,r,B.B),r,r,B.Ly,330)},
@@ -95080,7 +95080,7 @@ p=A.c7(B.e2,2)
 o=t.p
 n=A.b([],o)
 if(r)n.push(A.bn("assets/images/"+("ui_gameover_"+(A.Z0().length===0?"pt":A.Z0()))+".png",B.k,i,i,i,new A.alj(),B.n,i,!1,54,i))
-else n.push(B.arZ)
+else n.push(B.as_)
 n.push(B.c8)
 if(r){m=A.b([A.aN(A.c9(B.Wp),i,i,i,B.DN,i)],o)
 for(l=0;l<3;++l)m.push(new A.bQ(B.qj,A.bn("assets/images/item_lifeup.png",B.k,i,i,i,i,B.n,i,!1,16,i),i))}else{m=A.b([B.ase],o)
@@ -95095,7 +95095,7 @@ n.push(A.bB(A.b([A.dM(j.OS(s,g,j.ga98(),"Voc\xea tem "+(k+m.bh)),1),B.b7,A.dM(j.
 n.push(B.c9)
 m=A.bn(h,B.k,i,i,i,i,B.n,i,!1,12,i)
 g=j.a.c
-n.push(A.bB(A.b([new A.Co(!0,new A.alk(j),i,i,i,i,B.l,i,!1,i,!0,i,new A.WG(B.arX,m,i,i,i),i),A.Cp(A.aN(r?A.c9(B.Ww):"DESISTIR",i,i,i,B.aqL,i),g.ga17(),i)],o),B.p,B.iF,B.r,0))
+n.push(A.bB(A.b([new A.Co(!0,new A.alk(j),i,i,i,i,B.l,i,!1,i,!0,i,new A.WG(B.arY,m,i,i,i),i),A.Cp(A.aN(r?A.c9(B.Ww):"DESISTIR",i,i,i,B.aqL,i),g.ga17(),i)],o),B.p,B.iF,B.r,0))
 g=j.d
 if(g.length!==0)n.push(A.aN(g,i,i,i,B.ny,B.bb))
 g=A.b([A.bl(B.k,A.oR(A.bl(i,A.cj(n,B.p,B.o,B.a7),B.l,i,i,new A.b6(B.d3,i,p,q,i,i,B.B),i,B.LI,B.LN,380),B.cV),B.l,B.hY,i,i,i,i,i,i)],o)
@@ -95474,8 +95474,8 @@ return this.a.e=s},
 $S:0}
 A.vy.prototype={
 V(a){var s=new A.anO(),r=A.bG(16),q=t.p
-s=A.az5(A.cj(A.b([B.as8,B.hl,s.$2(B.Nn,"Toque em Compartilhar no Safari."),s.$2(B.N9,'Escolha "Adicionar \xe0 Tela de In\xedcio".'),s.$2(B.qE,"Abra pelo \xedcone do Nova Chronicles: o jogo abre em tela cheia e funciona at\xe9 sem internet.")],q),B.aJ,B.o,B.a7),null,B.aS)
-return A.axu(A.b([A.Cp(B.arF,new A.anN(a),null)],q),B.kM,s,new A.dF(r,B.od),B.arR)}}
+s=A.az5(A.cj(A.b([B.as9,B.hl,s.$2(B.Nn,"Toque em Compartilhar no Safari."),s.$2(B.N9,'Escolha "Adicionar \xe0 Tela de In\xedcio".'),s.$2(B.qE,"Abra pelo \xedcone do Nova Chronicles: o jogo abre em tela cheia e funciona at\xe9 sem internet.")],q),B.aJ,B.o,B.a7),null,B.aS)
+return A.axu(A.b([A.Cp(B.arF,new A.anN(a),null)],q),B.kM,s,new A.dF(r,B.od),B.arS)}}
 A.anO.prototype={
 $2(a,b){var s=null
 return new A.bQ(B.Lq,A.bB(A.b([A.mC(a,B.S,s,22),B.nm,A.dM(A.aN(b,s,s,s,B.DW,s),1)],t.p),B.p,B.o,B.r,0),s)},
@@ -95551,7 +95551,7 @@ aaY(){if(this.c==null)return
 this.gEX().cQ()
 this.a.pl()},
 V(a){var s=this,r=null,q=A.bY(a,B.dL,t.l).w.a,p=A.hZ(r,r,r,new A.Wi(s.w,r),B.Y),o=s.f
-return A.ci(B.ah,A.bZ(B.a_,A.b([p,A.bV(r,A.jH(new A.bv(Math.min(q.a-32,640),r,s.aav(),s.e),r,r),r,r,0,0,q.b-o,r),A.fi(!0,new A.dz(B.EP,r,r,new A.bQ(B.qh,A.Cp(B.arT,s.gQo(),A.aU9(r,r,B.O,r,r,r,r,r,r,B.S,r,r,r,r,r,r,r,r,r,r)),r),r),B.ac,!0)],t.p),B.A,B.hn),B.G,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.am4(s),new A.am5(s),new A.am6(s),r,r,r)},
+return A.ci(B.ah,A.bZ(B.a_,A.b([p,A.bV(r,A.jH(new A.bv(Math.min(q.a-32,640),r,s.aav(),s.e),r,r),r,r,0,0,q.b-o,r),A.fi(!0,new A.dz(B.EP,r,r,new A.bQ(B.qh,A.Cp(B.arU,s.gQo(),A.aU9(r,r,B.O,r,r,r,r,r,r,B.S,r,r,r,r,r,r,r,r,r,r)),r),r),B.ac,!0)],t.p),B.A,B.hn),B.G,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.am4(s),new A.am5(s),new A.am6(s),r,r,r)},
 aav(){var s,r,q=null,p=new A.am_(),o=new A.alZ(),n=t.p,m=A.b([],n)
 if(this.a.d)B.b.C(m,A.b([p.$1("A GAL\xc1XIA EST\xc1 SALVA!"),o.$1("O Imperador Eclipse foi vencido\ne a luz voltou para todos os mundos."),B.cK],n))
 m.push(B.Vo)
@@ -95850,7 +95850,7 @@ this.f3()}}
 A.Ll.prototype={
 V(a){var s,r,q=null,p=B.m.c0(0.72),o=A.bG(18),n=A.c7(B.aI,2),m=t.p,l=A.b([],m)
 for(s=B.iJ.gfn(),s=s.ga6(s);s.u();){r=s.gU()
-l.push(new A.bQ(B.qf,this.a9_(r.a,r.b),q))}return A.tG(!1,B.ab,!0,A.jH(A.oR(A.bl(q,A.cj(A.b([B.NP,B.c9,B.as6,B.aak,A.bB(l,B.p,B.o,B.a7,0)],m),B.p,B.o,B.a7),B.l,q,q,new A.b6(B.IA,q,n,o,q,q,B.B),q,B.LQ,B.LR,q),B.hC),q,q),B.l,p,0,q,q,q,q,q,B.cF)},
+l.push(new A.bQ(B.qf,this.a9_(r.a,r.b),q))}return A.tG(!1,B.ab,!0,A.jH(A.oR(A.bl(q,A.cj(A.b([B.NP,B.c9,B.as7,B.aak,A.bB(l,B.p,B.o,B.a7,0)],m),B.p,B.o,B.a7),B.l,q,q,new A.b6(B.IA,q,n,o,q,q,B.B),q,B.LQ,B.LR,q),B.hC),q,q),B.l,p,0,q,q,q,q,q,B.cF)},
 a9_(a,b){var s=null,r=A.bG(12),q=B.h.c0(0.06),p=A.bG(12),o=A.c7(B.kJ,1)
 return A.a5J(!1,r,!0,A.bl(s,A.cj(A.b([A.Ja(A.bG(6),new A.bv(120,80,A.hZ(s,s,s,new A.Sa(a,s),B.Y),s)),B.hl,A.aN(b,s,s,s,B.anE,s)],t.p),B.p,B.o,B.r),B.l,s,s,new A.b6(q,s,o,p,s,s,B.B),s,s,B.qh,150),s,!0,s,s,s,s,s,s,s,s,new A.a6l(this,a),s,s,s,s,s,s,s)}}
 A.a6l.prototype={
@@ -95979,7 +95979,7 @@ r=t.p
 l=A.b([],r)
 p=A.bG(20)
 l.push(new A.bQ(B.Li,A.ci(m,A.bl(m,B.a85,B.l,m,m,new A.b6(B.i5,m,A.c7(B.d6,1),p,m,m,B.B),m,m,B.Lw,m),B.G,!1,m,m,m,m,m,m,m,m,m,m,m,m,m,m,new A.a74(this.b),m,m,m,m,m,m),m))
-l.push(A.bl(m,B.ars,B.l,m,m,new A.b6(B.O,m,m,A.bG(8),m,m,B.B),m,m,B.qk,m))
+l.push(A.bl(m,B.arv,B.l,m,m,new A.b6(B.O,m,m,A.bG(8),m,m,B.B),m,m,B.qk,m))
 l=A.bV(8,A.fi(!0,A.cj(l,B.ch,B.o,B.r),B.ac,!0),m,m,m,12,m,m)
 p=a.$4(150,450,452,468)
 o=A.bn("assets/images/item_coin.png",B.k,m,m,m,m,B.n,m,!1,m,m)
@@ -96110,27 +96110,27 @@ r=A.eF($.a5.S().a.i(0,"sfx_volume"))
 if(r==null)r=0.9
 r=m.U7(B.lB,g!==!1,new A.apG(m),new A.apH(m),"Efeitos sonoros",r)
 g=A.bq($.a5.S().a.i(0,"new_music"))
-g=A.OY(new A.apI(m),B.NS,B.arw,B.arQ,g===!0)
+g=A.OY(new A.apI(m),B.NS,B.arw,B.arR,g===!0)
 q=A.aN(A.c9(B.WE),l,l,l,B.bH,l)
 p=A.aN(A.c9(B.VP),l,l,l,B.bW,l)
 o=A.bq($.a5.S().a.i(0,"voice_on"))
 q=A.OY(new A.apJ(m),B.NI,p,q,o!==!1)
 p=A.bq($.a5.S().a.i(0,"auto_fire"))
-p=A.OY(new A.apK(m),l,B.arC,B.as_,p===!0)
+p=A.OY(new A.apK(m),l,B.arC,B.as0,p===!0)
 o=A.bq($.a5.S().a.i(0,"easy"))
 o=A.OY(new A.apL(m),l,B.asf,B.arr,o===!0)
 n=A.eF($.a5.S().a.i(0,"controls_opacity"))
 if(n==null)n=0.8
-n=A.b([j,i,s,r,g,q,p,o,A.pk(!1,l,l,l,!0,l,l,l,!0,l,l,l,l,l,l,l,!1,l,l,l,l,A.aFk(1,0.3,l,new A.apM(m),n),l,B.arM,l,l)],h)
-B.b.C(n,A.b([B.Zy,A.OY(new A.apN(m),l,B.as7,B.arx,A.fE())],h))
-n.push(A.pk(!1,l,l,l,!0,l,l,l,!0,l,B.NE,l,l,l,l,m.ga9n(),!1,l,l,l,l,B.as4,l,B.art,l,l))
+n=A.b([j,i,s,r,g,q,p,o,A.pk(!1,l,l,l,!0,l,l,l,!0,l,l,l,l,l,l,l,!1,l,l,l,l,A.aFk(1,0.3,l,new A.apM(m),n),l,B.arN,l,l)],h)
+B.b.C(n,A.b([B.Zy,A.OY(new A.apN(m),l,B.as8,B.arx,A.fE())],h))
+n.push(A.pk(!1,l,l,l,!0,l,l,l,!0,l,B.NE,l,l,l,l,m.ga9n(),!1,l,l,l,l,B.as5,l,B.ars,l,l))
 n.push(A.pk(!1,l,l,l,!0,l,l,l,!0,l,B.qI,l,l,l,l,new A.apF(a),!1,l,l,l,l,B.asd,l,B.asb,l,l))
 return new A.FS("CONFIGURA\xc7\xd5ES",l,A.aE1(n),k,l)}}
 A.apt.prototype={
 $1(a){return A.W("coin")},
 $S:22}
 A.apr.prototype={
-$1(a){return A.axu(A.b([A.Cp(B.ary,new A.app(a),null),A.Cp(B.arJ,new A.apq(a),null)],t.p),B.pP,B.arB,null,B.as1)},
+$1(a){return A.axu(A.b([A.Cp(B.ary,new A.app(a),null),A.Cp(B.arK,new A.apq(a),null)],t.p),B.pP,B.arB,null,B.as2)},
 $S:570}
 A.app.prototype={
 $0(){A.j_(this.a,!1).Cg(!1)
@@ -96492,7 +96492,7 @@ r.d=s
 q=s}return q},
 l(){this.gRv().l()
 this.a6J()},
-V(a){var s,r=null,q=this.a.c,p=q.by,o=p.f,n=q.bD,m=o==null?r:B.av.i(0,o),l=this.gRv(),k=A.Bt(B.k,B.arN,r,A.c2(new A.cO(0,0.35,B.cC),l,r)),j=A.c2(new A.cO(0.15,0.45,B.cC),l,r),i=A.aN("Fase "+p.a+" \xb7 "+p.c+" \u2014 "+p.b+" derrotado",r,r,r,B.aoN,r),h=A.c2(new A.cO(0.25,0.55,B.cC),l,r),g=A.bn("assets/images/item_coin.png",B.k,r,r,r,r,B.n,r,!1,20,r),f=A.aN("  "+q.XH+"     ",r,r,r,B.DZ,r),e=A.bn("assets/images/item_egg2.png",B.k,r,r,r,r,B.n,r,!1,22,r),d=q.cY.ei(0)
+V(a){var s,r=null,q=this.a.c,p=q.by,o=p.f,n=q.bD,m=o==null?r:B.av.i(0,o),l=this.gRv(),k=A.Bt(B.k,B.arO,r,A.c2(new A.cO(0,0.35,B.cC),l,r)),j=A.c2(new A.cO(0.15,0.45,B.cC),l,r),i=A.aN("Fase "+p.a+" \xb7 "+p.c+" \u2014 "+p.b+" derrotado",r,r,r,B.aoN,r),h=A.c2(new A.cO(0.25,0.55,B.cC),l,r),g=A.bn("assets/images/item_coin.png",B.k,r,r,r,r,B.n,r,!1,20,r),f=A.aN("  "+q.XH+"     ",r,r,r,B.DZ,r),e=A.bn("assets/images/item_egg2.png",B.k,r,r,r,r,B.n,r,!1,22,r),d=q.cY.ei(0)
 d.C(0,q.cr)
 s=t.p
 d=A.b([k,new A.dW(j,!1,i,r),B.hl,new A.dW(h,!1,A.bB(A.b([g,f,e,A.aN("  "+d.gL(d)+"/5     ",r,r,r,B.DZ,r),new A.Wh(q.cO,r)],s),B.p,B.o,B.a7,0),r)],s)
@@ -96523,7 +96523,7 @@ A.r3.prototype={
 aw(){return new A.Xn()}}
 A.Xn.prototype={
 aP(){this.b5()
-A.aY9("1.0.102",new A.auq(this))},
+A.aY9("1.0.103",new A.auq(this))},
 V(a){var s,r,q=this,p=null,o=A.bG(16),n=t.p,m=A.b([A.aN(q.d,p,p,p,B.DW,p),B.ju],n)
 if(q.e===0){s=A.bG(6)
 r=q.f
@@ -96533,8 +96533,8 @@ m=A.cj(m,B.aJ,B.o,B.a7)
 n=A.b([],n)
 s=q.e
 if(s!==0)n.push(A.Cp(A.aN(s===2?"DEPOIS":"OK",p,p,p,B.DK,p),new A.auo(a),p))
-if(q.e===2)n.push(new A.Kp(A.aZY(),p,p,p,A.aQd(B.kH,p,p),B.l,p,!1,p,!0,p,B.arW,p))
-return A.axu(n,B.kM,m,new A.dF(o,B.od),B.arV)}}
+if(q.e===2)n.push(new A.Kp(A.aZY(),p,p,p,A.aQd(B.kH,p,p),B.l,p,!1,p,!0,p,B.arX,p))
+return A.axu(n,B.kM,m,new A.dF(o,B.od),B.arW)}}
 A.auq.prototype={
 $3(a,b,c){var s=this.a
 if(s.c==null)return
@@ -96639,7 +96639,7 @@ l.toString
 s=t.p
 r=A.b([],s)
 for(q=k.length,p=0;p<k.length;k.length===q||(0,A.y)(k),++p){o=k[p]
-r.push(this.ahi(o,m.t(0,o)))}return new A.bv(250,146,A.bZ(B.a_,A.b([B.arU,A.bV(n,A.azH(r,5,5),n,n,0,n,14,240),A.bV(n,A.aN(l.c,2,B.bc,n,B.anJ,n),n,n,0,0,112,n)],s),B.A,B.Q),n)},
+r.push(this.ahi(o,m.t(0,o)))}return new A.bv(250,146,A.bZ(B.a_,A.b([B.arV,A.bV(n,A.azH(r,5,5),n,n,0,n,14,240),A.bV(n,A.aN(l.c,2,B.bc,n,B.anJ,n),n,n,0,0,112,n)],s),B.A,B.Q),n)},
 ahi(a,b){var s,r,q,p,o=null,n=this.a.c,m=n.ao.a===a
 n=n.n_(a)
 s=A.ke().a
@@ -96650,7 +96650,7 @@ p=A.b([q,A.hB(new A.nz(a,26,m,o),p)],t.p)
 if(!b)p.push(B.NG)
 if(b&&a!=="energy"){n=B.c.ai(n/(20+6*s),0,1)
 p.push(A.bV(6,A.ayf(B.dQ,A.bl(o,o,B.l,r,o,o,o,o,o,o),o,n),3,o,8,8,o,o))}return A.ci(o,new A.bv(44,44,A.bZ(B.k,p,B.A,B.Q),o),B.G,!1,o,o,o,o,o,o,o,o,o,o,o,o,o,o,new A.aqn(this,b,a),o,o,o,o,o,o)},
-afd(){var s,r=null,q=t.p,p=A.bB(A.b([B.aru,B.bT,B.as5],q),B.p,B.o,B.r,0),o=A.b([],q)
+afd(){var s,r=null,q=t.p,p=A.bB(A.b([B.art,B.bT,B.as6],q),B.p,B.o,B.r,0),o=A.b([],q)
 for(s=0;s<4;++s)o.push(this.afc(B.rc[s]))
 return new A.bv(250,84,A.bZ(B.a_,A.b([p,A.bV(r,A.bB(o,B.p,B.o,B.r,0),r,r,0,r,16,r)],q),B.A,B.Q),r)},
 Vv(a){var s=this
@@ -96670,7 +96670,7 @@ i=this.ga94()
 r=A.bG(14)
 q=A.c7(B.aH,2)
 p=t.p
-o=A.bB(A.b([B.NJ,B.bT,B.as0,B.bo,A.ci(j,B.NO,B.G,!1,j,j,j,j,j,j,j,j,j,j,j,j,j,j,i,j,j,j,j,j,j)],p),B.p,B.o,B.r,0)
+o=A.bB(A.b([B.NJ,B.bT,B.as1,B.bo,A.ci(j,B.NO,B.G,!1,j,j,j,j,j,j,j,j,j,j,j,j,j,j,i,j,j,j,j,j,j)],p),B.p,B.o,B.r,0)
 n=A.b([],p)
 for(m=0;m<5;++m){l=B.c2[m]
 k=A.b([],p)
@@ -96929,7 +96929,7 @@ s=this.a
 r=t.p
 q=A.b([],r)
 for(p=B.dn.gbS(),p=p.ga6(p);p.u();){o=p.gU()
-q.push(s.OJ(i.t(0,o),"FASE "+A.r(o)))}q=A.dM(s.GU(A.cj(A.b([B.arO,B.bo,A.bB(q,B.p,B.iG,B.r,0),B.bo,A.aN("Achados: "+i.a+" de 4",j,j,j,B.nw,j)],r),B.p,B.o,B.r)),1)
+q.push(s.OJ(i.t(0,o),"FASE "+A.r(o)))}q=A.dM(s.GU(A.cj(A.b([B.arP,B.bo,A.bB(q,B.p,B.iG,B.r,0),B.bo,A.aN("Achados: "+i.a+" de 4",j,j,j,B.nw,j)],r),B.p,B.o,B.r)),1)
 p=A.b([],r)
 for(n=0;n<3;++n){o=n<h
 m=s.OJ(o,"")
@@ -96939,7 +96939,7 @@ else{l=J.fL($.ax6().a,B.r6[n])
 if(l==null)l=B.qZ[n]}if(o)o=B.fm
 else o=n===h?B.aH:B.i6
 k=n===h?B.e1:B.h
-p.push(A.cj(A.b([m,B.c8,s.SD(l,o,new A.aq5(s,n),k,70)],r),B.p,B.o,B.a7))}return A.bB(A.b([q,B.dD,A.dM(s.GU(A.cj(A.b([B.as3,B.bo,A.bB(p,B.p,B.iG,B.r,0),B.bo,B.arL],r),B.p,B.o,B.r)),1)],r),B.d8,B.o,B.r,0)},
+p.push(A.cj(A.b([m,B.c8,s.SD(l,o,new A.aq5(s,n),k,70)],r),B.p,B.o,B.a7))}return A.bB(A.b([q,B.dD,A.dM(s.GU(A.cj(A.b([B.as4,B.bo,A.bB(p,B.p,B.iG,B.r,0),B.bo,B.arM],r),B.p,B.o,B.r)),1)],r),B.d8,B.o,B.r,0)},
 $S:211}
 A.aq5.prototype={
 $0(){var s="bought_hearts",r=this.a,q=this.b,p=A.c1($.a5.S().a.i(0,s))
@@ -97198,7 +97198,7 @@ h.push(A.pk(!1,k,k,k,!0,k,k,k,!0,k,B.qI,k,k,k,k,new A.as1(p,l),!1,k,k,k,k,k,k,A.
 h=j!=null
 if(h&&!l.e)i.push(A.dD(0,A.rR(new A.ui(j.a,j.b,new A.as2(l),new A.cU(j,t.vi)),B.O,!0)))
 if(h&&l.e)i.push(A.dD(0,new A.uh(j.a,new A.as3(l),new A.cU(new A.l("thanks",j),t.Rt))))
-return A.aF0(new A.wW(B.arG,B.pP,B.h,new A.Uy(k,k,1/0,56),k),B.J5,A.bZ(B.a_,i,B.A,B.Q))}}
+return A.aF0(new A.wW(B.arH,B.pP,B.h,new A.Uy(k,k,1/0,56),k),B.J5,A.bZ(B.a_,i,B.A,B.Q))}}
 A.arY.prototype={
 $1(a){return a.a===this.a},
 $S:61}
@@ -97266,7 +97266,7 @@ o=A.bn("assets/images/ui_logo.png",B.k,p,p,p,p,B.n,p,!1,p,Math.min(o.a.a*0.82,42
 s=A.et(this.gUL(),new A.asb(this),B.auE)
 r=A.bG(20)
 q=t.p
-return A.bZ(B.a_,A.b([n,B.KB,A.fi(!0,new A.bQ(B.LP,A.cj(A.b([B.Db,o,B.Db,s,B.aal,B.arP,B.c9,B.arK,B.aaz,A.bl(p,B.as9,B.l,p,p,new A.b6(B.d4,p,A.c7(B.d6,1),r,p,p,B.B),p,p,B.LB,p)],q),B.p,B.o,B.r),p),B.ac,!0)],q),B.A,B.hn)}}
+return A.bZ(B.a_,A.b([n,B.KB,A.fi(!0,new A.bQ(B.LP,A.cj(A.b([B.Db,o,B.Db,s,B.aal,B.arQ,B.c9,B.arL,B.aaz,A.bl(p,B.arG,B.l,p,p,new A.b6(B.d4,p,A.c7(B.d6,1),r,p,p,B.B),p,p,B.LB,p)],q),B.p,B.o,B.r),p),B.ac,!0)],q),B.A,B.hn)}}
 A.asb.prototype={
 $2(a,b){var s=this.a.gUL()
 return A.aFJ(s.b.ar(s.a.gm()),b)},
@@ -97497,7 +97497,7 @@ $0(){return this.a.y=this.b},
 $S:0}
 A.atu.prototype={
 $2(a,b){var s=null,r=b.b,q=b.d,p=r/q>=1.6?B.au6:B.au5,o=p.a,n=t.p,m=this.a
-return new A.bv(r,q,A.oR(new A.bv(o.a,o.b,A.bZ(B.a_,A.b([A.bV(s,A.bZ(B.k,A.b([A.dD(0,A.bn("assets/images/sel_title.png",B.k,s,s,s,s,B.n,B.b1,!1,s,s)),B.arv],n),B.A,B.Q),38,s,40,s,0,210),A.bV(s,m.aho(),s,s,s,10,12,s),A.Az(m.agT(),p.b)],n),B.l,B.Q),s),B.cV),s)},
+return new A.bv(r,q,A.oR(new A.bv(o.a,o.b,A.bZ(B.a_,A.b([A.bV(s,A.bZ(B.k,A.b([A.dD(0,A.bn("assets/images/sel_title.png",B.k,s,s,s,s,B.n,B.b1,!1,s,s)),B.aru],n),B.A,B.Q),38,s,40,s,0,210),A.bV(s,m.aho(),s,s,s,10,12,s),A.Az(m.agT(),p.b)],n),B.l,B.Q),s),B.cV),s)},
 $S:579}
 A.atd.prototype={
 $0(){return this.a.Ua(this.b)},
@@ -101342,8 +101342,8 @@ B.GU=new A.xf(null,null,null,null,null,null)
 B.bK=new A.j(1,0.9372549019607843,0.26666666666666666,0.26666666666666666,B.d)
 B.C=new A.fV(900)
 B.aqG=new A.q(!0,B.bK,null,null,null,null,14,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.arS=new A.bg("!",null,B.aqG,null,null,null,null,null)
-B.GX=new A.mq(B.k,null,null,B.arS,null)
+B.arT=new A.bg("!",null,B.aqG,null,null,null,null,null)
+B.GX=new A.mq(B.k,null,null,B.arT,null)
 B.GZ=new A.xi(null,null,null,null,null,null,null,null,null)
 B.dV=new A.rF(0,"none")
 B.d2=new A.rF(1,"isTrue")
@@ -105208,15 +105208,15 @@ B.jb=new A.hG(null,null)
 B.NW=new A.d4(B.qF,15,B.e1,null,null,null)
 B.eG=new A.bv(4,null,null,null)
 B.ap9=new A.q(!0,B.e1,null,null,null,null,9.5,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.as2=new A.bg("TROCAR HER\xd3I",null,B.ap9,null,null,null,null,null)
-B.PS=s([B.NW,B.eG,B.as2],t.p)
+B.as3=new A.bg("TROCAR HER\xd3I",null,B.ap9,null,null,null,null,null)
+B.PS=s([B.NW,B.eG,B.as3],t.p)
 B.a84=new A.ne(B.aM,B.o,B.a7,B.p,null,B.bY,null,0,B.PS,null)
 B.Nv=new A.bS(983563,"MaterialIcons",!1)
 B.NR=new A.d4(B.Nv,18,B.S,null,null,null)
 B.bT=new A.bv(6,null,null,null)
 B.aq9=new A.q(!0,B.h,null,null,null,null,13,B.b2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.arH=new A.bg("VERIFICAR ATUALIZA\xc7\xd5ES",null,B.aq9,null,null,null,null,null)
-B.QB=s([B.NR,B.bT,B.arH],t.p)
+B.arI=new A.bg("VERIFICAR ATUALIZA\xc7\xd5ES",null,B.aq9,null,null,null,null,null)
+B.QB=s([B.NR,B.bT,B.arI],t.p)
 B.a85=new A.ne(B.aM,B.o,B.a7,B.p,null,B.bY,null,0,B.QB,null)
 B.LL=new A.at(170,6,0,0)
 B.MY=new A.yJ(null)
@@ -105454,8 +105454,8 @@ B.aat=new A.kl(3,"hide")
 B.avp=new A.kl(4,"remove")
 B.aau=new A.kl(5,"timeout")
 B.aav=new A.uG(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.arI=new A.bg("Progresso zerado. Tudo come\xe7a de novo!",null,null,null,null,null,null,null)
-B.aaw=new A.qf(B.arI,null,null,null,null,null,null,null,null,null,null,null,null,B.qb,!1,null,null,null,B.A,null)
+B.arJ=new A.bg("Progresso zerado. Tudo come\xe7a de novo!",null,null,null,null,null,null,null)
+B.aaw=new A.qf(B.arJ,null,null,null,null,null,null,null,null,null,null,null,null,B.qb,!1,null,null,null,B.A,null)
 B.Da=new A.C5(0,"permissive")
 B.aax=new A.C5(1,"normal")
 B.aay=new A.C5(2,"forced")
@@ -105860,14 +105860,14 @@ B.aqc=new A.q(!0,B.m,null,".AppleSystemUIFont",null,null,null,null,null,null,nul
 B.amP=new A.q(!0,B.m,null,".AppleSystemUIFont",null,null,null,null,null,null,null,null,null,null,null,null,null,B.j,null,null,null,"blackRedwoodCity labelSmall",null,null,null,null)
 B.aro=new A.ea(B.aoP,B.anG,B.aoQ,B.apl,B.anf,B.anq,B.ao4,B.apg,B.aog,B.apR,B.amI,B.an1,B.apM,B.aqc,B.amP)
 B.arr=new A.bg("Modo f\xe1cil",null,B.bH,null,null,null,null,null)
-B.aqa=new A.q(!0,B.S,null,null,null,null,15,B.b2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ars=new A.bg("Vers\xe3o beta 1.0.102 \xb7 08/11/2026 14:04",null,B.aqa,null,null,null,null,null)
-B.art=new A.bg("Zerar progresso",null,B.bH,null,null,null,null,null)
+B.ars=new A.bg("Zerar progresso",null,B.bH,null,null,null,null,null)
 B.Js=new A.j(1,0.5764705882352941,0.7725490196078432,0.9921568627450981,B.d)
 B.DV=new A.q(!0,B.Js,null,null,null,null,9,B.C,null,1.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aru=new A.bg("ITENS",null,B.DV,null,null,null,null,null)
+B.art=new A.bg("ITENS",null,B.DV,null,null,null,null,null)
 B.anD=new A.q(!0,B.S,null,null,null,null,13,B.C,null,1.2,null,null,null,null,null,null,null,null,null,null,null,null,B.qW,null,null,null)
-B.arv=new A.bg("CAMINHO DAS FASES",null,B.anD,null,null,null,null,null)
+B.aru=new A.bg("CAMINHO DAS FASES",null,B.anD,null,null,null,null,null)
+B.aqa=new A.q(!0,B.S,null,null,null,null,15,B.b2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.arv=new A.bg("Vers\xe3o beta 1.0.103 \xb7 20261108-1531",null,B.aqa,null,null,null,null,null)
 B.arw=new A.bg("Troca a trilha de rock pelas m\xfasicas mais calmas",null,B.bW,null,null,null,null,null)
 B.arx=new A.bg("Liberar tudo (modo de teste)",null,B.bH,null,null,null,null,null)
 B.ary=new A.bg("CANCELAR",null,null,null,null,null,null,null)
@@ -105879,52 +105879,52 @@ B.arB=new A.bg("Todas as fases, her\xf3is, poderes, ovos e moedas voltam a ficar
 B.arC=new A.bg("Atira sozinho quando h\xe1 um inimigo \xe0 frente",null,B.bW,null,null,null,null,null)
 B.arD=new A.bg("O novo her\xf3i continua daqui, com a mesma vida.",null,B.nw,null,null,null,null,null)
 B.arF=new A.bg("ENTENDI",null,B.DK,null,null,null,null,null)
-B.arG=new A.bg("Falas dos resgates",null,null,null,null,null,null,null)
+B.ano=new A.q(!0,B.S,null,null,null,null,14,B.b2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.arG=new A.bg("Vers\xe3o beta 1.0.103",null,B.ano,null,null,null,null,null)
+B.arH=new A.bg("Falas dos resgates",null,null,null,null,null,null,null)
 B.amY=new A.q(!0,B.xq,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.arJ=new A.bg("ZERAR",null,B.amY,null,null,null,null,null)
+B.arK=new A.bg("ZERAR",null,B.amY,null,null,null,null,null)
 B.aqV=new A.q(!0,B.cB,null,null,null,null,15,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.arK=new A.bg("Nova Chronicles \xe9 jogado com o celular deitado.",null,B.aqV,B.bb,null,null,null,null)
-B.arL=new A.bg("Compre em ordem: um de cada vez.",null,B.nw,null,null,null,null,null)
-B.arM=new A.bg("Visibilidade dos controles",null,B.bH,null,null,null,null,null)
+B.arL=new A.bg("Nova Chronicles \xe9 jogado com o celular deitado.",null,B.aqV,B.bb,null,null,null,null)
+B.arM=new A.bg("Compre em ordem: um de cada vez.",null,B.nw,null,null,null,null,null)
+B.arN=new A.bg("Visibilidade dos controles",null,B.bH,null,null,null,null,null)
 B.J7=new A.j(1,0.7058823529411765,0.3254901960784314,0.03529411764705882,B.d)
 B.a9h=new A.hH(B.J7,B.i,18)
 B.OU=s([B.a9h],t.kO)
 B.apt=new A.q(!0,B.aI,null,null,null,null,40,B.C,null,4,null,null,null,null,null,null,null,null,null,null,null,null,B.OU,null,null,null)
-B.arN=new A.bg("VOC\xca VENCEU!",null,B.apt,null,null,null,null,null)
+B.arO=new A.bg("VOC\xca VENCEU!",null,B.apt,null,null,null,null,null)
 B.DO=new A.q(!0,B.p2,null,null,null,null,10,B.C,null,0.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.arO=new A.bg("ACHE NAS \xc1REAS SECRETAS",null,B.DO,null,null,null,null,null)
+B.arP=new A.bg("ACHE NAS \xc1REAS SECRETAS",null,B.DO,null,null,null,null,null)
 B.aoS=new A.q(!0,B.h,null,null,null,null,28,B.C,null,0.5,null,null,null,null,null,null,null,null,null,null,null,null,B.ec,null,null,null)
-B.arP=new A.bg("Vire o celular",null,B.aoS,B.bb,null,null,null,null)
-B.arQ=new A.bg("Trilha alternativa",null,B.bH,null,null,null,null,null)
+B.arQ=new A.bg("Vire o celular",null,B.aoS,B.bb,null,null,null,null)
+B.arR=new A.bg("Trilha alternativa",null,B.bH,null,null,null,null,null)
 B.DJ=new A.q(!0,B.h,null,null,null,null,null,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.arR=new A.bg("Tela cheia no iPhone",null,B.DJ,null,null,null,null,null)
+B.arS=new A.bg("Tela cheia no iPhone",null,B.DJ,null,null,null,null,null)
 B.DR=new A.q(!0,null,null,null,null,null,null,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.arT=new A.bg("PULAR \u25b8",null,B.DR,null,null,null,null,null)
-B.arU=new A.bg("PODERES",null,B.DV,null,null,null,null,null)
-B.arV=new A.bg("Atualiza\xe7\xf5es",null,B.DJ,null,null,null,null,null)
-B.arW=new A.bg("REINICIAR AGORA",null,B.DR,null,null,null,null,null)
-B.arX=new A.bg("COMPRAR MOEDAS",null,B.DS,null,null,null,null,null)
+B.arU=new A.bg("PULAR \u25b8",null,B.DR,null,null,null,null,null)
+B.arV=new A.bg("PODERES",null,B.DV,null,null,null,null,null)
+B.arW=new A.bg("Atualiza\xe7\xf5es",null,B.DJ,null,null,null,null,null)
+B.arX=new A.bg("REINICIAR AGORA",null,B.DR,null,null,null,null,null)
+B.arY=new A.bg("COMPRAR MOEDAS",null,B.DS,null,null,null,null,null)
 B.anC=new A.q(!0,B.S,null,null,null,null,13,B.C,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.arY=new A.bg("LOJA DE MOEDAS",null,B.anC,null,null,null,null,null)
-B.arZ=new A.bg("CONTINUAR?",null,B.DM,null,null,null,null,null)
-B.as_=new A.bg("Tiro autom\xe1tico",null,B.bH,null,null,null,null,null)
+B.arZ=new A.bg("LOJA DE MOEDAS",null,B.anC,null,null,null,null,null)
+B.as_=new A.bg("CONTINUAR?",null,B.DM,null,null,null,null,null)
+B.as0=new A.bg("Tiro autom\xe1tico",null,B.bH,null,null,null,null,null)
 B.aqi=new A.q(!0,B.S,null,null,null,null,15,B.C,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.as0=new A.bg("TROCAR HER\xd3I",null,B.aqi,null,null,null,null,null)
-B.as1=new A.bg("Zerar progresso?",null,B.bH,null,null,null,null,null)
-B.as3=new A.bg("COMPRE NA PLAY STORE",null,B.DO,null,null,null,null,null)
-B.as4=new A.bg("Volta tudo ao come\xe7o: fases, her\xf3is, poderes e moedas bloqueados",null,B.bW,null,null,null,null,null)
+B.as1=new A.bg("TROCAR HER\xd3I",null,B.aqi,null,null,null,null,null)
+B.as2=new A.bg("Zerar progresso?",null,B.bH,null,null,null,null,null)
+B.as4=new A.bg("COMPRE NA PLAY STORE",null,B.DO,null,null,null,null,null)
+B.as5=new A.bg("Volta tudo ao come\xe7o: fases, her\xf3is, poderes e moedas bloqueados",null,B.bW,null,null,null,null,null)
 B.apw=new A.q(!0,B.fr,null,null,null,null,7.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.as5=new A.bg("toque para usar",null,B.apw,null,null,null,null,null)
+B.as6=new A.bg("toque para usar",null,B.apw,null,null,null,null,null)
 B.aqF=new A.q(!0,B.h,null,null,null,null,17,B.b2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.as6=new A.bg("Escolha o idioma \xb7 Choose your language \xb7 Elige tu idioma",null,B.aqF,B.bb,null,null,null,null)
-B.as7=new A.bg("Todas as fases, her\xf3is, poderes e mascotes, sem precisar jogar",null,B.bW,null,null,null,null,null)
+B.as7=new A.bg("Escolha o idioma \xb7 Choose your language \xb7 Elige tu idioma",null,B.aqF,B.bb,null,null,null,null)
+B.as8=new A.bg("Todas as fases, her\xf3is, poderes e mascotes, sem precisar jogar",null,B.bW,null,null,null,null,null)
 B.anW=new A.q(!0,B.cB,null,null,null,null,14,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.as8=new A.bg("O Safari do iPhone n\xe3o deixa sites em tela cheia. Mas d\xe1 para instalar o jogo na Tela de In\xedcio:",null,B.anW,null,null,null,null,null)
-B.ano=new A.q(!0,B.S,null,null,null,null,14,B.b2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.as9=new A.bg("Vers\xe3o beta 1.0.102",null,B.ano,null,null,null,null,null)
+B.as9=new A.bg("O Safari do iPhone n\xe3o deixa sites em tela cheia. Mas d\xe1 para instalar o jogo na Tela de In\xedcio:",null,B.anW,null,null,null,null,null)
 B.asb=new A.bg("Ouvir falas dos resgates",null,B.bH,null,null,null,null,null)
 B.apO=new A.q(!0,B.fr,null,null,null,null,13,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.asc=new A.bg("Vers\xe3o atual: 1.0.102",null,B.apO,null,null,null,null,null)
+B.asc=new A.bg("Vers\xe3o atual: 1.0.103",null,B.apO,null,null,null,null,null)
 B.asd=new A.bg("Toca cada conversa de quando um her\xf3i sai da c\xe1psula",null,B.bW,null,null,null,null,null)
 B.ase=new A.bg("Volte para a luta com ",null,B.DN,null,null,null,null,null)
 B.asf=new A.bg("Voc\xea recebe metade do dano",null,B.bW,null,null,null,null,null)
