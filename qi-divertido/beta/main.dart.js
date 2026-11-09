@@ -21639,7 +21639,7 @@ $iCS:1}
 A.a9f.prototype={
 $1(a){var s=A.c7().b
 s=s==null?null:s.canvasKitBaseUrl
-return(s==null?"canvaskit/":s)+a},
+return(s==null?"https://www.gstatic.com/flutter-canvaskit/af7e796e161ae0bb1ff0758c71a7105418bd9ded/":s)+a},
 $S:154}
 A.Fx.prototype={
 gjS(){var s=this.b
