@@ -1,5 +1,5 @@
 // Gerado por tools/make_service_worker.py — não editar à mão.
-const CACHE = 'kitnet-controle-20261110-153237';
+const CACHE = 'kitnet-controle-20261110-154046';
 const CORE = ["./", "index.html", "flutter_bootstrap.js", "flutter.js", "main.dart.js", "manifest.json", "favicon.png", "ocr.js", "atualizar.js"];
 const FILES = ["assets/AssetManifest.bin", "assets/AssetManifest.bin.json", "assets/FontManifest.json", "assets/NOTICES", "assets/fonts/MaterialIcons-Regular.otf", "assets/fonts/fallback/Roboto-Regular.ttf", "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf", "assets/shaders/ink_sparkle.frag", "assets/shaders/stretch_effect.frag", "canvaskit/canvaskit.js", "canvaskit/canvaskit.wasm", "canvaskit/chromium/canvaskit.js", "canvaskit/chromium/canvaskit.wasm", "icons/Icon-192.png", "icons/Icon-512.png", "icons/Icon-maskable-192.png", "icons/Icon-maskable-512.png", "tesseract/lang/por.traineddata.gz", "tesseract/tesseract-core-lstm.wasm.js", "tesseract/tesseract-core-simd-lstm.wasm.js", "tesseract/tesseract.min.js", "tesseract/worker.min.js"];
 const FRESH = ['', 'index.html', 'flutter_bootstrap.js', 'main.dart.js', 'version.json', 'ocr.js', 'atualizar.js'];
