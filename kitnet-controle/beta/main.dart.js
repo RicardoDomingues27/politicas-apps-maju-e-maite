@@ -36560,11 +36560,11 @@ Tv(a){var s=0,r=A.B(t.H),q,p
 var $async$Tv=A.x(function(b,c){if(b===1)return A.y(c,r)
 for(;;)switch(s){case 0:A.i0(a,"Procurando atualiza\xe7\xf5es\u2026")
 s=3
-return A.r(A.ajg("0.4.5"),$async$Tv)
+return A.r(A.ajg("0.4.6"),$async$Tv)
 case 3:p=c
 if(a.e==null){s=1
 break}a.ap(t.Pu).f.J9()
-if(p==null){A.i0(a,"Voc\xea j\xe1 est\xe1 na vers\xe3o mais recente (0.4.5).")
+if(p==null){A.i0(a,"Voc\xea j\xe1 est\xe1 na vers\xe3o mais recente (0.4.6).")
 s=1
 break}s=4
 return A.r(A.tY(null,null,!0,null,new A.b3I(p),a,null,!0,t.y),$async$Tv)
@@ -132945,12 +132945,12 @@ n=A.b([A.d9(A.dM(!1,r,r,r,!0,r,r,r,!0,r,new A.hz(o.c,40,A.o(a).ax.b,r),r,r,r,r,r
 s=o.dx
 if((s==null?r:s.d)!=null&&!o.f)B.l.P(n,A.b([B.blN,A.d9(A.dM(!1,r,r,r,!0,r,r,r,!0,r,B.adJ,r,r,r,r,r,new A.ak4(p,a),!1,r,r,r,r,r,B.bkM,r,B.a3Q,r,B.nX,r),r,r)],m))
 n.push(B.blM)
-n.push(A.d9(A.dM(!1,r,r,r,!0,r,r,r,!0,r,B.aeb,r,r,r,r,r,new A.ak5(a),!1,r,r,r,r,r,A.Z("Vers\xe3o 0.4.5",r,r,r,r,r,r,r),r,B.bkO,r,r,r),r,r))
+n.push(A.d9(A.dM(!1,r,r,r,!0,r,r,r,!0,r,B.aeb,r,r,r,r,r,new A.ak5(a),!1,r,r,r,r,r,A.Z("Vers\xe3o 0.4.6",r,r,r,r,r,r,r),r,B.bkO,r,r,r),r,r))
 if(!o.f)n.push(B.blP)
 if(!o.f){o=A.dM(!1,r,r,r,!0,r,r,r,!0,r,B.adE,r,r,r,r,r,new A.ak6(p,a),!1,r,r,r,r,r,r,r,B.bkA,r,r,r)
 s=A.dL(B.ada,(A.o(a).ax.a===B.L?new A.ax(B.eg,B.dS):new A.ax(B.ei,B.ej)).b,r,r)
 n.push(A.d9(A.c_(A.b([o,B.ld,A.dM(!1,r,r,r,!0,r,r,r,!0,r,s,r,r,r,r,r,new A.ak7(p,a),!1,r,r,r,r,r,r,r,A.Z("Apagar todos os dados",r,r,r,A.aV(r,r,(A.o(a).ax.a===B.L?new A.ax(B.eg,B.dS):new A.ax(B.ei,B.ej)).b,r,r,r,r,r,r,r,r,r,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r,r,r),r,r,r)],m),B.a2,B.S,B.W),r,r))}n.push(B.a3d)
-n.push(A.eV(A.Z("Kitnet Controle 0.4.5 \xb7 10/11/2026 15:12",r,r,r,A.aV(r,r,A.o(a).ax.a===B.L?B.at:B.au,r,r,r,r,r,r,r,r,12,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r,r,r),r,r))
+n.push(A.eV(A.Z("Kitnet Controle 0.4.6 \xb7 10/11/2026 15:15",r,r,r,A.aV(r,r,A.o(a).ax.a===B.L?B.at:B.au,r,r,r,r,r,r,r,r,12,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r,r,r),r,r))
 n.push(A.eV(A.Z("Seus dados ficam guardados s\xf3 neste aparelho.",r,r,r,A.aV(r,r,A.o(a).ax.a===B.L?B.at:B.au,r,r,r,r,r,r,r,r,12,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r,r,r),r,r))
 return A.jm(q,r,A.jh(n,r,B.dB,r,!1),r,r)},
 $S:49}
@@ -133119,7 +133119,7 @@ case 5:case 3:return A.z(null,r)}})
 return A.A($async$$0,r)},
 $S:7}
 A.b3I.prototype={
-$1(a){var s=null,r=A.Z("Voc\xea est\xe1 na 0.4.5 e j\xe1 existe a "+this.a+". O app vai recarregar; seus dados continuam guardados.",s,s,s,s,s,s,s)
+$1(a){var s=null,r=A.Z("Voc\xea est\xe1 na 0.4.6 e j\xe1 existe a "+this.a+". O app vai recarregar; seus dados continuam guardados.",s,s,s,s,s,s,s)
 return A.u6(A.b([A.es(B.a3W,s,s,new A.b3G(a),s,s),A.es(B.bkD,s,s,new A.b3H(a),s,s)],t.p),s,r,s,B.bk8)},
 $S:75}
 A.b3G.prototype={
@@ -133158,8 +133158,8 @@ o=A.hr(i,B.bW,!1,i,!0,B.an,i,A.i3(),j.d,i,i,i,i,i,2,A.Zy(i,i,i,i,i,i,i,i,!0,i,i,
 n=A.bdD(B.bl7,new A.aN9(j))
 m=A.o(a).ax.a===B.L?new A.ax(B.bR,B.bQ):new A.ax(B.bS,B.bT)
 l=A.dw(12)
-k=A.dL(B.ads,(A.o(a).ax.a===B.L?new A.ax(B.bR,B.bQ):new A.ax(B.bS,B.bT)).b,i,20)
-return A.jm(i,i,A.jl(!0,A.eV(A.beG(new A.eG(B.a66,A.c_(A.b([g,B.a3e,B.bk2,B.e8,s,B.beC,new A.eA(new A.aNa(j,h),i,r,i),B.a3e,p,B.mv,o,B.dJ,n,B.dJ,A.eg(i,A.bU(A.b([k,B.iD,A.cB(A.Z("Sem a conta Google, seus dados ficam salvos s\xf3 neste celular. Se voc\xea sair, trocar de celular ou apagar o app, perde tudo.",i,i,i,A.aV(i,i,(A.o(a).ax.a===B.L?new A.ax(B.bR,B.bQ):new A.ax(B.bS,B.bT)).b,i,i,i,i,i,i,i,i,12.5,i,i,i,i,1.4,!0,i,i,i,i,i,i,i,i),i,i,i),1)],q),B.aQ,B.S,B.W,0),B.a8,i,new A.cW(m.a,i,i,l,i,i,B.bk),i,i,i,B.fn,i,i,i),B.kt,A.eV(A.es(B.bkc,i,i,new A.aNb(j),i,i),i,i),A.eV(A.b6Q(B.adH,A.Z("Verificar atualiza\xe7\xf5es \xb7 vers\xe3o 0.4.5",i,i,i,B.BO,i,i,i),new A.aNc(a)),i,i)],q),B.eK,B.S,B.W),i),B.abR),i,i),!1,B.aF,!0),i,i)}}
+k=A.dL(B.adp,(A.o(a).ax.a===B.L?new A.ax(B.bR,B.bQ):new A.ax(B.bS,B.bT)).b,i,20)
+return A.jm(i,i,A.jl(!0,A.eV(A.beG(new A.eG(B.a66,A.c_(A.b([g,B.a3e,B.bk2,B.e8,s,B.beC,new A.eA(new A.aNa(j,h),i,r,i),B.a3e,p,B.mv,o,B.dJ,n,B.dJ,A.eg(i,A.bU(A.b([k,B.iD,A.cB(A.Z("Recomendamos usar a conta Google para que seus dados fiquem sempre salvos. Sem ela, tudo fica guardado s\xf3 neste celular e pode se perder se voc\xea sair, trocar de celular ou apagar o app.",i,i,i,A.aV(i,i,(A.o(a).ax.a===B.L?new A.ax(B.bR,B.bQ):new A.ax(B.bS,B.bT)).b,i,i,i,i,i,i,i,i,12.5,i,i,i,i,1.4,!0,i,i,i,i,i,i,i,i),i,i,i),1)],q),B.aQ,B.S,B.W,0),B.a8,i,new A.cW(m.a,i,i,l,i,i,B.bk),i,i,i,B.fn,i,i,i),B.kt,A.eV(A.es(B.bkc,i,i,new A.aNb(j),i,i),i,i),A.eV(A.b6Q(B.adH,A.Z("Verificar atualiza\xe7\xf5es \xb7 vers\xe3o 0.4.6",i,i,i,B.BO,i,i,i),new A.aNc(a)),i,i)],q),B.eK,B.S,B.W),i),B.abR),i,i),!1,B.aF,!0),i,i)}}
 A.aN6.prototype={
 $0(){return this.a.e=!0},
 $S:0}
@@ -134470,7 +134470,7 @@ return A.A($async$$0,r)},
 $S:7}
 A.b2n.prototype={
 $1(a){var s=null,r=t.p
-return A.jl(!0,new A.aE(B.abO,A.c_(A.b([B.bl6,B.f8,A.Z("De onde vem a imagem do comprovante?",s,s,s,A.aV(s,s,A.o(a).ax.a===B.L?B.at:B.au,s,s,s,s,s,s,s,s,s,s,s,s,s,s,!0,s,s,s,s,s,s,s,s),s,s,s),B.a3c,A.bU(A.b([A.cB(new A.PW(B.adq,"Tirar foto","Abrir a c\xe2mera",B.nY,s),1),B.iC,A.cB(new A.PW(B.adr,"Galeria","Escolher uma imagem",B.z2,s),1)],r),B.a2,B.S,B.W,0)],r),B.a2,B.S,B.by),s),!1,B.aF,!0)},
+return A.jl(!0,new A.aE(B.abO,A.c_(A.b([B.bl6,B.f8,A.Z("De onde vem a imagem do comprovante?",s,s,s,A.aV(s,s,A.o(a).ax.a===B.L?B.at:B.au,s,s,s,s,s,s,s,s,s,s,s,s,s,s,!0,s,s,s,s,s,s,s,s),s,s,s),B.a3c,A.bU(A.b([A.cB(new A.PW(B.adr,"Tirar foto","Abrir a c\xe2mera",B.nY,s),1),B.iC,A.cB(new A.PW(B.ads,"Galeria","Escolher uma imagem",B.z2,s),1)],r),B.a2,B.S,B.W,0)],r),B.a2,B.S,B.by),s),!1,B.aF,!0)},
 $S:156}
 A.PW.prototype={
 I(a){var s=this,r=null,q=A.o(a).ax.b,p=q.ke(0.1),o=A.dw(22),n=A.dw(22),m=A.dw(22),l=A.al3(q.ke(0.35),1.5),k=A.eg(r,A.dL(s.c,A.o(a).ax.c,r,32),B.a8,r,new A.cW(q,r,r,r,r,r,B.hO),r,62,r,r,r,r,62),j=A.Z(s.d,r,r,r,B.wu,r,r,r)
@@ -135116,7 +135116,7 @@ var $async$zF=A.x(function(a,b){if(a===1)return A.y(b,r)
 for(;;)switch(s){case 0:n=p.e
 if(n){s=1
 break}s=3
-return A.r(A.ajg("0.4.5"),$async$zF)
+return A.r(A.ajg("0.4.6"),$async$zF)
 case 3:o=b
 if(o==null||p.c==null){s=1
 break}p.e=!0
@@ -144051,10 +144051,10 @@ B.jq=new A.bg(62823,"MaterialIcons",!1)
 B.adl=new A.bg(63029,"MaterialIcons",!1)
 B.adm=new A.bg(63030,"MaterialIcons",!1)
 B.ado=new A.bg(63478,"MaterialIcons",!1)
+B.adp=new A.bg(63572,"MaterialIcons",!1)
 B.Fz=new A.bg(63643,"MaterialIcons",!1)
-B.adq=new A.bg(983181,"MaterialIcons",!1)
-B.adr=new A.bg(983183,"MaterialIcons",!1)
-B.ads=new A.bg(983712,"MaterialIcons",!1)
+B.adr=new A.bg(983181,"MaterialIcons",!1)
+B.ads=new A.bg(983183,"MaterialIcons",!1)
 B.FA=new A.bg(984725,"MaterialIcons",!1)
 B.FB=new A.d6(24,0,400,0,48,B.V,1,null,!1)
 B.adw=new A.d6(null,null,null,null,null,B.O,null,null,null)
@@ -144096,8 +144096,8 @@ B.acO=new A.bg(57686,"MaterialIcons",!1)
 B.FG=new A.bP(B.acO,null,null,null,null)
 B.Fn=new A.bg(57415,"MaterialIcons",!1)
 B.FH=new A.bP(B.Fn,18,null,null,null)
-B.adp=new A.bg(983143,"MaterialIcons",!1)
-B.adU=new A.bP(B.adp,null,null,null,null)
+B.adq=new A.bg(983143,"MaterialIcons",!1)
+B.adU=new A.bP(B.adq,null,null,null,null)
 B.adV=new A.bP(B.jq,null,null,null,null)
 B.acP=new A.bg(57704,"MaterialIcons",!1)
 B.adW=new A.bP(B.acP,18,null,null,null)
