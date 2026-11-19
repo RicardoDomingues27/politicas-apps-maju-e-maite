@@ -5005,6 +5005,9 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --------------------------------------------------------------------------------
 flutter_lints
+google_identity_services_web
+google_sign_in
+google_sign_in_platform_interface
 path_provider_windows
 plugin_platform_interface
 shared_preferences_linux
@@ -5040,6 +5043,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
 flutter_plugin_android_lifecycle
+google_sign_in_android
+google_sign_in_ios
+google_sign_in_web
 local_auth
 local_auth_android
 local_auth_darwin
