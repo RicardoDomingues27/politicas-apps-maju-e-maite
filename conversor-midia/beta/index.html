@@ -34,6 +34,11 @@ button.go:disabled{opacity:.4}
 .res .big{font-size:30px;font-weight:800;color:var(--ok)}
 .res .row{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin-top:4px}
 .res a{display:block;text-align:center;margin-top:14px;padding:13px;border-radius:12px;background:var(--ok);color:#04201a;font-weight:700;text-decoration:none}
+.ov{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;z-index:9;text-align:center}
+.ov h3{font-size:22px;margin:0 0 20px}.ov .pct{font-size:60px;font-weight:800}
+.ov .pb{width:100%;max-width:420px;height:14px;border-radius:8px;background:var(--line);margin:18px 0;overflow:hidden}
+.ov .pb i{display:block;height:100%;width:0;background:var(--acc)}
+.ov button{margin-top:30px;padding:13px 34px;border-radius:12px;border:2px solid var(--line);background:transparent;color:var(--txt);font-size:16px;cursor:pointer}
 .note{color:var(--mut);font-size:12px;margin-top:22px;text-align:center}
 </style>
 </head>
@@ -64,6 +69,9 @@ button.go:disabled{opacity:.4}
     <a id="dl" download>Salvar arquivo</a>
   </div>
 
+  <div class="ov" id="ov"><h3>Comprimindo…</h3><div class="pct" id="pct">0%</div>
+  <div class="pb"><i id="pbi"></i></div><div class="sub">Não feche esta página até terminar.</div>
+  <button id="cancel">Cancelar</button></div>
   <p class="note">Versão de teste (web). Tudo é feito no seu aparelho, nada é enviado.</p>
 </main>
 <script>
@@ -98,15 +106,18 @@ function pick(f){
   $('go').disabled=false;
 }
 
-function progress(p){ $('bar').style.display='block'; $('bar').firstElementChild.style.width=(p*100)+'%'; }
+let cancelled=false, stopFn=null;
+function progress(p){ p=Math.max(0,Math.min(1,p||0)); $('pct').textContent=Math.round(p*100)+'%'; $('pbi').style.width=(p*100)+'%'; }
+$('cancel').onclick=()=>{cancelled=true; if(stopFn)stopFn();};
 
 $('go').onclick=async()=>{
-  $('go').disabled=true; $('res').style.display='none'; progress(0);
+  $('go').disabled=true; $('res').style.display='none'; cancelled=false; progress(0);
+  $('ov').style.display='flex';
   try{
     const out = file.type.startsWith('video') ? await compV(file) : await compI(file);
-    show(out);
-  }catch(err){ alert('Não foi possível comprimir: '+err.message); }
-  $('go').disabled=false; $('bar').style.display='none';
+    if(!cancelled) show(out);
+  }catch(err){ if(!cancelled) alert('Não foi possível comprimir: '+err.message); }
+  $('ov').style.display='none'; $('go').disabled=false;
 };
 
 function show(blob){
@@ -136,17 +147,19 @@ async function compV(f){
   const w=Math.round(v.videoWidth*L.scale/2)*2, h=Math.round(v.videoHeight*L.scale/2)*2;
   const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d');
   const stream=c.captureStream(30);
-  try{ const at=(v.captureStream?v.captureStream():v.mozCaptureStream()).getAudioTracks(); at.forEach(t=>stream.addTrack(t)); }catch(e){}
+  try{ const ac=new AudioContext(); const src=ac.createMediaElementSource(v); const dst=ac.createMediaStreamDestination();
+    src.connect(dst); dst.stream.getAudioTracks().forEach(t=>stream.addTrack(t)); }catch(e){}
   const mime=['video/mp4;codecs=avc1','video/webm;codecs=vp9','video/webm'].find(m=>MediaRecorder.isTypeSupported(m));
   const bps=Math.max(150000,Math.round(w*h*30*L.vbr*0.1));
   const rec=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:bps});
   const parts=[]; rec.ondataavailable=e=>e.data.size&&parts.push(e.data);
   const done=new Promise(r=>rec.onstop=r);
   rec.start(); v.play();
-  const draw=()=>{ if(v.ended||v.paused&&v.currentTime>0&&v.currentTime>=v.duration)return;
+  const draw=()=>{ if(cancelled||v.ended)return;
     x.drawImage(v,0,0,w,h); progress(v.currentTime/v.duration); requestAnimationFrame(draw); };
   draw();
-  await new Promise(r=>v.onended=r); rec.stop(); await done;
+  stopFn=()=>{v.pause(); v.dispatchEvent(new Event('ended'));};
+  await new Promise(r=>v.onended=r); stopFn=null; rec.stop(); await done;
   return new Blob(parts,{type:mime.split(';')[0]});
 }
 </script>
