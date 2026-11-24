@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compressor de Mídia</title>
+<style>
+:root{--bg:#0f1420;--card:#1a2233;--line:#2a3550;--txt:#eef2fa;--mut:#93a0ba;--acc:#4da3ff;--ok:#3ddc97}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.4 system-ui,sans-serif;display:flex;justify-content:center}
+main{width:100%;max-width:480px;padding:20px 16px 40px}
+h1{font-size:22px;margin:4px 0 2px}
+p.sub{color:var(--mut);margin:0 0 18px;font-size:14px}
+.drop{display:block;border:2px dashed var(--line);border-radius:16px;padding:28px 16px;text-align:center;background:var(--card);cursor:pointer}
+.drop b{display:block;font-size:17px;margin-bottom:4px}
+.drop span{color:var(--mut);font-size:13px}
+.preview{margin:14px 0;border-radius:14px;overflow:hidden;background:#000;display:none}
+.preview img,.preview video{width:100%;max-height:260px;object-fit:contain;display:block}
+.info{color:var(--mut);font-size:13px;margin:6px 2px 0}
+h2{font-size:15px;margin:22px 0 8px;color:var(--mut);font-weight:600}
+.levels{display:grid;gap:10px}
+.lvl{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--line);border-radius:14px;background:var(--card);cursor:pointer}
+.lvl.on{border-color:var(--acc);background:#16263f}
+.lvl .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--mut);flex:none}
+.lvl.on .dot{border-color:var(--acc);background:radial-gradient(var(--acc) 45%,transparent 50%)}
+.lvl>div:nth-child(2){flex:1;min-width:0}.lvl b{display:block}.lvl small{display:block;color:var(--mut);font-size:13px}
+.drop span{display:block}
+.lvl .est{margin-left:auto;color:var(--ok);font-weight:700;font-size:14px;white-space:nowrap}
+button.go{width:100%;margin-top:20px;padding:16px;border:0;border-radius:14px;background:var(--acc);color:#04111f;font-size:17px;font-weight:700;cursor:pointer}
+button.go:disabled{opacity:.4}
+.bar{height:8px;border-radius:4px;background:var(--line);margin-top:14px;overflow:hidden;display:none}
+.bar i{display:block;height:100%;width:0;background:var(--acc)}
+.res{display:none;margin-top:18px;padding:16px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.res .big{font-size:30px;font-weight:800;color:var(--ok)}
+.res .row{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin-top:4px}
+.res a{display:block;text-align:center;margin-top:14px;padding:13px;border-radius:12px;background:var(--ok);color:#04201a;font-weight:700;text-decoration:none}
+.note{color:var(--mut);font-size:12px;margin-top:22px;text-align:center}
+</style>
+</head>
+<body>
+<main>
+  <h1>Compressor de Mídia</h1>
+  <p class="sub">Reduza o tamanho de fotos e vídeos escolhendo a qualidade.</p>
+
+  <label class="drop" id="drop">
+    <b>Escolher foto ou vídeo</b>
+    <span>Toque aqui ou arraste o arquivo</span>
+    <input id="file" type="file" accept="image/*,video/*" hidden>
+  </label>
+
+  <div class="preview" id="prev"></div>
+  <div class="info" id="info"></div>
+
+  <h2>Nível de compressão</h2>
+  <div class="levels" id="levels"></div>
+
+  <button class="go" id="go" disabled>Comprimir</button>
+  <div class="bar" id="bar"><i></i></div>
+
+  <div class="res" id="res">
+    <div class="big" id="saved"></div>
+    <div class="row"><span>Antes</span><span id="before"></span></div>
+    <div class="row"><span>Depois</span><span id="after"></span></div>
+    <a id="dl" download>Salvar arquivo</a>
+  </div>
+
+  <p class="note">Versão de teste (web). Tudo é feito no seu aparelho, nada é enviado.</p>
+</main>
+<script>
+const LEVELS = {
+  alta:  {nome:'Alta qualidade',  desc:'Quase sem diferença visível', est:'~20–40%', q:0.85, scale:1.0,  vbr:0.55},
+  media: {nome:'Média',           desc:'Equilíbrio entre tamanho e qualidade', est:'~50–70%', q:0.65, scale:0.85, vbr:0.30},
+  baixa: {nome:'Baixa qualidade', desc:'Arquivo bem pequeno, com perda visível', est:'~80–95%', q:0.40, scale:0.6, vbr:0.12}
+};
+let level='media', file=null, url=null;
+const $=id=>document.getElementById(id);
+const fmt=b=>b>1048576?(b/1048576).toFixed(2)+' MB':(b/1024).toFixed(0)+' KB';
+
+function drawLevels(){
+  $('levels').innerHTML=Object.entries(LEVELS).map(([k,l])=>
+    `<div class="lvl ${k===level?'on':''}" data-k="${k}"><div class="dot"></div>
+     <div><b>${l.nome}</b><small>${l.desc}</small></div><div class="est">${l.est}</div></div>`).join('');
+  document.querySelectorAll('.lvl').forEach(e=>e.onclick=()=>{level=e.dataset.k;drawLevels()});
+}
+drawLevels();
+
+$('file').onchange=e=>pick(e.target.files[0]);
+$('drop').ondragover=e=>e.preventDefault();
+$('drop').ondrop=e=>{e.preventDefault();pick(e.dataTransfer.files[0])};
+
+function pick(f){
+  if(!f)return; file=f; $('res').style.display='none';
+  if(url)URL.revokeObjectURL(url); url=URL.createObjectURL(f);
+  const isV=f.type.startsWith('video');
+  $('prev').style.display='block';
+  $('prev').innerHTML=isV?`<video src="${url}" controls muted playsinline></video>`:`<img src="${url}">`;
+  $('info').textContent=`${f.name} · ${fmt(f.size)}`;
+  $('go').disabled=false;
+}
+
+function progress(p){ $('bar').style.display='block'; $('bar').firstElementChild.style.width=(p*100)+'%'; }
+
+$('go').onclick=async()=>{
+  $('go').disabled=true; $('res').style.display='none'; progress(0);
+  try{
+    const out = file.type.startsWith('video') ? await compV(file) : await compI(file);
+    show(out);
+  }catch(err){ alert('Não foi possível comprimir: '+err.message); }
+  $('go').disabled=false; $('bar').style.display='none';
+};
+
+function show(blob){
+  const pct=Math.max(0,Math.round((1-blob.size/file.size)*100));
+  $('saved').textContent = blob.size<file.size ? `Economizou ${pct}%` : 'Arquivo já estava pequeno';
+  $('before').textContent=fmt(file.size); $('after').textContent=fmt(blob.size);
+  const ext=blob.type.includes('mp4')?'mp4':blob.type.includes('webm')?'webm':'jpg';
+  const a=$('dl'); a.href=URL.createObjectURL(blob);
+  a.download=file.name.replace(/\.[^.]+$/,'')+'_comprimido.'+ext;
+  $('res').style.display='block';
+}
+
+async function compI(f){
+  const L=LEVELS[level];
+  const bmp=await createImageBitmap(f);
+  const c=document.createElement('canvas');
+  c.width=Math.round(bmp.width*L.scale); c.height=Math.round(bmp.height*L.scale);
+  const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height);
+  x.drawImage(bmp,0,0,c.width,c.height); progress(.8);
+  return await new Promise(r=>c.toBlob(r,'image/jpeg',L.q));
+}
+
+async function compV(f){
+  const L=LEVELS[level];
+  const v=document.createElement('video'); v.src=url; v.muted=false; v.playsInline=true;
+  await new Promise((r,j)=>{v.onloadedmetadata=r;v.onerror=()=>j(new Error('vídeo inválido'))});
+  const w=Math.round(v.videoWidth*L.scale/2)*2, h=Math.round(v.videoHeight*L.scale/2)*2;
+  const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d');
+  const stream=c.captureStream(30);
+  try{ const at=(v.captureStream?v.captureStream():v.mozCaptureStream()).getAudioTracks(); at.forEach(t=>stream.addTrack(t)); }catch(e){}
+  const mime=['video/mp4;codecs=avc1','video/webm;codecs=vp9','video/webm'].find(m=>MediaRecorder.isTypeSupported(m));
+  const bps=Math.max(150000,Math.round(w*h*30*L.vbr*0.1));
+  const rec=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:bps});
+  const parts=[]; rec.ondataavailable=e=>e.data.size&&parts.push(e.data);
+  const done=new Promise(r=>rec.onstop=r);
+  rec.start(); v.play();
+  const draw=()=>{ if(v.ended||v.paused&&v.currentTime>0&&v.currentTime>=v.duration)return;
+    x.drawImage(v,0,0,w,h); progress(v.currentTime/v.duration); requestAnimationFrame(draw); };
+  draw();
+  await new Promise(r=>v.onended=r); rec.stop(); await done;
+  return new Blob(parts,{type:mime.split(';')[0]});
+}
+</script>
+</body>
+</html>
