@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compressor de Mídia — Diminua fotos e vídeos sem perder a qualidade</title>
+<meta name="description" content="Compressor de Mídia: diminua o tamanho de fotos e vídeos no celular, em lote, escolhendo o nível de qualidade. Tudo é feito no aparelho.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #fbf7f3;
+    --surface: #ffffff;
+    --text: #2b1a0e;
+    --text-muted: #7a6556;
+    --accent: #ea580c;
+    --accent-ink: #ea580c;
+    --accent-soft: #ffedd5;
+    --gold: #ea580c;
+    --gold-soft: #fff1e6;
+    --border: #f1dfd0;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a0f08; --surface: #26170d; --text: #fbeee3; --text-muted: #c2a48d;
+      --accent: #fb923c; --accent-ink: #fdba74; --accent-soft: #3a1d0a;
+      --gold: #fb923c; --gold-soft: #3a1d0a; --border: #4a2c14;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a0f08; --surface: #26170d; --text: #fbeee3; --text-muted: #c2a48d;
+    --accent: #fb923c; --accent-ink: #fdba74; --accent-soft: #3a1d0a;
+    --gold: #fb923c; --gold-soft: #3a1d0a; --border: #4a2c14;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+
+  a.back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--text-muted); text-decoration: none; margin-bottom: 28px;
+  }
+  a.back:hover { color: var(--accent-ink); }
+
+  .hero { display: flex; align-items: center; gap: 32px; padding: 12px 0 40px; }
+  .hero img.icon {
+    width: 128px; height: 128px; flex: none; border-radius: 28px;
+    box-shadow: 0 10px 24px rgba(120, 50, 10, 0.3);
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(30px, 4.8vw, 44px); line-height: 1.1; margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .hero .tagline { color: var(--text-muted); font-size: 17px; margin: 0; max-width: 40ch; }
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin: 0 0 8px;
+  }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 22px;
+    margin: 0 0 14px; text-wrap: balance;
+  }
+  section { margin-bottom: 40px; }
+  section p { font-size: 16px; max-width: 62ch; }
+
+  .verse {
+    margin: 0 0 40px; padding: 26px 28px; border-radius: 18px;
+    background: linear-gradient(160deg, #3a1d0a, #26170d); color: #f6f1e6;
+    box-shadow: 0 10px 24px rgba(120, 50, 10, 0.22);
+  }
+  .verse p {
+    font-family: var(--font-display); font-size: clamp(20px, 3.4vw, 25px); line-height: 1.35;
+    margin: 0 0 10px; max-width: none;
+  }
+  .verse cite { font-style: normal; font-weight: 600; font-size: 14px; color: #fb923c; letter-spacing: 0.04em; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+  }
+  .feature {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .feature .label { font-weight: 600; font-size: 15px; margin: 0 0 4px; color: var(--accent-ink); }
+  .feature p { margin: 0; font-size: 14px; color: var(--text-muted); }
+
+  .status-note {
+    background: var(--gold-soft); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 22px; font-size: 15px; color: var(--text);
+  }
+  .status-note strong { color: var(--gold); }
+
+  .prints {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px;
+    margin: 4px 0 0; padding: 0; list-style: none;
+  }
+  .prints figure { margin: 0; text-align: center; }
+  .prints img {
+    width: 100%; height: auto; display: block; border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 24px rgba(120, 50, 10, 0.18);
+  }
+  .prints figcaption { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.35; }
+
+  footer {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; align-items: center;
+    font-size: 14px; color: var(--text-muted);
+  }
+  footer a { color: var(--accent-ink); }
+  @media (max-width: 520px) {
+    .hero { flex-direction: column; text-align: center; }
+  }
+  .play-beta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px;
+    margin: 20px 0 8px; padding: 18px 20px;
+    background: var(--gold-soft); border: 1px solid var(--gold); border-radius: 14px;
+  }
+  .play-beta .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .play-beta .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 999px;
+    background: var(--accent); color: var(--surface); font-weight: 700;
+    font-size: 16px; text-decoration: none; white-space: nowrap;
+  }
+  .play-beta .btn.alt { background: transparent; color: var(--accent-ink); border: 2px solid var(--accent); }
+  .play-beta .btn:hover { filter: brightness(1.1); }
+  .play-beta p { margin: 0; font-size: 14px; color: var(--text-muted); flex: 1 1 240px; }
+  .play-beta strong { color: var(--text); }
+  .play-beta .version { display: inline-block; margin-bottom: 4px; font-weight: 700; color: var(--gold); }
+</style>
+<body>
+<main class="page">
+  <a class="back" href="../">← Todos os apps</a>
+  <div class="hero">
+    <img class="icon" src="assets/icon.png" alt="Ícone do Compressor de Mídia">
+    <div>
+      <p class="eyebrow">App para Android</p>
+      <h1>Compressor de Mídia</h1>
+      <p class="tagline">Diminua o tamanho de fotos e vídeos do seu celular em poucos toques, escolhendo o quanto de qualidade manter.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="status-note">
+      <strong>Em teste:</strong> o app está na fase de teste interno na Google Play, com versão <span class="ver">0.2.1</span>. A publicação para todo mundo vem depois dos testes.
+    </div>
+  </section>
+
+  <section>
+    <h2>O que ele faz</h2>
+    <div class="grid">
+      <div class="feature"><p class="label">Três níveis de compressão</p><p>Alta qualidade (quase sem diferença), média (equilíbrio) ou baixa (arquivo bem pequeno). Serve para fotos e vídeos.</p></div>
+      <div class="feature"><p class="label">Vários arquivos de uma vez</p><p>Escolha várias fotos e vídeos juntos. O app comprime em fila e mostra o progresso geral.</p></div>
+      <div class="feature"><p class="label">Formato da foto</p><p>Salve em JPG, PNG ou WebP. O WebP costuma gerar arquivos menores.</p></div>
+      <div class="feature"><p class="label">Limite de tamanho</p><p>Peça uma foto de até 200 KB, 500 KB, 1 MB ou 2 MB, e o app reduz até chegar perto do limite. Também dá para limitar o lado maior em pixels.</p></div>
+      <div class="feature"><p class="label">Mais privacidade</p><p>Por padrão, a localização e os outros dados escondidos na foto são removidos. Se quiser, você pode manter.</p></div>
+      <div class="feature"><p class="label">Progresso e notificação</p><p>Uma tela mostra a porcentagem e deixa cancelar. A compressão continua com o app em segundo plano, com uma notificação de andamento.</p></div>
+      <div class="feature"><p class="label">Resultado claro</p><p>No fim você vê quanto economizou, antes e depois, e pode salvar na galeria ou compartilhar.</p></div>
+      <div class="feature"><p class="label">Tudo no seu aparelho</p><p>Nada é enviado para a internet. Seus arquivos não saem do celular.</p></div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Como é o app</h2>
+    <ul class="prints">
+      <li><figure><img src="assets/print_home.webp" alt="Escolha as fotos e os vídeos e o nível de compressão" loading="lazy"><figcaption>Escolha as fotos e os vídeos e o nível de compressão</figcaption></figure></li>
+      <li><figure><img src="assets/print_opcoes.webp" alt="Ajuste formato, tamanho e limite de peso da foto" loading="lazy"><figcaption>Ajuste formato, tamanho e limite de peso da foto</figcaption></figure></li>
+      <li><figure><img src="assets/print_progresso.webp" alt="Acompanhe o progresso e cancele quando quiser" loading="lazy"><figcaption>Acompanhe o progresso e cancele quando quiser</figcaption></figure></li>
+      <li><figure><img src="assets/print_resultado.webp" alt="Veja quanto economizou, salve ou compartilhe" loading="lazy"><figcaption>Veja quanto economizou, salve ou compartilhe</figcaption></figure></li>
+    </ul>
+  </section>
+
+  <section>
+    <a class="back" href="privacidade.html">Política de privacidade →</a>
+  </section>
+</main>
+</body>
+</html>
