@@ -2,6 +2,8 @@
 (function () {
   'use strict';
   var LAYOUT = document.body.getAttribute('data-layout') || 'a';
+  var NATIVE = !!window.AndroidApp;   // rodando dentro do app Android (Play Store)
+  if (NATIVE) document.body.classList.add('native');
   var W = 1200, H = 900;
   var COLORS = ['#FF3B30', '#FF9500', '#FFD60A', '#7ED957', '#1E9E4A', '#20C9C9',
                 '#1E88FF', '#8E5CF0', '#FF6FB5', '#8B5A2B', '#222222', '#FFFFFF',
@@ -117,13 +119,13 @@
       if (rq) { try { var p = rq.call(de); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
       pseudoFull = true; setBar(true);   // sem API de tela cheia (iPhone): só esconde as ferramentas
     }
-    refreshUI(); setTimeout(fit, 120);
+    refreshUI(); scheduleCheck();
   }
   function onFsChange() {
     if (!(document.fullscreenElement || document.webkitFullscreenElement) && pseudoFull && (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen)) {
       pseudoFull = false; setBar(false);
     }
-    refreshUI(); setTimeout(function () { fit(); checkOrientation(); }, 250);
+    refreshUI(); scheduleCheck();
   }
   document.addEventListener('fullscreenchange', onFsChange);
   document.addEventListener('webkitfullscreenchange', onFsChange);
@@ -141,11 +143,27 @@
     stage.style.width = Math.floor(W * k + bd) + 'px'; stage.style.height = Math.floor(H * k + bd) + 'px';
     if (zs !== 1) resetZoom();
   }
-  if (window.ResizeObserver) new ResizeObserver(fit).observe(area);
-  var rzTimer = null;
-  function onResize() { fit(); clearTimeout(rzTimer); rzTimer = setTimeout(checkOrientation, 200); }
+  // O tamanho do desenho acompanha a área livre de verdade: depois de qualquer mudança de tela
+  // (tela cheia, girar, barra do navegador sumindo) confere de novo algumas vezes, porque o navegador demora a assentar.
+  var rzTimers = [];
+  function scheduleCheck() {
+    fit();
+    rzTimers.forEach(clearTimeout);
+    rzTimers = [150, 500, 1100, 2000].map(function (ms) { return setTimeout(function () { fit(); checkOrientation(); }, ms); });
+  }
+  function onResize() { scheduleCheck(); }
+  // rede de segurança: se a área livre mudou por qualquer motivo (tela cheia, barra do navegador), refaz o tamanho do desenho
+  var areaKey = '';
+  setInterval(function () {
+    if (current !== 'editor') return;
+    var r = area.getBoundingClientRect(), k = Math.round(r.width) + 'x' + Math.round(r.height);
+    if (k !== areaKey) { areaKey = k; fit(); checkOrientation(); }
+  }, 600);
+  if (window.ResizeObserver) new ResizeObserver(function () { fit(); clearTimeout(roT); roT = setTimeout(checkOrientation, 120); }).observe(area);
+  var roT = null;
   window.addEventListener('resize', onResize);
-  window.addEventListener('orientationchange', function () { setTimeout(onResize, 200); });
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', onResize);
+  window.addEventListener('orientationchange', onResize);
 
   // o quadro de desenho tem o formato da área livre da tela (celular em pé, deitado, tablet)
   function dimsFor() {
@@ -676,6 +694,10 @@
     var x = c.getContext('2d');
     x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.drawImage(paint, 0, 0); x.drawImage(lines, 0, 0);
     snd.save();
+    if (NATIVE) {   // app Android: salva direto na galeria
+      var ok = false; try { ok = window.AndroidApp.saveImage(c.toDataURL('image/png'), 'meu-desenho-' + Date.now() + '.png'); } catch (e) {}
+      if (ok) toast(); return;
+    }
     c.toBlob(function (blob) {
       if (!blob) return;
       var file = null;
@@ -693,7 +715,7 @@
 
   /* ---------- versão fixa + atualizar ---------- */
   var VER = window.APP_VERSION || '?', verBtn = $('verBtn'), verTxt = $('verTxt'), newVer = null, verTimer = null;
-  function verLabel() { verBtn.classList.remove('new'); verTxt.textContent = 'Versão ' + VER + ' · 🔄 Atualizar'; }
+  function verLabel() { verBtn.classList.remove('new'); verTxt.textContent = NATIVE ? 'Versão ' + VER : 'Versão ' + VER + ' · 🔄 Atualizar'; }
   function verSay(t, ms) { verTxt.textContent = t; clearTimeout(verTimer); if (ms) verTimer = setTimeout(function () { newVer ? verNew() : verLabel(); }, ms); }
   function verNew() { verBtn.classList.add('new'); verTxt.textContent = '🆕 Versão ' + newVer + ' · Toque para instalar'; }
   function checkVersion(quiet) {
@@ -712,10 +734,21 @@
     if (window.caches) p.push(caches.keys().then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); }));
     Promise.all(p).then(done, done);
   }
-  verBtn.addEventListener('click', function () { if (newVer) installNew(); else checkVersion(false); });
-  verLabel(); checkVersion(true);
+  verBtn.addEventListener('click', function () {
+    if (NATIVE) { verSay('Atualizações pela Play Store', 3000); return; }
+    if (newVer) installNew(); else checkVersion(false);
+  });
+  verLabel(); if (!NATIVE) checkVersion(true);
+  // botão "voltar" do Android e guardar o desenho ao sair do app
+  window.__androidBack = function () {
+    if (current === 'editor') { leaveEditor(); return true; }
+    if (current === 'gallery') { show('worlds'); $('islands').scrollLeft = islScroll; return true; }
+    if (current === 'worlds') { show('home'); return true; }
+    return false;
+  };
+  window.__androidPause = function () { if (current === 'editor') saveWork(); };
 
-  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  if (!NATIVE && 'serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     navigator.serviceWorker.register('sw.js').catch(function () {});
   }
   refreshUI();

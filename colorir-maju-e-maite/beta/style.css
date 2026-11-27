@@ -281,3 +281,6 @@ html, body {
 #cursor .tip { font-size: 64px; }
 
 .btn.exit svg { width: 36px; height: 36px; filter: drop-shadow(0 2px 0 rgba(0,0,0,.3)); }
+
+/* dentro do app Android a tela já é cheia: sem botão de tela cheia */
+.native .fsb { display: none !important; }
