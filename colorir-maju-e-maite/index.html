@@ -4,39 +4,95 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Colorir e Desenhar — Maju e Maitê</title>
-<meta name="description" content="Colorir e Desenhar: app de pintar para crianças pequenas, com páginas para colorir, balde de tinta, pincéis e carimbos. Sem anúncios, sem login e sem coleta de dados.">
+<meta name="description" content="Colorir e Desenhar: app de pintar para crianças pequenas, com 41 desenhos em 6 ilhas, balde de tinta, pincéis e carimbos. Grátis com 2 ilhas; versão completa por pagamento único. Sem anúncios, sem login e sem coleta de dados.">
 <style>
-:root{--bg:#eaf6ff;--surface:#fff;--text:#16304f;--muted:#4f6785;--accent:#1e88ff;--ok:#e6f6ec;--okb:#9fd9b4;--okt:#14532d}
-@media(prefers-color-scheme:dark){:root{--bg:#0f1c2e;--surface:#172740;--text:#e8f1ff;--muted:#9db3d1;--accent:#6db3ff;--ok:#14261b;--okb:#2c5b3f;--okt:#a7e8c0}}
+:root{--bg:#eaf6ff;--surface:#fff;--text:#16304f;--muted:#4f6785;--accent:#1e88ff;--ok:#e6f6ec;--okb:#9fd9b4;--okt:#14532d;--soon:#fff4d6;--soonb:#ffd56b;--soont:#5b4400;--line:#d3e4f6}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1c2e;--surface:#172740;--text:#e8f1ff;--muted:#9db3d1;--accent:#6db3ff;--ok:#14261b;--okb:#2c5b3f;--okt:#a7e8c0;--soon:#3a3010;--soonb:#7a6420;--soont:#ffe9a8;--line:#2b3b57}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
-.page{max-width:720px;margin:0 auto;padding:40px 20px 80px}a{color:var(--accent)}a.back{text-decoration:none;font-size:14px}
-.hero{display:flex;gap:24px;align-items:center;margin:20px 0 28px}.hero img{width:112px;height:112px;border-radius:26px;box-shadow:0 8px 22px rgba(30,136,255,.35)}
-h1{margin:0 0 6px;font-size:clamp(28px,5vw,40px);line-height:1.1}h2{margin-top:32px}.tag{color:var(--muted);margin:0}
-.ok{background:var(--ok);border:1px solid var(--okb);color:var(--okt);padding:14px 16px;border-radius:14px;margin:20px 0}
+.page{max-width:900px;margin:0 auto;padding:40px 20px 80px}a{color:var(--accent)}a.back{text-decoration:none;font-size:14px}
+.hero{display:flex;gap:24px;align-items:center;margin:20px 0 20px}.hero img{width:112px;height:112px;border-radius:26px;box-shadow:0 8px 22px rgba(30,136,255,.35)}
+h1{margin:0 0 6px;font-size:clamp(28px,5vw,42px);line-height:1.1}h2{margin:40px 0 10px;font-size:clamp(22px,3.6vw,28px)}.tag{color:var(--muted);margin:0}
+.ok{background:var(--ok);border:1px solid var(--okb);color:var(--okt);padding:14px 16px;border-radius:14px;margin:18px 0}
+.soon{background:var(--soon);border:1px solid var(--soonb);color:var(--soont);padding:14px 16px;border-radius:14px;margin:18px 0}
 .btns{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}.btns a{background:var(--accent);color:#fff;text-decoration:none;padding:12px 18px;border-radius:12px;font-weight:600}.btns a.sec{background:var(--surface);color:var(--accent);border:1px solid var(--accent)}
 .beta{display:inline-block;background:var(--surface);border-radius:999px;padding:2px 12px;font-size:13px;color:var(--muted)}
 li{margin:4px 0}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:18px 0}
+figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+figure img{display:block;width:100%;height:auto}figcaption{padding:10px 14px 14px;font-size:15px;color:var(--muted)}figcaption b{color:var(--text);display:block;font-size:16px}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:15px}th{background:rgba(30,136,255,.12)}tr:last-child td{border-bottom:0}
+.ilhas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;padding:0;list-style:none}
+.ilhas li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+small{color:var(--muted)}
 </style>
 </head>
 <body><div class="page">
 <a class="back" href="../">← Todos os apps</a>
-<div class="hero"><img src="assets/icon.webp" alt="Ícone do Colorir e Desenhar"><div><h1>Colorir e Desenhar</h1><p class="tag">Pintar e brincar com a Maju e a Maitê · <span class="beta">beta</span></p></div></div>
-<div class="ok"><strong>🔒 Seguro para crianças:</strong> sem anúncios, sem login, sem coleta de dados e sem links externos.</div>
-<h2>Como funciona</h2>
-<p>Um app de desenhar e colorir feito para crianças pequenas: botões grandes só com figuras, nada para ler e sons leves. A criança escolhe uma página, toca em uma cor e pinta com o dedo. A tinta fica sempre dentro do espaço onde o toque começou, então ninguém "borra" para fora do desenho.</p>
-<ul>
-<li><strong>41 desenhos para colorir, em 6 ilhas:</strong> Bichinhos, Casinhas, Automóveis, Dinossauros, Plantas e Céu e Mar. Cada tema é uma ilha flutuante com os cartões dos desenhos em cima; um toque abre a ilha.</li>
-<li><strong>Versão grátis:</strong> 2 ilhas (Bichinhos e Casinhas) com 5 desenhos liberados em cada uma. <strong>Versão completa:</strong> pagamento único de R$ 29,90 na Google Play, que libera as 6 ilhas e todos os desenhos. Não é assinatura e <strong>não tem anúncios</strong>. A compra fica atrás de uma pergunta para adultos.</li>
-<li><strong>O desenho fica guardado</strong> sozinho no aparelho ao sair, e a prévia aparece na lista de desenhos.</li>
-<li><strong>Desenho livre</strong> em uma folha em branco.</li>
-<li><strong>Balde de tinta</strong> para pintar um espaço inteiro com um toque.</li>
-<li><strong>Pincéis:</strong> pincel, giz, marcador, arco-íris e carimbos de estrela e coração, em 3 tamanhos e 24 cores.</li>
-<li>Borracha, desfazer, refazer, zoom com dois dedos e modo tela cheia.</li>
-<li><strong>Salvar o desenho</strong> como imagem para a galeria do aparelho.</li>
-</ul>
+<div class="hero"><img src="assets/icon.webp" alt="Ícone do Colorir e Desenhar"><div><h1>Colorir e Desenhar</h1><p class="tag">Pintar e brincar com a Maju e a Maitê · <span class="beta">versão <span class="ver">0.9.1</span> (beta)</span></p></div></div>
+
+<div class="ok"><strong>🔒 Seguro para crianças:</strong> sem anúncios, sem login, sem coleta de dados e sem links externos. Tudo fica no aparelho.</div>
+<div class="soon"><strong>🧪 Em teste:</strong> o app já está na Google Play em <strong>teste interno</strong> (só para testadores convidados) e também pode ser experimentado agora, no navegador, pela versão beta.</div>
+
 <div class="btns">
 <a href="beta/">Testar a versão beta no navegador</a>
 <a class="sec" href="privacidade.html">Política de privacidade</a>
 </div>
-<p class="tag">No celular ou tablet, abra a versão beta e use "Adicionar à tela inicial" para instalar como app de tela cheia. Versão de teste: pode ter erros. Se achar algum, conta pra gente!</p>
+<p class="tag">No celular ou tablet, abra a versão beta e use "Adicionar à tela inicial" para instalar como app de tela cheia. No navegador a compra não funciona (ela acontece só no app da Google Play); para ver tudo liberado, abra <a href="beta/?premium=1">a beta com o desbloqueio de teste</a>.</p>
+
+<h2>Como ficou o app</h2>
+<div class="shots">
+<figure><img src="assets/prints/inicio.webp" alt="Tela inicial do Colorir e Desenhar" loading="lazy"><figcaption><b>Tela inicial</b>Dois botões grandes: Desenhar (folha em branco) e Colorir (páginas prontas).</figcaption></figure>
+<figure><img src="assets/prints/ilhas.webp" alt="Ilhas flutuantes com os cartões dos desenhos" loading="lazy"><figcaption><b>As ilhas</b>Cada tema é uma ilha flutuante com os cartões dos desenhos em cima. É só arrastar para o lado e tocar.</figcaption></figure>
+<figure><img src="assets/prints/desenhos.webp" alt="Lista de desenhos da ilha Bichinhos" loading="lazy"><figcaption><b>Desenhos da ilha</b>Cartões grandes e coloridos. Os desenhos que a criança já pintou aparecem pintados.</figcaption></figure>
+<figure><img src="assets/prints/pintura.webp" alt="Desenho do patinho sendo pintado" loading="lazy"><figcaption><b>Pintando</b>Barra de ferramentas e 24 cores. A tinta fica dentro do espaço onde o dedo começou, sem "borrar" para fora.</figcaption></figure>
+<figure><img src="assets/prints/desenho-livre.webp" alt="Desenho livre com pincel arco-íris e carimbos de estrela" loading="lazy"><figcaption><b>Desenho livre</b>Pincel, giz, marcador, arco-íris e carimbos de estrela e coração.</figcaption></figure>
+<figure><img src="assets/prints/area-dos-pais.webp" alt="Área dos pais com uma conta de somar" loading="lazy"><figcaption><b>Área dos pais</b>Ao tocar em algo com cadeado, aparece uma conta simples só para adultos.</figcaption></figure>
+<figure><img src="assets/prints/desbloquear.webp" alt="Tela de desbloqueio por R$ 29,90" loading="lazy"><figcaption><b>Desbloquear tudo</b>Pagamento único de R$ 29,90 pela Google Play, sem assinatura e sem anúncios.</figcaption></figure>
+</div>
+
+<h2>Como funciona</h2>
+<p>Um app de desenhar e colorir feito para crianças pequenas (3 a 6 anos): botões grandes só com figuras, nada para ler e sons leves. A criança escolhe uma ilha, toca num desenho, escolhe uma cor e pinta com o dedo. O app fica sempre deitado (nos dois lados), e o desenho preenche a tela de cima a baixo.</p>
+<ul class="ilhas">
+<li>🐮 <strong>Bichinhos</strong> — 11 desenhos</li>
+<li>🏠 <strong>Casinhas</strong> — 5 desenhos</li>
+<li>🚗 <strong>Automóveis</strong> — 5 desenhos</li>
+<li>🦖 <strong>Dinossauros</strong> — 6 desenhos</li>
+<li>🌻 <strong>Plantas</strong> — 7 desenhos</li>
+<li>🌈 <strong>Céu e Mar</strong> — 7 desenhos</li>
+</ul>
+
+<h2>Versão grátis e versão completa</h2>
+<table>
+<tr><th></th><th>Grátis</th><th>Completa (R$ 29,90)</th></tr>
+<tr><td>Ilhas</td><td>2 (Bichinhos e Casinhas)</td><td>As 6 ilhas</td></tr>
+<tr><td>Desenhos para colorir</td><td>5 em cada ilha liberada</td><td>Todos os 41</td></tr>
+<tr><td>Desenho livre, pincéis, balde, salvar</td><td>Sim</td><td>Sim</td></tr>
+<tr><td>Anúncios</td><td>Nenhum</td><td>Nenhum</td></tr>
+<tr><td>Cobrança</td><td>—</td><td>Pagamento único, sem assinatura</td></tr>
+</table>
+<p><small>O desbloqueio é feito pelos pais, na Google Play, atrás de uma pergunta de adulto. O app não cria conta e não guarda dados de pagamento.</small></p>
+
+<h2>O que o app tem</h2>
+<ul>
+<li><strong>Tinta presa ao espaço:</strong> a pintura não passa do contorno de onde o toque começou.</li>
+<li><strong>Balde de tinta</strong> para pintar um espaço inteiro com um toque.</li>
+<li><strong>Pincéis:</strong> pincel, giz, marcador, arco-íris e carimbos, em 3 tamanhos e 24 cores. A ferramenta escolhida aparece na ponta do dedo.</li>
+<li>Borracha, desfazer, refazer e zoom com dois dedos.</li>
+<li><strong>O desenho fica guardado</strong> sozinho no aparelho ao sair.</li>
+<li><strong>Salvar</strong> o desenho como imagem na galeria do aparelho.</li>
+</ul>
+
+<h2>Dados técnicos</h2>
+<ul>
+<li>Android 10 ou mais novo (celular e tablet), sempre na horizontal.</li>
+<li>Funciona sem internet. O app não pede nenhuma permissão além da cobrança da Google Play.</li>
+<li>Versão atual: <strong>0.9.1</strong> (beta). Na versão web, o selo de versão no canto da tela mostra a versão e permite atualizar.</li>
+</ul>
+
+<div class="btns">
+<a href="beta/">Testar a versão beta no navegador</a>
+<a class="sec" href="privacidade.html">Política de privacidade</a>
+</div>
+<p class="tag">Versão de teste: pode ter erros. Se achar algum, conta pra gente!</p>
 </div></body></html>

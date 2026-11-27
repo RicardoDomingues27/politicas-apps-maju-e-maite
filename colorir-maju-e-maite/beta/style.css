@@ -329,3 +329,8 @@ html, body {
   .buy { min-height: 56px; font-size: 19px; margin: 8px auto 2px; }
   .gate-x { top: 4px; right: 4px; }
 }
+
+/* a área da câmera (recorte da tela) é ocupada pelas barras de ferramentas: sem faixa vazia nas laterais */
+#editor { padding-left: 0; padding-right: 0; }
+[data-layout="b"] .bar { padding-left: env(safe-area-inset-left); }
+[data-layout="b"] .floater { width: calc(var(--btn) + 22px + env(safe-area-inset-right)); padding-right: calc(7px + env(safe-area-inset-right)); }

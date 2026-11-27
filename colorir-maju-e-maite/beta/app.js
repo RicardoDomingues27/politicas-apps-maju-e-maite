@@ -735,8 +735,11 @@
   /* ---------- área dos pais: conta e pagamento (versão paga) ---------- */
   var gate = $('gate'), gAns = '', gRes = 0;
   function newQuestion() {
-    var x = 6 + Math.floor(Math.random() * 4), y = 6 + Math.floor(Math.random() * 4);
-    gRes = x * y; gAns = ''; $('gateQ').textContent = x + ' × ' + y + ' = ?'; $('gateAns').innerHTML = '&nbsp;';
+    // conta de adulto, mas fácil: soma ou subtração simples (a criança pequena não resolve)
+    var y = 6 + Math.floor(Math.random() * 4), x, txt;
+    if (Math.random() < 0.5) { x = 11 + Math.floor(Math.random() * 15); gRes = x + y; txt = x + ' + ' + y; }
+    else { x = 21 + Math.floor(Math.random() * 15); gRes = x - y; txt = x + ' − ' + y; }
+    gAns = ''; $('gateQ').textContent = txt + ' = ?'; $('gateAns').innerHTML = '&nbsp;';
   }
   (function buildKeys() {
     var box = $('gateKeys');

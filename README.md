@@ -6,7 +6,7 @@ app. Publicado via GitHub Pages.
 A página inicial (`index.html`) é a vitrine da **Libranium Tech**: lista todos os
 apps, com o ícone, o estado e os links de cada um.
 
-Uma pasta por app:
+Uma pasta por app (o Colorir e Desenhar — Maju e Maitê fica em `colorir-maju-e-maite/`, com `index.html`, `privacidade.html`, `assets/` com os prints do app e `beta/` com a versão web de teste):
 
 ```
 jogo-da-velha/
