@@ -1,0 +1,510 @@
+/* Colorir e Desenhar v2 — sem rede, sem dados, sem links. */
+(function () {
+  'use strict';
+  var LAYOUT = document.body.getAttribute('data-layout') || 'a';
+  var W = 1200, H = 900;
+  var COLORS = ['#FF3B30', '#FF9500', '#FFD60A', '#7ED957', '#1E9E4A', '#20C9C9',
+                '#1E88FF', '#8E5CF0', '#FF6FB5', '#8B5A2B', '#222222', '#FFFFFF',
+                '#FFB3C7', '#FFC9A0', '#FFF08A', '#BDF5A0', '#9FE8E0', '#A5D3FF',
+                '#D5B8FF', '#C0392B', '#0B4F9C', '#E6A15B', '#F2D2B0', '#808080'];
+  var NOTES = [262, 294, 330, 392, 440, 523, 587, 659, 784, 880, 1047, 1175];
+  var SIZES = [14, 30, 56];
+  var UNDO_MAX = 8;
+  var STAMPS = { star: 1, heart: 1 };
+
+  function $(id) { return document.getElementById(id); }
+  var screens = { home: $('home'), gallery: $('gallery'), editor: $('editor') };
+  var current = 'home';
+  function show(name) {
+    current = name; for (var k in screens) screens[k].hidden = (k !== name);
+    if (name === 'editor') fit();
+  }
+
+  var paint = $('paint'), tmp = $('tmp'), lines = $('lines'), stage = $('stage'), area = $('area');
+  var pctx = paint.getContext('2d', { willReadFrequently: true });
+  var tctx = tmp.getContext('2d');
+  var lctx = lines.getContext('2d');
+  var scratch = document.createElement('canvas'), maskCv = document.createElement('canvas');
+  var sctx = scratch.getContext('2d'), mctx = maskCv.getContext('2d', { willReadFrequently: true });
+  var labels = null, maskImg = null, dc = null, clipOn = false;
+  function setDims(w, h) { W = w; H = h; [paint, tmp, lines, scratch, maskCv].forEach(function (c) { c.width = w; c.height = h; }); maskImg = null; labels = null; }
+  setDims(1200, 900);
+
+  var mode = 'draw', tool = 'pencil', lastTool = 'pencil', colorIdx = 0, sizeIdx = 1, muted = false;
+  var lineAlpha = null, curPage = null, pageId = 'livre';
+  var undoStack = [], redoStack = [], memory = {};
+
+  /* ---------- sons ---------- */
+  var actx = null;
+  function audio() {
+    if (muted) return null;
+    if (!actx) { var C = window.AudioContext || window.webkitAudioContext; if (C) actx = new C(); }
+    if (actx && actx.state === 'suspended') actx.resume();
+    return actx;
+  }
+  function tone(f, dur, type, vol, delay, to) {
+    var a = audio(); if (!a) return;
+    var t = a.currentTime + (delay || 0), o = a.createOscillator(), g = a.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+    if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur);
+    g.gain.setValueAtTime(vol || 0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + 0.02);
+  }
+  var snd = {
+    tap: function () { tone(660, 0.07, 'sine', 0.12); },
+    color: function (i) { tone(NOTES[i % 12], 0.18, 'triangle', 0.18); },
+    fill: function (i) { var n = NOTES[i % 12]; tone(n / 2, 0.12, 'sine', 0.2, 0, n); tone(n, 0.22, 'triangle', 0.15, 0.08); },
+    stamp: function () { tone(880, 0.06, 'triangle', 0.1); },
+    undo: function () { tone(500, 0.12, 'sine', 0.14, 0, 300); },
+    clear: function () { tone(700, 0.3, 'sawtooth', 0.05, 0, 120); },
+    save: function () { tone(523, 0.12, 'triangle', 0.18); tone(659, 0.12, 'triangle', 0.18, 0.1); tone(784, 0.25, 'triangle', 0.18, 0.2); }
+  };
+
+  /* ---------- ícones SVG de tela cheia ---------- */
+  var ICON_FULL = '<svg viewBox="0 0 24 24" fill="none" stroke="#1b3a63" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+  var ICON_EXIT = '<svg viewBox="0 0 24 24" fill="none" stroke="#1b3a63" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>';
+
+  /* ---------- paleta ---------- */
+  var swWrap = $('swatches');
+  COLORS.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.className = 'sw'; b.style.background = c; b.setAttribute('aria-label', 'Cor ' + (i + 1));
+    b.addEventListener('click', function () {
+      colorIdx = i; if (tool === 'eraser') tool = lastTool;
+      refreshUI(); snd.color(i);
+    });
+    swWrap.appendChild(b);
+  });
+  if (LAYOUT === 'a') $('strip').appendChild(swWrap);   // v2a: cores na mesma faixa rolante
+  var swatches = swWrap.children;
+  var toolBtns = Array.prototype.slice.call(document.querySelectorAll('[data-tool]'));
+  var sizeBtns = Array.prototype.slice.call(document.querySelectorAll('.size'));
+  toolBtns.forEach(function (b) { b.addEventListener('click', function () { snd.tap(); setTool(b.getAttribute('data-tool')); }); });
+  sizeBtns.forEach(function (b) { b.addEventListener('click', function () { sizeIdx = +b.getAttribute('data-s'); snd.tap(); refreshUI(); }); });
+
+  function setTool(t) { tool = t; if (t !== 'eraser') lastTool = t; refreshUI(); }
+  function refreshUI() {
+    for (var i = 0; i < swatches.length; i++) swatches[i].classList.toggle('on', i === colorIdx && tool !== 'eraser');
+    toolBtns.forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tool') === tool); });
+    sizeBtns.forEach(function (b) {
+      b.classList.toggle('on', +b.getAttribute('data-s') === sizeIdx);
+      b.firstElementChild.style.background = COLORS[colorIdx] === '#FFFFFF' ? '#bbb' : COLORS[colorIdx];
+    });
+    $('bBucket').hidden = (mode !== 'color');
+    $('bUndo').disabled = !undoStack.length; $('bRedo').disabled = !redoStack.length;
+    $('bZoom').hidden = zs <= 1.02;
+    $('bSound').textContent = muted ? '🔇' : '🔊';
+    var fs = fsOn(); $('bFull').innerHTML = $('hFull').innerHTML = fs ? ICON_EXIT : ICON_FULL;
+  }
+
+  /* ---------- tela cheia e barra de ferramentas ---------- */
+  var pseudoFull = false;
+  function fsOn() { return !!(document.fullscreenElement || document.webkitFullscreenElement) || pseudoFull; }
+  function setBar() {}   // as ferramentas ficam sempre visíveis (quem usa é a criança)
+  function toggleFull() {
+    var de = document.documentElement, rq = de.requestFullscreen || de.webkitRequestFullscreen;
+    if (fsOn()) {
+      var ex = document.exitFullscreen || document.webkitExitFullscreen;
+      if ((document.fullscreenElement || document.webkitFullscreenElement) && ex) { try { var r = ex.call(document); if (r && r.catch) r.catch(function () {}); } catch (e) {} }
+      pseudoFull = false; setBar(false);
+    } else {
+      if (rq) { try { var p = rq.call(de); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
+      pseudoFull = true; setBar(true);   // sem API de tela cheia (iPhone): só esconde as ferramentas
+    }
+    refreshUI(); setTimeout(fit, 120);
+  }
+  function onFsChange() {
+    if (!(document.fullscreenElement || document.webkitFullscreenElement) && pseudoFull && (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen)) {
+      pseudoFull = false; setBar(false);
+    }
+    refreshUI(); setTimeout(fit, 120);
+  }
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+  $('bFull').addEventListener('click', function () { snd.tap(); toggleFull(); });
+  $('hFull').addEventListener('click', function () { snd.tap(); toggleFull(); });
+
+  /* ---------- tamanho do desenho (ocupa o máximo da tela) ---------- */
+  var zs = 1, zx = 0, zy = 0;
+  function applyZoom() { stage.style.transform = 'translate(' + zx + 'px,' + zy + 'px) scale(' + zs + ')'; }
+  function resetZoom() { zs = 1; zx = zy = 0; applyZoom(); refreshUI(); }
+  function fit() {
+    var r = area.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    var pad = 8, k = Math.min((r.width - pad) / W, (r.height - pad) / H);
+    stage.style.width = Math.floor(W * k) + 'px'; stage.style.height = Math.floor(H * k) + 'px';
+    if (zs !== 1) resetZoom();
+  }
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(area);
+  var rzTimer = null;
+  function onResize() { fit(); clearTimeout(rzTimer); rzTimer = setTimeout(checkOrientation, 200); }
+  window.addEventListener('resize', onResize);
+  window.addEventListener('orientationchange', function () { setTimeout(onResize, 200); });
+
+  // o quadro de desenho tem o formato da área livre da tela (celular em pé, deitado, tablet)
+  function dimsFor() {
+    var aw = window.innerWidth - 8 - (LAYOUT === 'b' ? 172 : 0), ah = window.innerHeight - 8 - (LAYOUT === 'a' ? 78 : 0);
+    var r = aw / ah, w, h;
+    if (r >= 1) { h = 900; w = Math.max(1200, Math.min(2600, Math.round(900 * r))); }
+    else { w = 900; h = Math.max(1200, Math.min(2600, Math.round(900 / r))); }
+    return [w - (w % 2), h - (h % 2)];
+  }
+  // desenha uma imagem antiga no quadro novo mantendo a escala do desenho (a página fica alinhada)
+  function drawScaled(src, sw, sh) {
+    var k = Math.min(W / 400, H / 300) / Math.min(sw / 400, sh / 300), dw = sw * k, dh = sh * k;
+    pctx.drawImage(src, (W - dw) / 2, (H - dh) / 2, dw, dh);
+  }
+  function checkOrientation() {
+    if (current !== 'editor') return;
+    var d = dimsFor();
+    if ((d[0] > d[1]) === (W > H)) return;   // só refaz quando o aparelho gira
+    var tc = document.createElement('canvas'); tc.width = W; tc.height = H;
+    tc.getContext('2d').drawImage(paint, 0, 0);
+    var ow = W, oh = H;
+    setDims(d[0], d[1]); drawScaled(tc, ow, oh);
+    undoStack = []; redoStack = [];
+    setLines(curPage); fit(); refreshUI();
+  }
+
+  /* ---------- desfazer / refazer ---------- */
+  function snapshot() { undoStack.push(pctx.getImageData(0, 0, W, H)); if (undoStack.length > UNDO_MAX) undoStack.shift(); redoStack = []; refreshUI(); }
+  function undo() { var s = undoStack.pop(); if (!s) return; redoStack.push(pctx.getImageData(0, 0, W, H)); pctx.putImageData(s, 0, 0); snd.undo(); refreshUI(); }
+  function redo() { var s = redoStack.pop(); if (!s) return; undoStack.push(pctx.getImageData(0, 0, W, H)); pctx.putImageData(s, 0, 0); snd.undo(); refreshUI(); }
+
+  /* ---------- pincéis ---------- */
+  function pos(e) {
+    var r = paint.getBoundingClientRect();
+    return [(e.clientX - r.left) * W / r.width, (e.clientY - r.top) * H / r.height];
+  }
+  function flushClip(x0, y0, x1, y1) {
+    if (!clipOn) return;
+    var p = SIZES[sizeIdx] * 3 + 6;
+    var bx = Math.max(0, Math.floor(Math.min(x0, x1) - p)), by = Math.max(0, Math.floor(Math.min(y0, y1) - p));
+    var bw = Math.min(W, Math.ceil(Math.max(x0, x1) + p)) - bx, bh = Math.min(H, Math.ceil(Math.max(y0, y1) + p)) - by;
+    if (bw <= 0 || bh <= 0) return;
+    var c = tool === 'marker' ? tctx : sctx;
+    c.globalCompositeOperation = 'destination-in'; c.drawImage(maskCv, bx, by, bw, bh, bx, by, bw, bh);
+    c.globalCompositeOperation = 'source-over';
+    if (tool !== 'marker') { pctx.drawImage(scratch, bx, by, bw, bh, bx, by, bw, bh); sctx.clearRect(bx, by, bw, bh); }
+  }
+  function setup(c, comp) {
+    c.globalCompositeOperation = comp || 'source-over';
+    c.strokeStyle = c.fillStyle = COLORS[colorIdx]; c.lineCap = c.lineJoin = 'round';
+    c.lineWidth = SIZES[sizeIdx] * (tool === 'eraser' ? 1.6 : tool === 'marker' ? 1.5 : 1);
+  }
+  function star(c, x, y, r) {
+    c.beginPath();
+    for (var k = 0; k < 10; k++) {
+      var a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * 0.45 : r;
+      c[k ? 'lineTo' : 'moveTo'](x + rr * Math.cos(a), y + rr * Math.sin(a));
+    }
+    c.closePath(); c.fill();
+  }
+  function heart(c, x, y, r) {
+    c.beginPath(); c.moveTo(x, y + r * 0.9);
+    c.bezierCurveTo(x - r * 1.6, y - r * 0.1, x - r * 0.8, y - r * 1.1, x, y - r * 0.35);
+    c.bezierCurveTo(x + r * 0.8, y - r * 1.1, x + r * 1.6, y - r * 0.1, x, y + r * 0.9);
+    c.fill();
+  }
+  function stampAt(x, y) {
+    setup(dc); var r = SIZES[sizeIdx] * 1.6;
+    (tool === 'star' ? star : heart)(dc, x, y, r);
+  }
+  function chalkAt(x, y) {
+    setup(dc); var s = SIZES[sizeIdx] * 1.1;
+    for (var i = 0; i < 7; i++) {
+      var a = Math.random() * 6.283, d = Math.random() * s * 0.55;
+      dc.globalAlpha = 0.5 + Math.random() * 0.5;
+      dc.beginPath(); dc.arc(x + Math.cos(a) * d, y + Math.sin(a) * d, 1 + Math.random() * 2.4, 0, 6.283); dc.fill();
+    }
+    dc.globalAlpha = 1;
+  }
+
+  var drawing = false, lx = 0, ly = 0, mx = 0, my = 0, sx = 0, sy = 0, hue = 0;
+  function beginStroke(p) {
+    snapshot(); drawing = true;
+    lx = mx = sx = p[0]; ly = my = sy = p[1]; hue = Math.random() * 360;
+    // modo colorir: o pincel só pinta dentro do espaço onde o dedo encostou primeiro
+    clipOn = (mode === 'color' && !!labels && tool !== 'eraser');
+    if (clipOn) buildMask(regionAt(p[0], p[1]));
+    dc = (clipOn && tool !== 'marker') ? sctx : pctx;
+    switch (tool) {
+      case 'pencil': case 'eraser':
+        setup(dc, tool === 'eraser' ? 'destination-out' : null);
+        dc.beginPath(); dc.arc(lx, ly, dc.lineWidth / 2, 0, 6.283); dc.fill(); break;
+      case 'marker':
+        tctx.clearRect(0, 0, W, H); setup(tctx);
+        tctx.beginPath(); tctx.arc(lx, ly, tctx.lineWidth / 2, 0, 6.283); tctx.fill(); break;
+      case 'chalk': chalkAt(lx, ly); break;
+      case 'rainbow':
+        setup(dc); dc.fillStyle = 'hsl(' + hue + ',95%,55%)';
+        dc.beginPath(); dc.arc(lx, ly, dc.lineWidth / 2, 0, 6.283); dc.fill(); break;
+      default: stampAt(lx, ly); snd.stamp();
+    }
+    flushClip(lx, ly, lx, ly);
+  }
+  function strokeTo(x, y) {
+    var ox = lx, oy = ly;
+    switch (tool) {
+      case 'pencil': case 'eraser': case 'marker':
+        var c = tool === 'marker' ? tctx : dc;
+        setup(c, tool === 'eraser' ? 'destination-out' : null);
+        var cx = (lx + x) / 2, cy = (ly + y) / 2;
+        c.beginPath(); c.moveTo(mx, my); c.quadraticCurveTo(lx, ly, cx, cy); c.stroke();
+        mx = cx; my = cy; break;
+      case 'chalk':
+        var d = Math.hypot(x - lx, y - ly), step = Math.max(3, SIZES[sizeIdx] / 5), n = Math.max(1, Math.round(d / step));
+        for (var i = 1; i <= n; i++) chalkAt(lx + (x - lx) * i / n, ly + (y - ly) * i / n);
+        break;
+      case 'rainbow':
+        var dd = Math.hypot(x - lx, y - ly); hue = (hue + dd * 0.8) % 360;
+        setup(dc); dc.strokeStyle = 'hsl(' + hue + ',95%,55%)';
+        dc.beginPath(); dc.moveTo(lx, ly); dc.lineTo(x, y); dc.stroke(); break;
+      default:
+        if (Math.hypot(x - sx, y - sy) >= SIZES[sizeIdx] * 2.6) { stampAt(x, y); sx = x; sy = y; snd.stamp(); }
+    }
+    flushClip(ox, oy, x, y);
+    lx = x; ly = y;
+  }
+  function endStroke() {
+    if (!drawing) return; drawing = false;
+    if (tool === 'pencil' || tool === 'eraser' || tool === 'marker') {
+      var c = tool === 'marker' ? tctx : dc;
+      setup(c, tool === 'eraser' ? 'destination-out' : null);
+      c.beginPath(); c.moveTo(mx, my); c.lineTo(lx, ly); c.stroke();
+      flushClip(mx, my, lx, ly);
+    }
+    if (tool === 'marker') {
+      pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 0.55; pctx.drawImage(tmp, 0, 0); pctx.globalAlpha = 1;
+      tctx.clearRect(0, 0, W, H);
+    }
+    pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 1; sctx.globalAlpha = 1; clipOn = false;
+  }
+  function cancelStroke() {
+    if (!drawing) return; drawing = false; clipOn = false; tctx.clearRect(0, 0, W, H); sctx.clearRect(0, 0, W, H);
+    var s = undoStack.pop(); if (s) pctx.putImageData(s, 0, 0);
+    pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 1; refreshUI();
+  }
+
+  /* ---------- toques: desenhar com 1 dedo, zoom/mover com 2 dedos ---------- */
+  var ptrs = {}, pinch = null, blocked = false, tap = null;
+  function keys() { return Object.keys(ptrs); }
+  function startPinch() {
+    var k = keys(), a = ptrs[k[0]], b = ptrs[k[1]];
+    pinch = { d0: Math.hypot(a.x - b.x, a.y - b.y) || 1, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2, s0: zs, x0: zx, y0: zy };
+  }
+  function doPinch() {
+    var k = keys(), a = ptrs[k[0]], b = ptrs[k[1]]; if (!a || !b) return;
+    var d = Math.hypot(a.x - b.x, a.y - b.y), m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    var r = area.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    var ns = Math.max(1, Math.min(4, pinch.s0 * d / pinch.d0));
+    var qx = (pinch.mx - cx - pinch.x0) / pinch.s0, qy = (pinch.my - cy - pinch.y0) / pinch.s0;
+    zx = m.x - cx - ns * qx; zy = m.y - cy - ns * qy; zs = ns;
+    var lim_x = Math.max(0, (zs * stage.offsetWidth - r.width) / 2) + 40, lim_y = Math.max(0, (zs * stage.offsetHeight - r.height) / 2) + 40;
+    zx = Math.max(-lim_x, Math.min(lim_x, zx)); zy = Math.max(-lim_y, Math.min(lim_y, zy));
+    applyZoom();
+  }
+  stage.addEventListener('pointerdown', function (e) {
+    e.preventDefault();
+    ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
+    try { stage.setPointerCapture(e.pointerId); } catch (x) {}
+    if (keys().length >= 2) { cancelStroke(); tap = null; blocked = true; startPinch(); return; }
+    if (blocked) return;
+    var p = pos(e);
+    if (tool === 'bucket') { tap = { x: e.clientX, y: e.clientY, px: p[0], py: p[1] }; return; }
+    beginStroke(p);
+  });
+  stage.addEventListener('pointermove', function (e) {
+    var q = ptrs[e.pointerId]; if (!q) return;
+    q.x = e.clientX; q.y = e.clientY;
+    if (pinch) { doPinch(); return; }
+    if (!drawing || blocked) return;
+    e.preventDefault();
+    var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    if (!evs.length) evs = [e];
+    evs.forEach(function (ev) { var p = pos(ev); strokeTo(p[0], p[1]); });
+  });
+  function up(e) {
+    var q = ptrs[e.pointerId]; if (!q) return;
+    if (tap && !blocked && e.type === 'pointerup' && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 14) {
+      snapshot();
+      if (bucket(tap.px, tap.py, COLORS[colorIdx])) snd.fill(colorIdx); else { undoStack.pop(); refreshUI(); }
+    }
+    tap = null; delete ptrs[e.pointerId];
+    if (drawing) endStroke();
+    if (keys().length < 2 && pinch) { pinch = null; if (zs < 1.08) resetZoom(); else refreshUI(); }
+    if (!keys().length) blocked = false;
+  }
+  stage.addEventListener('pointerup', up);
+  stage.addEventListener('pointercancel', up);
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+  /* ---------- balde ---------- */
+  var THRESH = 25;
+  function hexToU32(h) { var n = parseInt(h.slice(1), 16); return ((255 << 24) | ((n & 255) << 16) | (((n >> 8) & 255) << 8) | (n >> 16)) >>> 0; }
+  function bucket(x, y, hex) {
+    if (!lineAlpha) return false;
+    x = Math.max(0, Math.min(W - 1, Math.round(x))); y = Math.max(0, Math.min(H - 1, Math.round(y)));
+    var la = lineAlpha, seed = y * W + x;
+    if (la[seed] > THRESH) {
+      seed = -1;
+      for (var rad = 1; rad <= 10 && seed < 0; rad++)
+        for (var dy = -rad; dy <= rad && seed < 0; dy++)
+          for (var dx = -rad; dx <= rad; dx++) {
+            var nx = x + dx, ny = y + dy;
+            if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+            if (la[ny * W + nx] <= THRESH) { seed = ny * W + nx; break; }
+          }
+      if (seed < 0) return false;
+    }
+    var img = pctx.getImageData(0, 0, W, H), buf = new Uint32Array(img.data.buffer), col = hexToU32(hex);
+    var vis = new Uint8Array(W * H), stack = [seed];
+    while (stack.length) {
+      var p = stack.pop();
+      if (vis[p] || la[p] > THRESH) continue;
+      var row = p - (p % W), px = p - row, l = px, r = px;
+      while (l > 0 && !vis[row + l - 1] && la[row + l - 1] <= THRESH) l--;
+      while (r < W - 1 && !vis[row + r + 1] && la[row + r + 1] <= THRESH) r++;
+      for (var i = l; i <= r; i++) { vis[row + i] = 1; buf[row + i] = col; }
+      for (var d = -1; d <= 1; d += 2) {
+        var nr = row + d * W; if (nr < 0 || nr >= W * H) continue;
+        var inSpan = false;
+        for (var j = l; j <= r; j++) {
+          var blk = vis[nr + j] || la[nr + j] > THRESH;
+          if (!blk && !inSpan) { stack.push(nr + j); inSpan = true; } else if (blk) inSpan = false;
+        }
+      }
+    }
+    pctx.putImageData(img, 0, 0);
+    return true;
+  }
+
+  /* ---------- espaços da página (para o pincel não vazar) ---------- */
+  function labelRegions(la) {
+    var lab = new Int32Array(W * H), id = 0, stack = [], N = W * H;
+    for (var s = 0; s < N; s++) {
+      if (lab[s] || la[s] > THRESH) continue;
+      id++; stack.length = 0; stack.push(s);
+      while (stack.length) {
+        var p = stack.pop();
+        if (lab[p] || la[p] > THRESH) continue;
+        var row = p - (p % W), px = p - row, l = px, r = px;
+        while (l > 0 && !lab[row + l - 1] && la[row + l - 1] <= THRESH) l--;
+        while (r < W - 1 && !lab[row + r + 1] && la[row + r + 1] <= THRESH) r++;
+        for (var i = l; i <= r; i++) lab[row + i] = id;
+        for (var d = -1; d <= 1; d += 2) {
+          var nr = row + d * W; if (nr < 0 || nr >= N) continue;
+          var inSpan = false;
+          for (var j = l; j <= r; j++) {
+            var blk = lab[nr + j] || la[nr + j] > THRESH;
+            if (!blk && !inSpan) { stack.push(nr + j); inSpan = true; } else if (blk) inSpan = false;
+          }
+        }
+      }
+    }
+    return lab;
+  }
+  function regionAt(x, y) {
+    x = Math.max(0, Math.min(W - 1, Math.round(x))); y = Math.max(0, Math.min(H - 1, Math.round(y)));
+    if (labels[y * W + x]) return labels[y * W + x];
+    for (var rad = 1; rad <= 14; rad++)
+      for (var dy = -rad; dy <= rad; dy++)
+        for (var dx = -rad; dx <= rad; dx++) {
+          var nx = x + dx, ny = y + dy;
+          if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+          if (labels[ny * W + nx]) return labels[ny * W + nx];
+        }
+    return 0;
+  }
+  function buildMask(id) {
+    if (!maskImg) maskImg = mctx.createImageData(W, H);
+    var d = maskImg.data, lab = labels; d.fill(0);
+    if (id) for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
+      var i = y * W + x, v = lab[i];
+      if (v === id) d[i * 4 + 3] = 255;
+      else if (v === 0 && ((x >= 3 && lab[i - 3] === id) || (x < W - 3 && lab[i + 3] === id) || (y >= 3 && lab[i - 3 * W] === id) || (y < H - 3 && lab[i + 3 * W] === id))) d[i * 4 + 3] = 255;
+    }
+    mctx.putImageData(maskImg, 0, 0);
+  }
+
+  /* ---------- páginas ---------- */
+  function svgUrl(svg) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }
+  function setLines(page, done) {
+    lctx.clearRect(0, 0, W, H); labels = null;
+    if (!page) { lineAlpha = null; done && done(); return; }
+    var img = new Image(), w = W, h = H;
+    img.onload = function () {
+      if (w !== W || h !== H) return;   // girou de novo enquanto carregava
+      var t = document.createElement('canvas'); t.width = W; t.height = H;
+      var c = t.getContext('2d', { willReadFrequently: true });
+      c.fillStyle = '#fff'; c.fillRect(0, 0, W, H);
+      var pk = Math.min(W / 400, H / 300), pw = 400 * pk, ph = 300 * pk; c.drawImage(img, (W - pw) / 2, (H - ph) / 2, pw, ph);
+      var src = c.getImageData(0, 0, W, H).data, out = lctx.createImageData(W, H), a = new Uint8Array(W * H);
+      for (var i = 0, n = W * H; i < n; i++) { var v = 255 - src[i * 4]; a[i] = v; out.data[i * 4 + 3] = v; }
+      lctx.putImageData(out, 0, 0); lineAlpha = a; labels = labelRegions(a); done && done();
+    };
+    img.src = svgUrl(page.svg);
+  }
+
+  function leaveEditor() { memory[pageId] = { w: W, h: H, d: pctx.getImageData(0, 0, W, H) }; }
+  function openEditor(m, page) {
+    mode = m; curPage = page; pageId = page ? page.id : 'livre'; undoStack = []; redoStack = [];
+    var d = dimsFor(); setDims(d[0], d[1]);
+    var mem = memory[pageId];
+    if (mem) {
+      var t = document.createElement('canvas'); t.width = mem.w; t.height = mem.h; t.getContext('2d').putImageData(mem.d, 0, 0);
+      drawScaled(t, mem.w, mem.h);
+    }
+    tool = lastTool = (m === 'color') ? 'bucket' : 'pencil';
+    if (m === 'draw' && tool === 'bucket') tool = 'pencil';
+    resetZoom(); setBar(pseudoFull); refreshUI(); show('editor');
+    setLines(page);
+  }
+
+  var grid = $('grid');
+  window.PAGES.forEach(function (p) {
+    var b = document.createElement('button'), im = new Image();
+    b.className = 'card'; b.setAttribute('aria-label', p.nome);
+    im.src = svgUrl(p.svg); im.alt = ''; b.appendChild(im);
+    b.addEventListener('click', function () { snd.tap(); openEditor('color', p); });
+    grid.appendChild(b);
+  });
+
+  /* ---------- botões ---------- */
+  $('goDraw').addEventListener('click', function () { snd.tap(); openEditor('draw', null); });
+  $('goColor').addEventListener('click', function () { snd.tap(); show('gallery'); });
+  $('galBack').addEventListener('click', function () { snd.tap(); show('home'); });
+  $('bBack').addEventListener('click', function () { snd.tap(); leaveEditor(); show(mode === 'color' ? 'gallery' : 'home'); });
+  $('bUndo').addEventListener('click', undo);
+  $('bRedo').addEventListener('click', redo);
+  $('bClear').addEventListener('click', function () { snapshot(); pctx.clearRect(0, 0, W, H); snd.clear(); });
+  $('bZoom').addEventListener('click', function () { snd.tap(); resetZoom(); });
+  $('bSound').addEventListener('click', function () { muted = !muted; refreshUI(); snd.tap(); });
+
+  /* ---------- salvar (no celular abre "Salvar imagem" para a galeria) ---------- */
+  function toast() { var t = $('toast'); t.hidden = true; void t.offsetWidth; t.hidden = false; setTimeout(function () { t.hidden = true; }, 1000); }
+  $('bSave').addEventListener('click', function () {
+    var c = document.createElement('canvas'); c.width = W; c.height = H;
+    var x = c.getContext('2d');
+    x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.drawImage(paint, 0, 0); x.drawImage(lines, 0, 0);
+    snd.save();
+    c.toBlob(function (blob) {
+      if (!blob) return;
+      var file = null;
+      try { file = new File([blob], 'meu-desenho.png', { type: 'image/png' }); } catch (e) {}
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file] }).then(toast, function () {}); return;
+      }
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'meu-desenho.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+      toast();
+    }, 'image/png');
+  });
+
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+  refreshUI();
+})();

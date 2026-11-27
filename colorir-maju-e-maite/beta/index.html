@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; form-action 'none'; base-uri 'none'">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1E88FF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Colorir e Desenhar</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-layout="b">
+
+<main id="home" class="screen">
+  <div class="deco" aria-hidden="true"><span>🐥</span><span>🐮</span><span>🐷</span><span>🌻</span><span>🐑</span></div>
+  <button class="btn fsb" id="hFull" aria-label="Tela cheia"></button>
+  <button class="big" id="goDraw" aria-label="Desenhar"><span class="ico">🖍️</span><span class="lbl">Desenhar</span></button>
+  <button class="big alt" id="goColor" aria-label="Colorir"><span class="ico">🎨</span><span class="lbl">Colorir</span></button>
+</main>
+
+<main id="gallery" class="screen" hidden>
+  <button class="btn back" id="galBack" aria-label="Voltar">⬅️</button>
+  <div id="grid" class="grid"></div>
+</main>
+
+<main id="editor" class="screen" hidden>
+  <div id="area" class="area">
+    <div id="stage" class="stage">
+      <canvas id="paint"></canvas>
+      <canvas id="tmp"></canvas>
+      <canvas id="lines"></canvas>
+    </div>
+  </div>
+  <nav id="bar" class="bar" aria-label="Ferramentas">
+    <div id="strip" class="strip">
+      <button class="btn" id="bBack" aria-label="Voltar">⬅️</button>
+      <button class="btn fsb" id="bFull" aria-label="Tela cheia"></button>
+      <i class="sep"></i>
+      <button class="btn" data-tool="pencil" aria-label="Pincel">🖌️</button>
+      <button class="btn" data-tool="chalk" aria-label="Giz">🖍️</button>
+      <button class="btn" data-tool="marker" aria-label="Marcador">🖊️</button>
+      <button class="btn" data-tool="rainbow" aria-label="Arco-íris">🌈</button>
+      <button class="btn" data-tool="star" aria-label="Carimbo de estrela">⭐</button>
+      <button class="btn" data-tool="heart" aria-label="Carimbo de coração">❤️</button>
+      <button class="btn" data-tool="bucket" id="bBucket" aria-label="Balde de tinta">🪣</button>
+      <button class="btn" data-tool="eraser" aria-label="Borracha">🧽</button>
+      <i class="sep"></i>
+      <button class="btn size" data-s="0" aria-label="Fino"><i class="dot d0"></i></button>
+      <button class="btn size" data-s="1" aria-label="Médio"><i class="dot d1"></i></button>
+      <button class="btn size" data-s="2" aria-label="Grosso"><i class="dot d2"></i></button>
+      <i class="sep"></i>
+      <button class="btn" id="bUndo" aria-label="Desfazer">↩️</button>
+      <button class="btn" id="bRedo" aria-label="Refazer">↪️</button>
+      <button class="btn" id="bClear" aria-label="Limpar tudo">🗑️</button>
+      <button class="btn" id="bZoom" aria-label="Tamanho normal" hidden>🔎</button>
+      <button class="btn" id="bSave" aria-label="Salvar imagem">💾</button>
+      <button class="btn" id="bSound" aria-label="Som">🔊</button>
+      <i class="sep" id="sepColors"></i>
+    </div>
+    <div id="swatches" class="colors"></div>
+  </nav>
+  <div id="toast" class="toast" hidden>✅</div>
+</main>
+
+<script src="pages.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
