@@ -123,7 +123,7 @@
     if (!(document.fullscreenElement || document.webkitFullscreenElement) && pseudoFull && (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen)) {
       pseudoFull = false; setBar(false);
     }
-    refreshUI(); setTimeout(fit, 120);
+    refreshUI(); setTimeout(function () { fit(); checkOrientation(); }, 250);
   }
   document.addEventListener('fullscreenchange', onFsChange);
   document.addEventListener('webkitfullscreenchange', onFsChange);
@@ -137,8 +137,8 @@
   function fit() {
     var r = area.getBoundingClientRect();
     if (!r.width || !r.height) return;
-    var pad = 8, k = Math.min((r.width - pad) / W, (r.height - pad) / H);
-    stage.style.width = Math.floor(W * k) + 'px'; stage.style.height = Math.floor(H * k) + 'px';
+    var bd = 14, k = Math.min((r.width - bd) / W, (r.height - bd) / H);   // a moldura (14px) conta fora do desenho: encosta no topo e no fundo
+    stage.style.width = Math.floor(W * k + bd) + 'px'; stage.style.height = Math.floor(H * k + bd) + 'px';
     if (zs !== 1) resetZoom();
   }
   if (window.ResizeObserver) new ResizeObserver(fit).observe(area);
@@ -149,7 +149,9 @@
 
   // o quadro de desenho tem o formato da área livre da tela (celular em pé, deitado, tablet)
   function dimsFor() {
-    var aw = window.innerWidth - 8 - (LAYOUT === 'b' ? 258 : 0), ah = window.innerHeight - 8 - (LAYOUT === 'a' ? 78 : 0);
+    var ar = area.getBoundingClientRect(), aw, ah;
+    if (ar.width > 50 && ar.height > 50) { aw = ar.width - 14; ah = ar.height - 14; }   // mede a área livre de verdade (já sem as barras e recortes da tela)
+    else { aw = window.innerWidth - 14 - (LAYOUT === 'b' ? 258 : 0); ah = window.innerHeight - 14 - (LAYOUT === 'a' ? 78 : 0); }
     var r = aw / ah, w, h;
     if (r >= 1) { h = 900; w = Math.max(900, Math.min(2600, Math.round(900 * r))); }
     else { w = 900; h = Math.max(900, Math.min(2600, Math.round(900 / r))); }
@@ -163,7 +165,7 @@
   function checkOrientation() {
     if (current !== 'editor') return;
     var d = dimsFor();
-    if ((d[0] > d[1]) === (W > H)) return;   // só refaz quando o aparelho gira
+    if (Math.abs(d[0] - W) / W < 0.03 && Math.abs(d[1] - H) / H < 0.03) return;   // refaz quando o formato da área muda (girar, tela cheia)
     var tc = document.createElement('canvas'); tc.width = W; tc.height = H;
     tc.getContext('2d').drawImage(paint, 0, 0);
     var ow = W, oh = H;
@@ -597,6 +599,7 @@
 
   function openEditor(m, page) {
     mode = m; curPage = page; pageId = page ? page.id : 'livre'; resetHistory(); workDirty = false;
+    show('editor');   // primeiro mostra a tela, para medir o espaço livre de verdade
     var d = dimsFor(); setDims(d[0], d[1]);
     var rec = saved[pageId], id0 = pageId;
     if (rec) {
@@ -605,7 +608,7 @@
       im.src = url;
     }
     tool = lastTool = 'pencil';   // sempre começa com o pincel na mão
-    resetZoom(); setBar(pseudoFull); refreshUI(); show('editor');
+    resetZoom(); setBar(pseudoFull); refreshUI(); fit();
     setLines(page);
   }
   var curWorld = null, galScroll = 0, islScroll = 0;
