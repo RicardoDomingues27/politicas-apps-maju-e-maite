@@ -310,10 +310,28 @@
     pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 1; sctx.globalAlpha = 1; clipOn = false;
   }
   function cancelStroke() {
-    if (!drawing) return; drawing = false; clipOn = false; dirty = null; if (raf) { cancelAnimationFrame(raf); raf = 0; } tctx.clearRect(0, 0, W, H); sctx.clearRect(0, 0, W, H);
+    if (!drawing) return; hideCursor(); drawing = false; clipOn = false; dirty = null; if (raf) { cancelAnimationFrame(raf); raf = 0; } tctx.clearRect(0, 0, W, H); sctx.clearRect(0, 0, W, H);
     var s = undoStack.pop(); if (s) { restoreSnap(s); freeSnap(s); }
     pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 1; refreshUI();
   }
+
+  /* ---------- ferramenta na ponta do dedo (mostra qual está em uso) ---------- */
+  var TOOL_EMOJI = { pencil: '🖌️', chalk: '🖍️', marker: '🖊️', rainbow: '🌈', star: '⭐', heart: '❤️', eraser: '🧽' };
+  var cur = document.createElement('div'); cur.id = 'cursor'; cur.hidden = true;
+  var curRing = document.createElement('i'), curTip = document.createElement('b');
+  curRing.className = 'ring'; curTip.className = 'tip'; cur.appendChild(curRing); cur.appendChild(curTip); document.body.appendChild(cur);
+  function showCursor(x, y) {
+    var r = paint.getBoundingClientRect(), mult = tool === 'eraser' ? 1.6 : tool === 'marker' ? 1.5 : tool === 'chalk' ? 1.1 : 1;
+    var d = Math.max(8, SIZES[sizeIdx] * mult * r.width / W), stamp = (tool === 'star' || tool === 'heart' || tool === 'rainbow');
+    curTip.textContent = TOOL_EMOJI[tool] || '';
+    curTip.className = 'tip' + (tool === 'eraser' || stamp ? ' mid' : '');
+    curRing.style.display = (tool === 'star' || tool === 'heart') ? 'none' : 'block';
+    curRing.style.width = curRing.style.height = d + 'px';
+    curRing.style.background = tool === 'eraser' ? 'rgba(255,255,255,.35)' : (tool === 'rainbow' ? 'rgba(255,255,255,.2)' : COLORS[colorIdx] + 'aa');
+    cur.hidden = false; moveCursor(x, y);
+  }
+  function moveCursor(x, y) { cur.style.transform = 'translate(' + x + 'px,' + y + 'px)'; }
+  function hideCursor() { cur.hidden = true; }
 
   /* ---------- toques: desenhar com 1 dedo, zoom/mover com 2 dedos ---------- */
   var ptrs = {}, pinch = null, blocked = false, tap = null;
@@ -341,7 +359,7 @@
     if (blocked) return;
     var p = pos(e);
     if (tool === 'bucket') { tap = { x: e.clientX, y: e.clientY, px: p[0], py: p[1] }; return; }
-    beginStroke(p);
+    beginStroke(p); showCursor(e.clientX, e.clientY);
   });
   stage.addEventListener('pointermove', function (e) {
     var q = ptrs[e.pointerId]; if (!q) return;
@@ -352,9 +370,11 @@
     var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
     if (!evs.length) evs = [e];
     evs.forEach(function (ev) { var p = pos(ev); strokeTo(p[0], p[1]); });
+    moveCursor(e.clientX, e.clientY);
   });
   function up(e) {
     var q = ptrs[e.pointerId]; if (!q) return;
+    hideCursor();
     if (tap && !blocked && e.type === 'pointerup' && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 14) {
       snapshot();
       if (bucket(tap.px, tap.py, COLORS[colorIdx])) { snd.fill(colorIdx); sparkle(tap.x, tap.y); } else { freeSnap(undoStack.pop()); refreshUI(); }

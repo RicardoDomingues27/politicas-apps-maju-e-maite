@@ -203,3 +203,9 @@ html, body {
 .card img { object-fit: cover; }
 #goDraw { position: relative; }
 .big .thumb { position: absolute; right: -8px; bottom: -8px; width: 38%; border: 4px solid #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,.3); transform: rotate(6deg); background: #fff; }
+
+/* ferramenta seguindo o dedo */
+#cursor { position: fixed; left: 0; top: 0; z-index: 25; pointer-events: none; will-change: transform; }
+#cursor .ring { position: absolute; left: 0; top: 0; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px rgba(0,0,0,.55); transform: translate(-50%, -50%); }
+#cursor .tip { position: absolute; left: 0; top: 0; font-size: 52px; line-height: 1; transform: translate(-6%, -94%); filter: drop-shadow(0 3px 3px rgba(0,0,0,.35)); }
+#cursor .tip.mid { transform: translate(-50%, -50%); }
