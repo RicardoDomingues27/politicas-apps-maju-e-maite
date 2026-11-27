@@ -13,7 +13,7 @@
   var STAMPS = { star: 1, heart: 1 };
 
   function $(id) { return document.getElementById(id); }
-  var screens = { home: $('home'), worlds: $('worlds'), gallery: $('gallery'), editor: $('editor') };
+  var screens = { home: $('home'), worlds: $('worlds'), editor: $('editor') };
   var current = 'home';
   function show(name) {
     current = name; for (var k in screens) screens[k].hidden = (k !== name);
@@ -572,39 +572,36 @@
     resetZoom(); setBar(pseudoFull); refreshUI(); show('editor');
     setLines(page);
   }
-  function leaveEditor() { saveWork(); show(mode === 'color' ? 'gallery' : 'home'); }
-
-  /* ---------- ilhas (mundos) e galerias ---------- */
-  var grid = $('grid'), pageById = {}, curWorld = null;
-  window.PAGES.forEach(function (p) { pageById[p.id] = p; });
-  function openWorld(w) {
-    curWorld = w; grid.innerHTML = ''; cardImgs = {};
-    $('galTitle').textContent = w.emoji[0] + ' ' + w.nome;
-    w.paginas.forEach(function (id) {
-      var p = pageById[id]; if (!p) return;
-      var b = document.createElement('button'), im = new Image();
-      b.className = 'card'; b.setAttribute('aria-label', p.nome);
-      im.alt = ''; b.appendChild(im); cardImgs[id] = im;
-      b.addEventListener('click', function () { snd.tap(); openEditor('color', p); });
-      grid.appendChild(b);
-    });
-    refreshThumbs(); grid.scrollTop = 0; show('gallery');
+  var foldersScroll = 0;
+  function leaveEditor() {
+    saveWork(); show(mode === 'color' ? 'worlds' : 'home');
+    if (mode === 'color') $('folders').scrollTop = foldersScroll;
   }
-  (function buildIslands() {
-    var box = $('islands');
-    (window.WORLDS || []).forEach(function (w, i) {
-      var b = document.createElement('button');
-      b.className = 'island'; b.setAttribute('aria-label', w.nome);
-      b.style.setProperty('--t', w.cima); b.style.setProperty('--t2', w.baixo); b.style.setProperty('--s', w.terra); b.style.setProperty('--d', (-i * 0.8) + 's');
-      var soil = document.createElement('span'); soil.className = 'isl-soil';
-      var land = document.createElement('span'); land.className = 'isl-land';
-      var emo = document.createElement('span'); emo.className = 'isl-emo';
-      w.emoji.forEach(function (e) { var n = document.createElement('i'); n.textContent = e; emo.appendChild(n); });
-      var nm = document.createElement('span'); nm.className = 'isl-name'; nm.textContent = w.nome;
-      [soil, land, emo, nm].forEach(function (n) { b.appendChild(n); });
-      b.addEventListener('click', function () { snd.tap(); openWorld(w); });
-      box.appendChild(b);
+
+  /* ---------- pastas por tema, com todos os desenhos à vista ---------- */
+  var pageById = {};
+  window.PAGES.forEach(function (p) { pageById[p.id] = p; });
+  (function buildFolders() {
+    var box = $('folders');
+    (window.WORLDS || []).forEach(function (w) {
+      var sec = document.createElement('section');
+      sec.className = 'folder'; sec.style.setProperty('--c', w.pasta || '#4cc15f');
+      var tab = document.createElement('div'); tab.className = 'tab';
+      var emo = document.createElement('span'); emo.className = 'emo'; emo.textContent = w.emoji[0];
+      var nm = document.createElement('span'); nm.textContent = w.nome;
+      tab.appendChild(emo); tab.appendChild(nm);
+      var cards = document.createElement('div'); cards.className = 'cards';
+      w.paginas.forEach(function (id) {
+        var p = pageById[id]; if (!p) return;
+        var b = document.createElement('button'), im = new Image();
+        b.className = 'card'; b.setAttribute('aria-label', p.nome);
+        im.alt = ''; b.appendChild(im); cardImgs[id] = im;
+        b.addEventListener('click', function () { snd.tap(); foldersScroll = $('folders').scrollTop; openEditor('color', p); });
+        cards.appendChild(b);
+      });
+      sec.appendChild(tab); sec.appendChild(cards); box.appendChild(sec);
     });
+    refreshThumbs();
   })();
   dbOpen(function () { dbLoadAll(refreshThumbs); });
 
@@ -612,7 +609,6 @@
   $('goDraw').addEventListener('click', function () { snd.tap(); openEditor('draw', null); });
   $('goColor').addEventListener('click', function () { snd.tap(); show('worlds'); });
   $('worldsBack').addEventListener('click', function () { snd.tap(); show('home'); });
-  $('galBack').addEventListener('click', function () { snd.tap(); show('worlds'); });
   $('bBack').addEventListener('click', function () { snd.tap(); leaveEditor(); });
   $('bUndo').addEventListener('click', undo);
   $('bRedo').addEventListener('click', redo);

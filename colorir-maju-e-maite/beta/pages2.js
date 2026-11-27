@@ -268,17 +268,17 @@
 
   /* ======== AS ILHAS ======== */
   window.WORLDS = [
-    { id: 'bichos', nome: 'Bichinhos', emoji: ['🐮', '🐷', '🐥', '🐑'], cima: '#8fe36a', baixo: '#4cc15f', terra: '#a2703d',
+    { id: 'bichos', pasta: '#4cc15f', nome: 'Bichinhos', emoji: ['🐮', '🐷', '🐥', '🐑'], cima: '#8fe36a', baixo: '#4cc15f', terra: '#a2703d',
       paginas: ['patinho', 'pintinho', 'vaca', 'porquinho', 'ovelha', 'gato', 'coelho', 'cachorro', 'leao', 'elefante', 'borboleta'] },
-    { id: 'casas', nome: 'Casinhas', emoji: ['🏠', '🏰', '🏢', '🌳'], cima: '#b6e86a', baixo: '#7fcb4a', terra: '#b5804a',
+    { id: 'casas', pasta: '#8bd04a', nome: 'Casinhas', emoji: ['🏠', '🏰', '🏢', '🌳'], cima: '#b6e86a', baixo: '#7fcb4a', terra: '#b5804a',
       paginas: ['casa', 'predio', 'castelo', 'celeiro', 'barraca'] },
-    { id: 'autos', nome: 'Automóveis', emoji: ['🚗', '🚌', '🚚', '✈️'], cima: '#9aa7b8', baixo: '#6e7c91', terra: '#4a5568',
+    { id: 'autos', pasta: '#6e8fb8', nome: 'Automóveis', emoji: ['🚗', '🚌', '🚚', '✈️'], cima: '#9aa7b8', baixo: '#6e7c91', terra: '#4a5568',
       paginas: ['carro', 'onibus', 'caminhao', 'trem', 'aviao'] },
-    { id: 'dinos', nome: 'Dinossauros', emoji: ['🦖', '🦕', '🥚', '🌋'], cima: '#ffcf70', baixo: '#f0a040', terra: '#9c5a2b',
+    { id: 'dinos', pasta: '#f0a040', nome: 'Dinossauros', emoji: ['🦖', '🦕', '🥚', '🌋'], cima: '#ffcf70', baixo: '#f0a040', terra: '#9c5a2b',
       paginas: ['trex', 'tricera', 'bronto', 'estego', 'ptero', 'ovodino'] },
-    { id: 'plantas', nome: 'Plantas', emoji: ['🌻', '🌵', '🍄', '🌴'], cima: '#5fd08a', baixo: '#2fa866', terra: '#7a4f2a',
+    { id: 'plantas', pasta: '#2fa866', nome: 'Plantas', emoji: ['🌻', '🌵', '🍄', '🌴'], cima: '#5fd08a', baixo: '#2fa866', terra: '#7a4f2a',
       paginas: ['flor', 'arvore', 'girassol', 'cacto', 'cogumelo', 'palmeira', 'pinheiro'] },
-    { id: 'ceu', nome: 'Céu e Mar', emoji: ['🌈', '🐳', '🚀', '⭐'], cima: '#ffffff', baixo: '#cfeaff', terra: '#8fc8f5',
+    { id: 'ceu', pasta: '#5fb4f0', nome: 'Céu e Mar', emoji: ['🌈', '🐳', '🚀', '⭐'], cima: '#ffffff', baixo: '#cfeaff', terra: '#8fc8f5',
       paginas: ['arcoiris', 'estrela', 'balao', 'barco', 'peixe', 'baleia', 'foguete'] }
   ];
 })();
