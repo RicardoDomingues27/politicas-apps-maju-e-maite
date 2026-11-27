@@ -95,6 +95,7 @@
       b.classList.toggle('on', +b.getAttribute('data-s') === sizeIdx);
       b.firstElementChild.style.background = COLORS[colorIdx] === '#FFFFFF' ? '#bbb' : COLORS[colorIdx];
     });
+    var chalkBtn = document.querySelector('[data-tool="chalk"]'); if (chalkBtn) chalkBtn.innerHTML = crayonIconSVG(COLORS[colorIdx]);
     $('bBucket').hidden = (mode !== 'color');
     $('bUndo').disabled = !undoStack.length; $('bRedo').disabled = !redoStack.length;
     $('bZoom').hidden = zs <= 1.02;
@@ -334,6 +335,21 @@
   }
 
   /* ---------- ferramenta na ponta do dedo (mostra qual está em uso) ---------- */
+  // giz desenhado na cor escolhida (o emoji é sempre vermelho)
+  function crayonParts(c) {
+    return '<path d="M-30 -205 L-11 -262 Q0 -274 11 -262 L30 -205 Z" fill="' + c + '"/>' +
+      '<path d="M-30 -205 L30 -205 L30 -14 Q30 0 16 0 L-16 0 Q-30 0 -30 -14 Z" fill="' + c + '"/>' +
+      '<rect x="-30" y="-165" width="60" height="100" fill="#fff" stroke-width="7"/>' +
+      '<path d="M-30 -150 L30 -150 M-30 -80 L30 -80" stroke="' + c + '" stroke-width="11" fill="none"/>' +
+      '<rect x="-20" y="-200" width="8" height="180" rx="4" fill="#fff" opacity=".4" stroke="none"/>';
+  }
+  var CR_ST = ' stroke="#1b3a63" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"';
+  function crayonCursorSVG(c) {   // ponta embaixo à esquerda, corpo para cima e para a direita
+    return '<svg viewBox="-20 -240 260 260" style="display:block;width:108px;height:108px"><g transform="rotate(225) translate(0,262)"' + CR_ST + '>' + crayonParts(c) + '</g></svg>';
+  }
+  function crayonIconSVG(c) {     // para o botão da barra (em pé)
+    return '<svg viewBox="-42 -282 84 296" style="display:block;width:30px;height:52px"><g' + CR_ST + '>' + crayonParts(c) + '</g></svg>';
+  }
   var TOOL_EMOJI = { pencil: '🖌️', chalk: '🖍️', marker: '🖊️', rainbow: '🌈', star: '⭐', heart: '❤️', eraser: '🧽' };
   var cur = document.createElement('div'); cur.id = 'cursor'; cur.hidden = true;
   var curRing = document.createElement('i'), curTip = document.createElement('b');
@@ -341,7 +357,7 @@
   function showCursor(x, y) {
     var r = paint.getBoundingClientRect(), mult = tool === 'eraser' ? 1.6 : tool === 'marker' ? 1.5 : tool === 'chalk' ? 1.1 : 1;
     var d = Math.max(8, SIZES[sizeIdx] * mult * r.width / W), stamp = (tool === 'star' || tool === 'heart' || tool === 'rainbow');
-    curTip.textContent = TOOL_EMOJI[tool] || '';
+    if (tool === 'chalk') curTip.innerHTML = crayonCursorSVG(COLORS[colorIdx]); else curTip.textContent = TOOL_EMOJI[tool] || '';
     curTip.style.fontSize = (tool === 'pencil' || tool === 'chalk' || tool === 'marker' ? 92 : 64) + 'px';
     curTip.className = 'tip' + (tool === 'eraser' || stamp ? ' mid' : '');
     curRing.style.display = (tool === 'star' || tool === 'heart') ? 'none' : 'block';
