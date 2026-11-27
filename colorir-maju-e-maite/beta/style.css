@@ -253,3 +253,21 @@ html, body {
 #gallery .back { position: absolute; z-index: 8; top: max(10px, env(safe-area-inset-top)); left: max(10px, env(safe-area-inset-left)); box-shadow: 0 4px 0 rgba(0,0,0,.25), 0 0 0 3px rgba(255,255,255,.7); }
 .gal-title { position: absolute; z-index: 8; top: max(10px, env(safe-area-inset-top)); left: calc(max(10px, env(safe-area-inset-left)) + 80px); height: 64px; padding: 0 24px; display: flex; align-items: center; border-radius: 32px; background: var(--c, #4cc15f); border: 4px solid #fff; color: #fff; font-weight: 900; font-size: clamp(20px, 4.4vmin, 32px); text-shadow: 0 2px 0 rgba(0,0,0,.3); box-shadow: 0 4px 0 rgba(0,0,0,.22); }
 .isl .isl-name { bottom: auto; width: 56%; left: 22%; right: auto; top: 73%; text-align: center; line-height: 1.25; }
+
+/* ===== arte gerada (ilhas e cartões) ===== */
+.isl { background: var(--img) center bottom / contain no-repeat; }
+.isl::before { padding-bottom: 87%; }
+.isl-name { top: 71%; }
+.mini { width: 27%; height: 24%; background: url(img/cartao-simples.webp) center / 100% 100% no-repeat; border: 0; border-radius: 0; box-shadow: none; overflow: visible; filter: drop-shadow(0 5px 2px rgba(0,0,0,.28)); }
+.mini img { position: absolute; left: 4%; top: 4%; width: 92%; height: 90%; border-radius: 8px; object-fit: cover; }
+.card, .folder .card { position: relative; width: 100%; height: 0; margin: 0; padding: 0 0 79% 0; border: 0; border-radius: 0; box-shadow: none; overflow: visible; background: var(--cb, url(img/cartao-simples.webp)) center / 100% 100% no-repeat; filter: drop-shadow(0 6px 3px rgba(0,0,0,.25)); box-sizing: content-box; }
+.card img { position: absolute; left: 9%; top: 9%; width: 82%; height: 80%; border-radius: 10px; object-fit: cover; }
+.card.k0 { --cb: url(img/cartao-verde.webp); } .card.k1 { --cb: url(img/cartao-azul.webp); } .card.k2 { --cb: url(img/cartao-laranja.webp); }
+.card.k3 { --cb: url(img/cartao-amarelo.webp); } .card.k4 { --cb: url(img/cartao-vermelho.webp); } .card.k5 { --cb: url(img/cartao-turquesa.webp); }
+.card:active { transform: scale(.95); }
+#gallery .grid { gap: 18px 16px; }
+
+.isl { width: min(54vw, 100vh); }
+.mini { width: 26%; height: 23%; }
+.isl .isl-name { top: 76%; width: 52%; left: 24%; }
+#gallery .grid { grid-template-columns: repeat(auto-fill, minmax(clamp(210px, 27vw, 320px), 1fr)); }

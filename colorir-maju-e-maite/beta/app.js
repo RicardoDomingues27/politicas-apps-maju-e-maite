@@ -582,7 +582,7 @@
   /* ---------- ilhas (temas) com cartões espalhados; um toque abre a ilha ---------- */
   var pageById = {};
   window.PAGES.forEach(function (p) { pageById[p.id] = p; });
-  var LAYOUT7 = [[5, 3, -11], [34, 0, -3], [62, 4, 9], [12, 30, -7], [40, 27, 4], [66, 31, -9], [31, 54, 6]];
+  var LAYOUT7 = [[8, 23, -8], [37, 20, -2], [66, 24, 8], [16, 42, -5], [44, 41, 4], [70, 43, -8]];
   function openWorld(w) {
     curWorld = w; var grid = $('grid'); grid.innerHTML = '';
     (cardImgs.__g || []).forEach(function () {}); 
@@ -591,7 +591,7 @@
     w.paginas.forEach(function (id) {
       var p = pageById[id]; if (!p) return;
       var b = document.createElement('button'), im = new Image();
-      b.className = 'card'; b.setAttribute('aria-label', p.nome); im.alt = ''; im.__g = true;
+      b.className = 'card k' + (grid.children.length % 6); b.setAttribute('aria-label', p.nome); im.alt = ''; im.__g = true;
       b.appendChild(im); regImg(id, im);
       b.addEventListener('click', function () { snd.tap(); galScroll = grid.scrollTop; openEditor('color', p); });
       grid.appendChild(b);
@@ -603,10 +603,8 @@
     (window.WORLDS || []).forEach(function (w, i) {
       var b = document.createElement('button');
       b.className = 'isl'; b.setAttribute('aria-label', w.nome);
-      b.style.setProperty('--t', w.cima); b.style.setProperty('--t2', w.baixo); b.style.setProperty('--d', (-i * 1.1) + 's'); b.style.setProperty('--c', w.pasta || '#4cc15f');
-      ['isl-rock', 'isl-grass'].forEach(function (c) { var s = document.createElement('span'); s.className = c; b.appendChild(s); });
-      [[w.emoji[3] || '🌳', 'l'], [w.emoji[2] || '🌳', 'r']].forEach(function (d) { var s = document.createElement('span'); s.className = 'isl-deco ' + d[1]; s.textContent = d[0]; b.appendChild(s); });
-      w.paginas.slice(0, 7).forEach(function (id, k) {
+      b.style.setProperty('--img', 'url(img/ilha-' + (i + 1) + '.webp)'); b.style.setProperty('--d', (-i * 1.1) + 's'); b.style.setProperty('--c', w.pasta || '#4cc15f');
+      w.paginas.slice(0, 6).forEach(function (id, k) {
         var p = pageById[id]; if (!p) return;
         var L = LAYOUT7[k], m = document.createElement('span'), im = new Image();
         m.className = 'mini'; m.style.left = L[0] + '%'; m.style.top = L[1] + '%'; m.style.setProperty('--r', L[2] + 'deg'); m.style.zIndex = 3 + k;
