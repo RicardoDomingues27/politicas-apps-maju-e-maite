@@ -29,13 +29,21 @@
   <button class="btn fsb" id="hFull" aria-label="Tela cheia"></button>
   <h1 id="logo" class="logo" aria-label="Colorir e Desenhar"></h1>
   <div class="choices">
-    <button class="big" id="goDraw" aria-label="Desenhar"><span class="ico">🖍️</span><span class="lbl">Desenhar</span></button>
+    <button class="big" id="goDraw" aria-label="Desenhar"><span class="ico">🖍️</span><span class="lbl">Desenhar</span><img id="drawThumb" class="thumb" alt="" hidden></button>
     <button class="big alt" id="goColor" aria-label="Colorir"><span class="ico">🎨</span><span class="lbl">Colorir</span></button>
   </div>
 </main>
 
+<main id="worlds" class="screen" hidden>
+  <button class="btn back" id="worldsBack" aria-label="Voltar">⬅️</button>
+  <div id="islands" class="islands"></div>
+</main>
+
 <main id="gallery" class="screen" hidden>
-  <button class="btn back" id="galBack" aria-label="Voltar">⬅️</button>
+  <div class="gal-head">
+    <button class="btn back" id="galBack" aria-label="Voltar">⬅️</button>
+    <div id="galTitle" class="gal-title"></div>
+  </div>
   <div id="grid" class="grid"></div>
 </main>
 
@@ -47,9 +55,14 @@
       <canvas id="lines"></canvas>
     </div>
   </div>
+  <div class="floater" aria-label="Ações principais">
+    <button class="btn" data-tool="eraser" aria-label="Borracha">🧽</button>
+    <button class="btn" id="bUndo" aria-label="Voltar um passo (desfazer)">↩️</button>
+    <button class="btn" id="bSave" aria-label="Salvar imagem">💾</button>
+    <button class="btn exit" id="bBack" aria-label="Sair e guardar o desenho">🚪</button>
+  </div>
   <nav id="bar" class="bar" aria-label="Ferramentas">
     <div id="strip" class="strip">
-      <button class="btn" id="bBack" aria-label="Voltar">⬅️</button>
       <button class="btn fsb" id="bFull" aria-label="Tela cheia"></button>
       <i class="sep"></i>
       <button class="btn" data-tool="pencil" aria-label="Pincel">🖌️</button>
@@ -59,17 +72,14 @@
       <button class="btn" data-tool="star" aria-label="Carimbo de estrela">⭐</button>
       <button class="btn" data-tool="heart" aria-label="Carimbo de coração">❤️</button>
       <button class="btn" data-tool="bucket" id="bBucket" aria-label="Balde de tinta">🪣</button>
-      <button class="btn" data-tool="eraser" aria-label="Borracha">🧽</button>
       <i class="sep"></i>
       <button class="btn size" data-s="0" aria-label="Fino"><i class="dot d0"></i></button>
       <button class="btn size" data-s="1" aria-label="Médio"><i class="dot d1"></i></button>
       <button class="btn size" data-s="2" aria-label="Grosso"><i class="dot d2"></i></button>
       <i class="sep"></i>
-      <button class="btn" id="bUndo" aria-label="Desfazer">↩️</button>
       <button class="btn" id="bRedo" aria-label="Refazer">↪️</button>
       <button class="btn" id="bClear" aria-label="Limpar tudo">🗑️</button>
       <button class="btn" id="bZoom" aria-label="Tamanho normal" hidden>🔎</button>
-      <button class="btn" id="bSave" aria-label="Salvar imagem">💾</button>
       <button class="btn" id="bSound" aria-label="Som">🔊</button>
       <i class="sep" id="sepColors"></i>
     </div>
@@ -82,6 +92,7 @@
 
 <script src="version.js"></script>
 <script src="pages.js"></script>
+<script src="pages2.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

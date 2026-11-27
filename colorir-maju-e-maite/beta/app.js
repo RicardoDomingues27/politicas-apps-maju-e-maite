@@ -9,11 +9,11 @@
                 '#D5B8FF', '#C0392B', '#0B4F9C', '#E6A15B', '#F2D2B0', '#808080'];
   var NOTES = [262, 294, 330, 392, 440, 523, 587, 659, 784, 880, 1047, 1175];
   var SIZES = [14, 30, 56];
-  var UNDO_MAX = 8;
+  var UNDO_MAX = 6;
   var STAMPS = { star: 1, heart: 1 };
 
   function $(id) { return document.getElementById(id); }
-  var screens = { home: $('home'), gallery: $('gallery'), editor: $('editor') };
+  var screens = { home: $('home'), worlds: $('worlds'), gallery: $('gallery'), editor: $('editor') };
   var current = 'home';
   function show(name) {
     current = name; for (var k in screens) screens[k].hidden = (k !== name);
@@ -21,18 +21,23 @@
   }
 
   var paint = $('paint'), tmp = $('tmp'), lines = $('lines'), stage = $('stage'), area = $('area');
-  var pctx = paint.getContext('2d', { willReadFrequently: true });
+  var pctx = paint.getContext('2d');   // sem willReadFrequently: fica na placa de vídeo (rápido no iPad)
   var tctx = tmp.getContext('2d');
   var lctx = lines.getContext('2d');
   var scratch = document.createElement('canvas'), maskCv = document.createElement('canvas');
-  var sctx = scratch.getContext('2d'), mctx = maskCv.getContext('2d', { willReadFrequently: true });
-  var labels = null, maskImg = null, dc = null, clipOn = false;
-  function setDims(w, h) { W = w; H = h; [paint, tmp, lines, scratch, maskCv].forEach(function (c) { c.width = w; c.height = h; }); maskImg = null; labels = null; }
+  var sctx = scratch.getContext('2d'), mctx = maskCv.getContext('2d');
+  var labels = null, regBox = [], maskImg = null, maskId = -1, dc = null, clipOn = false, pool = [];
+  function setDims(w, h) {
+    labels = null; maskId = -1;
+    if (w === W && h === H && paint.width === w) { [paint, tmp, lines, scratch, maskCv].forEach(function (c) { c.getContext('2d').clearRect(0, 0, w, h); }); return; }
+    W = w; H = h; pool = []; maskImg = null;
+    [paint, tmp, lines, scratch, maskCv].forEach(function (c) { c.width = w; c.height = h; });
+  }
   setDims(1200, 900);
 
   var mode = 'draw', tool = 'pencil', lastTool = 'pencil', colorIdx = 0, sizeIdx = 1, muted = false;
   var lineAlpha = null, curPage = null, pageId = 'livre';
-  var undoStack = [], redoStack = [], memory = {};
+  var undoStack = [], redoStack = [], workDirty = false;
 
   /* ---------- sons ---------- */
   var actx = null;
@@ -167,20 +172,41 @@
   }
 
   /* ---------- desfazer / refazer ---------- */
-  function snapshot() { undoStack.push(pctx.getImageData(0, 0, W, H)); if (undoStack.length > UNDO_MAX) undoStack.shift(); redoStack = []; refreshUI(); }
-  function undo() { var s = undoStack.pop(); if (!s) return; redoStack.push(pctx.getImageData(0, 0, W, H)); pctx.putImageData(s, 0, 0); snd.undo(); refreshUI(); }
-  function redo() { var s = redoStack.pop(); if (!s) return; undoStack.push(pctx.getImageData(0, 0, W, H)); pctx.putImageData(s, 0, 0); snd.undo(); refreshUI(); }
+  // o histórico guarda cópias da tela (canvas -> canvas, rápido) em vez de ler pixel por pixel
+  function takeSnap() {
+    var c = pool.pop();
+    if (!c) { c = document.createElement('canvas'); c.width = W; c.height = H; }
+    var x = c.getContext('2d'); x.globalCompositeOperation = 'copy'; x.drawImage(paint, 0, 0); x.globalCompositeOperation = 'source-over';
+    return c;
+  }
+  function freeSnap(c) { if (c && c.width === W && c.height === H) pool.push(c); }
+  function restoreSnap(c) { pctx.globalCompositeOperation = 'copy'; pctx.drawImage(c, 0, 0); pctx.globalCompositeOperation = 'source-over'; }
+  function resetHistory() { undoStack.forEach(freeSnap); redoStack.forEach(freeSnap); undoStack = []; redoStack = []; }
+  function snapshot() {
+    workDirty = true; undoStack.push(takeSnap()); if (undoStack.length > UNDO_MAX) freeSnap(undoStack.shift());
+    redoStack.forEach(freeSnap); redoStack = []; refreshUI();
+  }
+  function undo() { var s = undoStack.pop(); if (!s) return; workDirty = true; redoStack.push(takeSnap()); restoreSnap(s); freeSnap(s); snd.undo(); refreshUI(); }
+  function redo() { var s = redoStack.pop(); if (!s) return; workDirty = true; undoStack.push(takeSnap()); restoreSnap(s); freeSnap(s); snd.undo(); refreshUI(); }
 
   /* ---------- pincéis ---------- */
   function pos(e) {
-    var r = paint.getBoundingClientRect();
+    var r = (drawing && prect) ? prect : paint.getBoundingClientRect();
     return [(e.clientX - r.left) * W / r.width, (e.clientY - r.top) * H / r.height];
   }
-  function flushClip(x0, y0, x1, y1) {
+  function flushClip(x0, y0, x1, y1) {   // só marca a área suja; o recorte é feito 1x por quadro
     if (!clipOn) return;
     var p = SIZES[sizeIdx] * 3 + 6;
-    var bx = Math.max(0, Math.floor(Math.min(x0, x1) - p)), by = Math.max(0, Math.floor(Math.min(y0, y1) - p));
-    var bw = Math.min(W, Math.ceil(Math.max(x0, x1) + p)) - bx, bh = Math.min(H, Math.ceil(Math.max(y0, y1) + p)) - by;
+    var bx = Math.min(x0, x1) - p, by = Math.min(y0, y1) - p, ex = Math.max(x0, x1) + p, ey = Math.max(y0, y1) + p;
+    if (!dirty) dirty = [bx, by, ex, ey];
+    else { dirty[0] = Math.min(dirty[0], bx); dirty[1] = Math.min(dirty[1], by); dirty[2] = Math.max(dirty[2], ex); dirty[3] = Math.max(dirty[3], ey); }
+    if (!raf) raf = requestAnimationFrame(doFlush);
+  }
+  function doFlush() {
+    raf = 0; if (!dirty) return;
+    var bx = Math.max(0, Math.floor(dirty[0])), by = Math.max(0, Math.floor(dirty[1]));
+    var bw = Math.min(W, Math.ceil(dirty[2])) - bx, bh = Math.min(H, Math.ceil(dirty[3])) - by;
+    dirty = null;
     if (bw <= 0 || bh <= 0) return;
     var c = tool === 'marker' ? tctx : sctx;
     c.globalCompositeOperation = 'destination-in'; c.drawImage(maskCv, bx, by, bw, bh, bx, by, bw, bh);
@@ -220,9 +246,10 @@
     dc.globalAlpha = 1;
   }
 
+  var prect = null, dirty = null, raf = 0;
   var drawing = false, lx = 0, ly = 0, mx = 0, my = 0, sx = 0, sy = 0, hue = 0;
   function beginStroke(p) {
-    snapshot(); drawing = true;
+    snapshot(); drawing = true; prect = paint.getBoundingClientRect();
     lx = mx = sx = p[0]; ly = my = sy = p[1]; hue = Math.random() * 360;
     // modo colorir: o pincel só pinta dentro do espaço onde o dedo encostou primeiro
     clipOn = (mode === 'color' && !!labels && tool !== 'eraser');
@@ -274,6 +301,8 @@
       c.beginPath(); c.moveTo(mx, my); c.lineTo(lx, ly); c.stroke();
       flushClip(mx, my, lx, ly);
     }
+    if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    doFlush();
     if (tool === 'marker') {
       pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 0.55; pctx.drawImage(tmp, 0, 0); pctx.globalAlpha = 1;
       tctx.clearRect(0, 0, W, H);
@@ -281,8 +310,8 @@
     pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 1; sctx.globalAlpha = 1; clipOn = false;
   }
   function cancelStroke() {
-    if (!drawing) return; drawing = false; clipOn = false; tctx.clearRect(0, 0, W, H); sctx.clearRect(0, 0, W, H);
-    var s = undoStack.pop(); if (s) pctx.putImageData(s, 0, 0);
+    if (!drawing) return; drawing = false; clipOn = false; dirty = null; if (raf) { cancelAnimationFrame(raf); raf = 0; } tctx.clearRect(0, 0, W, H); sctx.clearRect(0, 0, W, H);
+    var s = undoStack.pop(); if (s) { restoreSnap(s); freeSnap(s); }
     pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 1; refreshUI();
   }
 
@@ -328,7 +357,7 @@
     var q = ptrs[e.pointerId]; if (!q) return;
     if (tap && !blocked && e.type === 'pointerup' && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 14) {
       snapshot();
-      if (bucket(tap.px, tap.py, COLORS[colorIdx])) { snd.fill(colorIdx); sparkle(tap.x, tap.y); } else { undoStack.pop(); refreshUI(); }
+      if (bucket(tap.px, tap.py, COLORS[colorIdx])) { snd.fill(colorIdx); sparkle(tap.x, tap.y); } else { freeSnap(undoStack.pop()); refreshUI(); }
     }
     tap = null; delete ptrs[e.pointerId];
     if (drawing) endStroke();
@@ -399,10 +428,11 @@
 
   /* ---------- espaços da página (para o pincel não vazar) ---------- */
   function labelRegions(la) {
-    var lab = new Int32Array(W * H), id = 0, stack = [], N = W * H;
+    var lab = new Int32Array(W * H), id = 0, stack = [], N = W * H; regBox = [];
     for (var s = 0; s < N; s++) {
       if (lab[s] || la[s] > THRESH) continue;
       id++; stack.length = 0; stack.push(s);
+      var b0 = W, b1 = H, b2 = 0, b3 = 0;
       while (stack.length) {
         var p = stack.pop();
         if (lab[p] || la[p] > THRESH) continue;
@@ -410,6 +440,7 @@
         while (l > 0 && !lab[row + l - 1] && la[row + l - 1] <= THRESH) l--;
         while (r < W - 1 && !lab[row + r + 1] && la[row + r + 1] <= THRESH) r++;
         for (var i = l; i <= r; i++) lab[row + i] = id;
+        var yy = (row / W) | 0; if (l < b0) b0 = l; if (r > b2) b2 = r; if (yy < b1) b1 = yy; if (yy > b3) b3 = yy;
         for (var d = -1; d <= 1; d += 2) {
           var nr = row + d * W; if (nr < 0 || nr >= N) continue;
           var inSpan = false;
@@ -419,6 +450,7 @@
           }
         }
       }
+      regBox[id] = [b0, b1, b2, b3];
     }
     return lab;
   }
@@ -435,14 +467,17 @@
     return 0;
   }
   function buildMask(id) {
+    if (id === maskId) return; maskId = id;
+    mctx.clearRect(0, 0, W, H); if (!id) return;
+    var b = regBox[id], x0 = Math.max(0, b[0] - 4), y0 = Math.max(0, b[1] - 4), x1 = Math.min(W - 1, b[2] + 4), y1 = Math.min(H - 1, b[3] + 4);
     if (!maskImg) maskImg = mctx.createImageData(W, H);
-    var d = maskImg.data, lab = labels; d.fill(0);
-    if (id) for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
-      var i = y * W + x, v = lab[i];
-      if (v === id) d[i * 4 + 3] = 255;
-      else if (v === 0 && ((x >= 3 && lab[i - 3] === id) || (x < W - 3 && lab[i + 3] === id) || (y >= 3 && lab[i - 3 * W] === id) || (y < H - 3 && lab[i + 3 * W] === id))) d[i * 4 + 3] = 255;
+    var d = maskImg.data, lab = labels;
+    for (var y = y0; y <= y1; y++) for (var x = x0; x <= x1; x++) {
+      var i = y * W + x, v = lab[i], on = (v === id);
+      if (!on && v === 0) on = (x >= 3 && lab[i - 3] === id) || (x < W - 3 && lab[i + 3] === id) || (y >= 3 && lab[i - 3 * W] === id) || (y < H - 3 && lab[i + 3 * W] === id);
+      d[i * 4 + 3] = on ? 255 : 0;
     }
-    mctx.putImageData(maskImg, 0, 0);
+    mctx.putImageData(maskImg, 0, 0, x0, y0, x1 - x0 + 1, y1 - y0 + 1);
   }
 
   /* ---------- páginas ---------- */
@@ -459,39 +494,106 @@
       var pk = Math.min(W / 400, H / 300), pw = 400 * pk, ph = 300 * pk; c.drawImage(img, (W - pw) / 2, (H - ph) / 2, pw, ph);
       var src = c.getImageData(0, 0, W, H).data, out = lctx.createImageData(W, H), a = new Uint8Array(W * H);
       for (var i = 0, n = W * H; i < n; i++) { var v = 255 - src[i * 4]; a[i] = v; out.data[i * 4 + 3] = v; }
-      lctx.putImageData(out, 0, 0); lineAlpha = a; labels = labelRegions(a); done && done();
+      lctx.putImageData(out, 0, 0); lineAlpha = a; labels = labelRegions(a); maskId = -1; done && done();
     };
     img.src = svgUrl(page.svg);
   }
 
-  function leaveEditor() { memory[pageId] = { w: W, h: H, d: pctx.getImageData(0, 0, W, H) }; }
+  /* ---------- guardar o desenho no aparelho (nunca sai do aparelho) ---------- */
+  var DB = null, saved = {}, cardImgs = {};
+  function dbOpen(cb) {
+    try {
+      var rq = indexedDB.open('colorir-obras', 1);
+      rq.onupgradeneeded = function () { rq.result.createObjectStore('obras'); };
+      rq.onsuccess = function () { DB = rq.result; cb(); };
+      rq.onerror = function () { cb(); };
+    } catch (e) { cb(); }
+  }
+  function dbPut(id, rec) { if (!DB) return; try { DB.transaction('obras', 'readwrite').objectStore('obras').put(rec, id); } catch (e) {} }
+  function dbLoadAll(done) {
+    if (!DB) { done(); return; }
+    try {
+      var rq = DB.transaction('obras').objectStore('obras').openCursor();
+      rq.onsuccess = function () { var c = rq.result; if (c) { saved[c.key] = c.value; c['continue'](); } else done(); };
+      rq.onerror = function () { done(); };
+    } catch (e) { done(); }
+  }
+  function refreshThumbs() {
+    window.PAGES.forEach(function (p) { var im = cardImgs[p.id]; if (im) im.src = saved[p.id] ? saved[p.id].thumb : svgUrl(p.svg); });
+    var dt = $('drawThumb'); if (saved.livre) { dt.src = saved.livre.thumb; dt.hidden = false; } else dt.hidden = true;
+  }
+  function saveWork(cb) {
+    if (!workDirty) { cb && cb(); return; }
+    workDirty = false;
+    var id = pageId, w = W, h = H, k = Math.min(W / 400, H / 300), cw = 400 * k, ch = 300 * k;
+    var tc = document.createElement('canvas'); tc.width = 360; tc.height = 270;
+    var x = tc.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, 360, 270);
+    x.drawImage(paint, (W - cw) / 2, (H - ch) / 2, cw, ch, 0, 0, 360, 270);
+    x.drawImage(lines, (W - cw) / 2, (H - ch) / 2, cw, ch, 0, 0, 360, 270);
+    var thumb = tc.toDataURL('image/jpeg', 0.82);
+    paint.toBlob(function (blob) {
+      if (blob) { var rec = { blob: blob, w: w, h: h, thumb: thumb, t: Date.now() }; saved[id] = rec; dbPut(id, rec); }
+      refreshThumbs(); cb && cb();
+    }, 'image/png');
+  }
+  document.addEventListener('visibilitychange', function () { if (document.hidden && current === 'editor') saveWork(); });
+  window.addEventListener('pagehide', function () { if (current === 'editor') saveWork(); });
+
   function openEditor(m, page) {
-    mode = m; curPage = page; pageId = page ? page.id : 'livre'; undoStack = []; redoStack = [];
+    mode = m; curPage = page; pageId = page ? page.id : 'livre'; resetHistory(); workDirty = false;
     var d = dimsFor(); setDims(d[0], d[1]);
-    var mem = memory[pageId];
-    if (mem) {
-      var t = document.createElement('canvas'); t.width = mem.w; t.height = mem.h; t.getContext('2d').putImageData(mem.d, 0, 0);
-      drawScaled(t, mem.w, mem.h);
+    var rec = saved[pageId], id0 = pageId;
+    if (rec) {
+      var url = URL.createObjectURL(rec.blob), im = new Image();
+      im.onload = function () { if (pageId === id0 && !workDirty) drawScaled(im, rec.w, rec.h); URL.revokeObjectURL(url); };
+      im.src = url;
     }
     tool = lastTool = 'pencil';   // sempre começa com o pincel na mão
     resetZoom(); setBar(pseudoFull); refreshUI(); show('editor');
     setLines(page);
   }
+  function leaveEditor() { saveWork(); show(mode === 'color' ? 'gallery' : 'home'); }
 
-  var grid = $('grid');
-  window.PAGES.forEach(function (p) {
-    var b = document.createElement('button'), im = new Image();
-    b.className = 'card'; b.setAttribute('aria-label', p.nome);
-    im.src = svgUrl(p.svg); im.alt = ''; b.appendChild(im);
-    b.addEventListener('click', function () { snd.tap(); openEditor('color', p); });
-    grid.appendChild(b);
-  });
+  /* ---------- ilhas (mundos) e galerias ---------- */
+  var grid = $('grid'), pageById = {}, curWorld = null;
+  window.PAGES.forEach(function (p) { pageById[p.id] = p; });
+  function openWorld(w) {
+    curWorld = w; grid.innerHTML = ''; cardImgs = {};
+    $('galTitle').textContent = w.emoji[0] + ' ' + w.nome;
+    w.paginas.forEach(function (id) {
+      var p = pageById[id]; if (!p) return;
+      var b = document.createElement('button'), im = new Image();
+      b.className = 'card'; b.setAttribute('aria-label', p.nome);
+      im.alt = ''; b.appendChild(im); cardImgs[id] = im;
+      b.addEventListener('click', function () { snd.tap(); openEditor('color', p); });
+      grid.appendChild(b);
+    });
+    refreshThumbs(); grid.scrollTop = 0; show('gallery');
+  }
+  (function buildIslands() {
+    var box = $('islands');
+    (window.WORLDS || []).forEach(function (w, i) {
+      var b = document.createElement('button');
+      b.className = 'island'; b.setAttribute('aria-label', w.nome);
+      b.style.setProperty('--t', w.cima); b.style.setProperty('--t2', w.baixo); b.style.setProperty('--s', w.terra); b.style.setProperty('--d', (-i * 0.8) + 's');
+      var soil = document.createElement('span'); soil.className = 'isl-soil';
+      var land = document.createElement('span'); land.className = 'isl-land';
+      var emo = document.createElement('span'); emo.className = 'isl-emo';
+      w.emoji.forEach(function (e) { var n = document.createElement('i'); n.textContent = e; emo.appendChild(n); });
+      var nm = document.createElement('span'); nm.className = 'isl-name'; nm.textContent = w.nome;
+      [soil, land, emo, nm].forEach(function (n) { b.appendChild(n); });
+      b.addEventListener('click', function () { snd.tap(); openWorld(w); });
+      box.appendChild(b);
+    });
+  })();
+  dbOpen(function () { dbLoadAll(refreshThumbs); });
 
   /* ---------- botões ---------- */
   $('goDraw').addEventListener('click', function () { snd.tap(); openEditor('draw', null); });
-  $('goColor').addEventListener('click', function () { snd.tap(); show('gallery'); });
-  $('galBack').addEventListener('click', function () { snd.tap(); show('home'); });
-  $('bBack').addEventListener('click', function () { snd.tap(); leaveEditor(); show(mode === 'color' ? 'gallery' : 'home'); });
+  $('goColor').addEventListener('click', function () { snd.tap(); show('worlds'); });
+  $('worldsBack').addEventListener('click', function () { snd.tap(); show('home'); });
+  $('galBack').addEventListener('click', function () { snd.tap(); show('worlds'); });
+  $('bBack').addEventListener('click', function () { snd.tap(); leaveEditor(); });
   $('bUndo').addEventListener('click', undo);
   $('bRedo').addEventListener('click', redo);
   $('bClear').addEventListener('click', function () { snapshot(); pctx.clearRect(0, 0, W, H); snd.clear(); });
