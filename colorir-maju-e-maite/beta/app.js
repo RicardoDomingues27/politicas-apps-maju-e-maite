@@ -13,7 +13,7 @@
   var STAMPS = { star: 1, heart: 1 };
 
   function $(id) { return document.getElementById(id); }
-  var screens = { home: $('home'), worlds: $('worlds'), editor: $('editor') };
+  var screens = { home: $('home'), worlds: $('worlds'), gallery: $('gallery'), editor: $('editor') };
   var current = 'home';
   function show(name) {
     current = name; for (var k in screens) screens[k].hidden = (k !== name);
@@ -539,7 +539,7 @@
     } catch (e) { done(); }
   }
   function refreshThumbs() {
-    window.PAGES.forEach(function (p) { var im = cardImgs[p.id]; if (im) im.src = saved[p.id] ? saved[p.id].thumb : svgUrl(p.svg); });
+    window.PAGES.forEach(function (p) { var ims = cardImgs[p.id]; if (ims) { var u = saved[p.id] ? saved[p.id].thumb : svgUrl(p.svg); ims.forEach(function (im) { im.src = u; }); } });
     var dt = $('drawThumb'); if (saved.livre) { dt.src = saved.livre.thumb; dt.hidden = false; } else dt.hidden = true;
   }
   function saveWork(cb) {
@@ -572,34 +572,49 @@
     resetZoom(); setBar(pseudoFull); refreshUI(); show('editor');
     setLines(page);
   }
-  var foldersScroll = 0;
+  var curWorld = null, galScroll = 0, islScroll = 0;
   function leaveEditor() {
-    saveWork(); show(mode === 'color' ? 'worlds' : 'home');
-    if (mode === 'color') $('folders').scrollTop = foldersScroll;
+    saveWork();
+    if (mode === 'color') { show('gallery'); $('grid').scrollTop = galScroll; } else show('home');
   }
+  function regImg(id, im) { (cardImgs[id] = cardImgs[id] || []).push(im); }
 
-  /* ---------- pastas por tema, com todos os desenhos à vista ---------- */
+  /* ---------- ilhas (temas) com cartões espalhados; um toque abre a ilha ---------- */
   var pageById = {};
   window.PAGES.forEach(function (p) { pageById[p.id] = p; });
-  (function buildFolders() {
-    var box = $('folders');
-    (window.WORLDS || []).forEach(function (w) {
-      var sec = document.createElement('section');
-      sec.className = 'folder'; sec.style.setProperty('--c', w.pasta || '#4cc15f');
-      var tab = document.createElement('div'); tab.className = 'tab';
-      var emo = document.createElement('span'); emo.className = 'emo'; emo.textContent = w.emoji[0];
-      var nm = document.createElement('span'); nm.textContent = w.nome;
-      tab.appendChild(emo); tab.appendChild(nm);
-      var cards = document.createElement('div'); cards.className = 'cards';
-      w.paginas.forEach(function (id) {
+  var LAYOUT7 = [[5, 3, -11], [34, 0, -3], [62, 4, 9], [12, 30, -7], [40, 27, 4], [66, 31, -9], [31, 54, 6]];
+  function openWorld(w) {
+    curWorld = w; var grid = $('grid'); grid.innerHTML = '';
+    (cardImgs.__g || []).forEach(function () {}); 
+    window.PAGES.forEach(function (p) { if (cardImgs[p.id]) cardImgs[p.id] = cardImgs[p.id].filter(function (im) { return !im.__g; }); });
+    var t = $('galTitle'); t.textContent = w.emoji[0] + ' ' + w.nome; t.style.setProperty('--c', w.pasta || '#4cc15f');
+    w.paginas.forEach(function (id) {
+      var p = pageById[id]; if (!p) return;
+      var b = document.createElement('button'), im = new Image();
+      b.className = 'card'; b.setAttribute('aria-label', p.nome); im.alt = ''; im.__g = true;
+      b.appendChild(im); regImg(id, im);
+      b.addEventListener('click', function () { snd.tap(); galScroll = grid.scrollTop; openEditor('color', p); });
+      grid.appendChild(b);
+    });
+    refreshThumbs(); grid.scrollTop = 0; show('gallery');
+  }
+  (function buildIslands() {
+    var box = $('islands');
+    (window.WORLDS || []).forEach(function (w, i) {
+      var b = document.createElement('button');
+      b.className = 'isl'; b.setAttribute('aria-label', w.nome);
+      b.style.setProperty('--t', w.cima); b.style.setProperty('--t2', w.baixo); b.style.setProperty('--d', (-i * 1.1) + 's'); b.style.setProperty('--c', w.pasta || '#4cc15f');
+      ['isl-rock', 'isl-grass'].forEach(function (c) { var s = document.createElement('span'); s.className = c; b.appendChild(s); });
+      [[w.emoji[3] || '🌳', 'l'], [w.emoji[2] || '🌳', 'r']].forEach(function (d) { var s = document.createElement('span'); s.className = 'isl-deco ' + d[1]; s.textContent = d[0]; b.appendChild(s); });
+      w.paginas.slice(0, 7).forEach(function (id, k) {
         var p = pageById[id]; if (!p) return;
-        var b = document.createElement('button'), im = new Image();
-        b.className = 'card'; b.setAttribute('aria-label', p.nome);
-        im.alt = ''; b.appendChild(im); cardImgs[id] = im;
-        b.addEventListener('click', function () { snd.tap(); foldersScroll = $('folders').scrollTop; openEditor('color', p); });
-        cards.appendChild(b);
+        var L = LAYOUT7[k], m = document.createElement('span'), im = new Image();
+        m.className = 'mini'; m.style.left = L[0] + '%'; m.style.top = L[1] + '%'; m.style.setProperty('--r', L[2] + 'deg'); m.style.zIndex = 3 + k;
+        im.alt = ''; m.appendChild(im); regImg(id, im); b.appendChild(m);
       });
-      sec.appendChild(tab); sec.appendChild(cards); box.appendChild(sec);
+      var nm = document.createElement('span'); nm.className = 'isl-name'; nm.textContent = w.nome; b.appendChild(nm);
+      b.addEventListener('click', function () { snd.tap(); islScroll = box.scrollLeft; openWorld(w); });
+      box.appendChild(b);
     });
     refreshThumbs();
   })();
@@ -609,6 +624,7 @@
   $('goDraw').addEventListener('click', function () { snd.tap(); openEditor('draw', null); });
   $('goColor').addEventListener('click', function () { snd.tap(); show('worlds'); });
   $('worldsBack').addEventListener('click', function () { snd.tap(); show('home'); });
+  $('galBack').addEventListener('click', function () { snd.tap(); show('worlds'); $('islands').scrollLeft = islScroll; });
   $('bBack').addEventListener('click', function () { snd.tap(); leaveEditor(); });
   $('bUndo').addEventListener('click', undo);
   $('bRedo').addEventListener('click', redo);
