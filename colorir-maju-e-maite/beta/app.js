@@ -148,10 +148,10 @@
 
   // o quadro de desenho tem o formato da área livre da tela (celular em pé, deitado, tablet)
   function dimsFor() {
-    var aw = window.innerWidth - 8 - (LAYOUT === 'b' ? 172 : 0), ah = window.innerHeight - 8 - (LAYOUT === 'a' ? 78 : 0);
+    var aw = window.innerWidth - 8 - (LAYOUT === 'b' ? 258 : 0), ah = window.innerHeight - 8 - (LAYOUT === 'a' ? 78 : 0);
     var r = aw / ah, w, h;
-    if (r >= 1) { h = 900; w = Math.max(1200, Math.min(2600, Math.round(900 * r))); }
-    else { w = 900; h = Math.max(1200, Math.min(2600, Math.round(900 / r))); }
+    if (r >= 1) { h = 900; w = Math.max(900, Math.min(2600, Math.round(900 * r))); }
+    else { w = 900; h = Math.max(900, Math.min(2600, Math.round(900 / r))); }
     return [w - (w % 2), h - (h % 2)];
   }
   // desenha uma imagem antiga no quadro novo mantendo a escala do desenho (a página fica alinhada)
@@ -194,8 +194,30 @@
     var r = (drawing && prect) ? prect : paint.getBoundingClientRect();
     return [(e.clientX - r.left) * W / r.width, (e.clientY - r.top) * H / r.height];
   }
+  var mkPts = [];
+  // marcador: redesenha o risco inteiro a cada movimento por cima do papel de antes (sem camada temporária)
+  function markerRedraw() {
+    var base = undoStack[undoStack.length - 1]; if (!base || !mkPts.length) return;
+    restoreSnap(base);
+    var c = clipOn ? sctx : pctx, w = SIZES[sizeIdx] * 1.5, p = mkPts;
+    if (clipOn) sctx.clearRect(0, 0, W, H);
+    c.save(); c.globalAlpha = clipOn ? 1 : 0.55; c.globalCompositeOperation = 'source-over';
+    c.strokeStyle = c.fillStyle = COLORS[colorIdx]; c.lineWidth = w; c.lineCap = c.lineJoin = 'round';
+    c.beginPath();
+    if (p.length < 2) { c.arc(p[0][0], p[0][1], w / 2, 0, 6.283); c.fill(); }
+    else {
+      c.moveTo(p[0][0], p[0][1]);
+      for (var i = 1; i < p.length - 1; i++) c.quadraticCurveTo(p[i][0], p[i][1], (p[i][0] + p[i + 1][0]) / 2, (p[i][1] + p[i + 1][1]) / 2);
+      c.lineTo(p[p.length - 1][0], p[p.length - 1][1]); c.stroke();
+    }
+    c.restore();
+    if (clipOn) {
+      sctx.globalCompositeOperation = 'destination-in'; sctx.drawImage(maskCv, 0, 0); sctx.globalCompositeOperation = 'source-over';
+      pctx.globalAlpha = 0.55; pctx.drawImage(scratch, 0, 0); pctx.globalAlpha = 1;
+    }
+  }
   function flushClip(x0, y0, x1, y1) {   // só marca a área suja; o recorte é feito 1x por quadro
-    if (!clipOn) return;
+    if (!clipOn || tool === 'marker') return;
     var p = SIZES[sizeIdx] * 3 + 6;
     var bx = Math.min(x0, x1) - p, by = Math.min(y0, y1) - p, ex = Math.max(x0, x1) + p, ey = Math.max(y0, y1) + p;
     if (!dirty) dirty = [bx, by, ex, ey];
@@ -259,9 +281,7 @@
       case 'pencil': case 'eraser':
         setup(dc, tool === 'eraser' ? 'destination-out' : null);
         dc.beginPath(); dc.arc(lx, ly, dc.lineWidth / 2, 0, 6.283); dc.fill(); break;
-      case 'marker':
-        tctx.clearRect(0, 0, W, H); setup(tctx);
-        tctx.beginPath(); tctx.arc(lx, ly, tctx.lineWidth / 2, 0, 6.283); tctx.fill(); break;
+      case 'marker': mkPts = [[lx, ly]]; markerRedraw(); break;
       case 'chalk': chalkAt(lx, ly); break;
       case 'rainbow':
         setup(dc); dc.fillStyle = 'hsl(' + hue + ',95%,55%)';
@@ -273,8 +293,9 @@
   function strokeTo(x, y) {
     var ox = lx, oy = ly;
     switch (tool) {
-      case 'pencil': case 'eraser': case 'marker':
-        var c = tool === 'marker' ? tctx : dc;
+      case 'marker': mkPts.push([x, y]); break;
+      case 'pencil': case 'eraser':
+        var c = dc;
         setup(c, tool === 'eraser' ? 'destination-out' : null);
         var cx = (lx + x) / 2, cy = (ly + y) / 2;
         c.beginPath(); c.moveTo(mx, my); c.quadraticCurveTo(lx, ly, cx, cy); c.stroke();
@@ -295,18 +316,15 @@
   }
   function endStroke() {
     if (!drawing) return; drawing = false;
-    if (tool === 'pencil' || tool === 'eraser' || tool === 'marker') {
-      var c = tool === 'marker' ? tctx : dc;
+    if (tool === 'pencil' || tool === 'eraser') {
+      var c = dc;
       setup(c, tool === 'eraser' ? 'destination-out' : null);
       c.beginPath(); c.moveTo(mx, my); c.lineTo(lx, ly); c.stroke();
       flushClip(mx, my, lx, ly);
     }
     if (raf) { cancelAnimationFrame(raf); raf = 0; }
     doFlush();
-    if (tool === 'marker') {
-      pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 0.55; pctx.drawImage(tmp, 0, 0); pctx.globalAlpha = 1;
-      tctx.clearRect(0, 0, W, H);
-    }
+    if (tool === 'marker') markerRedraw();
     pctx.globalCompositeOperation = 'source-over'; pctx.globalAlpha = 1; sctx.globalAlpha = 1; clipOn = false;
   }
   function cancelStroke() {
@@ -324,6 +342,7 @@
     var r = paint.getBoundingClientRect(), mult = tool === 'eraser' ? 1.6 : tool === 'marker' ? 1.5 : tool === 'chalk' ? 1.1 : 1;
     var d = Math.max(8, SIZES[sizeIdx] * mult * r.width / W), stamp = (tool === 'star' || tool === 'heart' || tool === 'rainbow');
     curTip.textContent = TOOL_EMOJI[tool] || '';
+    curTip.style.fontSize = (tool === 'pencil' || tool === 'chalk' || tool === 'marker' ? 92 : 64) + 'px';
     curTip.className = 'tip' + (tool === 'eraser' || stamp ? ' mid' : '');
     curRing.style.display = (tool === 'star' || tool === 'heart') ? 'none' : 'block';
     curRing.style.width = curRing.style.height = d + 'px';
@@ -370,6 +389,7 @@
     var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
     if (!evs.length) evs = [e];
     evs.forEach(function (ev) { var p = pos(ev); strokeTo(p[0], p[1]); });
+    if (tool === 'marker') markerRedraw();
     moveCursor(e.clientX, e.clientY);
   });
   function up(e) {

@@ -271,3 +271,11 @@ html, body {
 .mini { width: 26%; height: 23%; }
 .isl .isl-name { top: 76%; width: 52%; left: 24%; }
 #gallery .grid { grid-template-columns: repeat(auto-fill, minmax(clamp(210px, 27vw, 320px), 1fr)); }
+
+/* botões principais: barra lateral vertical fixa à direita (v2b); o desenho fica depois dela */
+[data-layout="b"] #editor { flex-direction: row; }
+[data-layout="b"] .bar { order: 0; }
+[data-layout="b"] .area { order: 1; }
+[data-layout="b"] .floater { order: 2; position: static; flex: none; flex-direction: column; justify-content: flex-start; gap: 8px; padding: 7px; border-radius: 0; width: calc(var(--btn) + 22px); height: 100%; overflow-y: auto; scrollbar-width: none; touch-action: pan-y; background: linear-gradient(270deg, #38a6ff, #6c5cff); box-shadow: -4px 0 14px rgba(0,0,0,.22); }
+[data-layout="b"] .floater::-webkit-scrollbar { display: none; }
+#cursor .tip { font-size: 64px; }
