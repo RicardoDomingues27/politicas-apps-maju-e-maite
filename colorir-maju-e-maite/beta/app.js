@@ -3,6 +3,14 @@
   'use strict';
   var LAYOUT = document.body.getAttribute('data-layout') || 'a';
   var NATIVE = !!window.AndroidApp;   // rodando dentro do app Android (Play Store)
+  var FREE_WORLDS = 2, FREE_PER_WORLD = 5;   // versão grátis: 2 ilhas, 5 desenhos em cada
+  var premium = false;
+  try {
+    if (NATIVE) premium = !!window.AndroidApp.isPremium();
+    else if (/[?&]premium=1/.test(location.search)) { localStorage.setItem('colorir-premium-teste', '1'); premium = true; }
+    else if (/[?&]premium=0/.test(location.search)) localStorage.removeItem('colorir-premium-teste');
+    else premium = localStorage.getItem('colorir-premium-teste') === '1';   // só para testar a versão paga no navegador
+  } catch (e) {}
   if (NATIVE) document.body.classList.add('native');
   var W = 1200, H = 900;
   var COLORS = ['#FF3B30', '#FF9500', '#FFD60A', '#7ED957', '#1E9E4A', '#20C9C9',
@@ -116,7 +124,14 @@
       if ((document.fullscreenElement || document.webkitFullscreenElement) && ex) { try { var r = ex.call(document); if (r && r.catch) r.catch(function () {}); } catch (e) {} }
       pseudoFull = false; setBar(false);
     } else {
-      if (rq) { try { var p = rq.call(de); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
+      if (rq) {
+        try {
+          var p = rq.call(de);
+          // em tela cheia, trava deitado (nos dois lados): só gira 180° e a parte de baixo continua embaixo
+          var lockLand = function () { try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(function () {}); } catch (e) {} };
+          if (p && p.then) p.then(lockLand, function () {}); else lockLand();
+        } catch (e) {}
+      }
       pseudoFull = true; setBar(true);   // sem API de tela cheia (iPhone): só esconde as ferramentas
     }
     refreshUI(); scheduleCheck();
@@ -648,9 +663,11 @@
     w.paginas.forEach(function (id) {
       var p = pageById[id]; if (!p) return;
       var b = document.createElement('button'), im = new Image();
-      b.className = 'card k' + (grid.children.length % 6); b.setAttribute('aria-label', p.nome); im.alt = ''; im.__g = true;
+      var idx = grid.children.length, locked = !premium && idx >= FREE_PER_WORLD;
+      b.className = 'card k' + (idx % 6) + (locked ? ' locked' : ''); b.setAttribute('aria-label', p.nome); im.alt = ''; im.__g = true;
       b.appendChild(im); regImg(id, im);
-      b.addEventListener('click', function () { snd.tap(); galScroll = grid.scrollTop; openEditor('color', p); });
+      if (locked) { var lk = document.createElement('span'); lk.className = 'lockbadge'; lk.textContent = '🔒'; b.appendChild(lk); }
+      b.addEventListener('click', function () { snd.tap(); if (locked) { openGate(); return; } galScroll = grid.scrollTop; openEditor('color', p); });
       grid.appendChild(b);
     });
     refreshThumbs(); grid.scrollTop = 0; show('gallery');
@@ -668,7 +685,9 @@
         im.alt = ''; m.appendChild(im); regImg(id, im); b.appendChild(m);
       });
       var nm = document.createElement('span'); nm.className = 'isl-name'; nm.textContent = w.nome; b.appendChild(nm);
-      b.addEventListener('click', function () { snd.tap(); islScroll = box.scrollLeft; openWorld(w); });
+      var lockedW = (i >= FREE_WORLDS); b.__locked = lockedW;
+      if (lockedW && !premium) { b.classList.add('locked'); var lb = document.createElement('span'); lb.className = 'lockbadge isl-lock'; lb.textContent = '🔒'; b.appendChild(lb); }
+      b.addEventListener('click', function () { snd.tap(); if (b.__locked && !premium) { openGate(); return; } islScroll = box.scrollLeft; openWorld(w); });
       box.appendChild(b);
     });
     refreshThumbs();
@@ -713,6 +732,53 @@
     }, 'image/png');
   });
 
+  /* ---------- área dos pais: conta e pagamento (versão paga) ---------- */
+  var gate = $('gate'), gAns = '', gRes = 0;
+  function newQuestion() {
+    var x = 6 + Math.floor(Math.random() * 4), y = 6 + Math.floor(Math.random() * 4);
+    gRes = x * y; gAns = ''; $('gateQ').textContent = x + ' × ' + y + ' = ?'; $('gateAns').innerHTML = '&nbsp;';
+  }
+  (function buildKeys() {
+    var box = $('gateKeys');
+    ['1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', '0', '✔'].forEach(function (k) {
+      var b = document.createElement('button'); b.className = 'btn key'; b.textContent = k;
+      b.addEventListener('click', function () {
+        snd.tap();
+        if (k === '⌫') gAns = gAns.slice(0, -1);
+        else if (k === '✔') {
+          if (parseInt(gAns, 10) === gRes) { $('gate1').hidden = true; $('gate2').hidden = false; $('gateMsg').textContent = ''; }
+          else { $('gate1').classList.remove('shake'); void $('gate1').offsetWidth; $('gate1').classList.add('shake'); newQuestion(); return; }
+        } else if (gAns.length < 3) gAns += k;
+        $('gateAns').textContent = gAns || '\u00a0';
+      });
+      box.appendChild(b);
+    });
+  })();
+  function openGate() {
+    $('gate1').hidden = false; $('gate2').hidden = true; newQuestion();
+    var pr = ''; try { if (NATIVE) pr = window.AndroidApp.price(); } catch (e) {}
+    $('gatePrice').textContent = pr || 'R$ 29,90';
+    gate.hidden = false;
+  }
+  function closeGate() { gate.hidden = true; }
+  $('gateClose').addEventListener('click', function () { snd.tap(); closeGate(); });
+  $('buyBtn').addEventListener('click', function () {
+    snd.tap();
+    if (NATIVE) { try { window.AndroidApp.buy(); } catch (e) { $('gateMsg').textContent = 'Não foi possível abrir a Google Play.'; } }
+    else $('gateMsg').textContent = 'A compra é feita no aplicativo da Google Play.';
+  });
+  $('restoreBtn').addEventListener('click', function () {
+    snd.tap();
+    if (NATIVE) { try { window.AndroidApp.restore(); $('gateMsg').textContent = 'Procurando sua compra…'; } catch (e) {} }
+    else $('gateMsg').textContent = 'A compra é feita no aplicativo da Google Play.';
+  });
+  // chamado pelo app Android quando a compra é confirmada (ou não encontrada)
+  window.__premium = function (b) {
+    premium = !!b;
+    if (b) { closeGate(); document.querySelectorAll('.lockbadge').forEach(function (n) { n.remove(); }); document.querySelectorAll('.locked').forEach(function (n) { n.classList.remove('locked'); }); document.querySelectorAll('.isl').forEach(function (n) { n.__locked = false; }); if (curWorld) openWorld(curWorld); }
+  };
+  window.__gateMsg = function (t) { $('gateMsg').textContent = t; };
+
   /* ---------- versão fixa + atualizar ---------- */
   var VER = window.APP_VERSION || '?', verBtn = $('verBtn'), verTxt = $('verTxt'), newVer = null, verTimer = null;
   function verLabel() { verBtn.classList.remove('new'); verTxt.textContent = NATIVE ? 'Versão ' + VER : 'Versão ' + VER + ' · 🔄 Atualizar'; }
@@ -741,6 +807,7 @@
   verLabel(); if (!NATIVE) checkVersion(true);
   // botão "voltar" do Android e guardar o desenho ao sair do app
   window.__androidBack = function () {
+    if (!gate.hidden) { closeGate(); return true; }
     if (current === 'editor') { leaveEditor(); return true; }
     if (current === 'gallery') { show('worlds'); $('islands').scrollLeft = islScroll; return true; }
     if (current === 'worlds') { show('home'); return true; }

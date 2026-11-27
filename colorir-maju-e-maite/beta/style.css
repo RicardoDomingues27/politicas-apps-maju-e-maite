@@ -284,3 +284,48 @@ html, body {
 
 /* dentro do app Android a tela já é cheia: sem botão de tela cheia */
 .native .fsb { display: none !important; }
+
+/* ===== versão grátis x paga: cadeados e área dos pais ===== */
+.card.locked { filter: grayscale(.55) brightness(.92) drop-shadow(0 6px 3px rgba(0,0,0,.25)); }
+.card.locked img { opacity: .55; }
+.lockbadge { position: absolute; right: 6%; bottom: 8%; width: clamp(34px, 7vmin, 58px); height: clamp(34px, 7vmin, 58px); border-radius: 50%; background: #ffd60a; border: 4px solid #fff; box-shadow: 0 3px 0 rgba(0,0,0,.3); display: flex; align-items: center; justify-content: center; font-size: clamp(16px, 3.4vmin, 28px); line-height: 1; z-index: 20; }
+.isl.locked { filter: saturate(.55) brightness(.94); }
+.lockbadge.isl-lock { right: 8%; bottom: auto; top: 12%; width: clamp(54px, 13vmin, 110px); height: clamp(54px, 13vmin, 110px); font-size: clamp(26px, 6.4vmin, 54px); }
+
+.gate { position: fixed; inset: 0; z-index: 80; background: rgba(20, 40, 90, .72); display: flex; align-items: center; justify-content: center; padding: 16px; touch-action: none; }
+.gate-card { position: relative; width: min(94vw, 560px); max-height: 94vh; overflow: auto; background: #fff; border-radius: 28px; border: 8px solid #ffd60a; padding: 22px 22px 20px; text-align: center; box-shadow: 0 10px 0 rgba(0,0,0,.25); }
+.gate-x { position: absolute; top: 8px; right: 8px; width: 56px; height: 56px; min-width: 56px; background: linear-gradient(160deg, #ff9a8a, #ff4d6d); }
+.gate-x svg { width: 28px; height: 28px; }
+.gate-lock { font-size: 54px; line-height: 1; }
+.gate-h { font-weight: 900; font-size: clamp(24px, 5vmin, 34px); color: #1b3a63; margin: 4px 0; }
+.gate-p { color: #4f6785; font-size: 17px; }
+.gate-q { font-weight: 900; font-size: clamp(30px, 7vmin, 46px); color: #1e88ff; margin: 8px 0 4px; }
+.gate-ans { min-height: 56px; border: 4px solid #cfe4ff; border-radius: 16px; font-weight: 900; font-size: 36px; line-height: 48px; color: #1b3a63; width: 160px; margin: 0 auto 10px; }
+.keys { display: grid; grid-template-columns: repeat(3, 64px); gap: 8px; justify-content: center; }
+.key { font-size: 28px; font-weight: 900; color: #1b3a63; }
+.gate-step.shake { animation: shake .4s; }
+@keyframes shake { 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+.gate-list { text-align: left; color: #1b3a63; font-size: 18px; line-height: 1.5; margin: 10px auto; padding-left: 26px; max-width: 420px; }
+.gate-price { font-weight: 900; font-size: 44px; color: #1e9e4a; margin: 6px 0 2px; }
+.buy { display: block; width: 100%; max-width: 420px; margin: 10px auto 6px; min-height: 64px; border: 0; border-radius: 22px; background: linear-gradient(160deg, #34c759, #1e9e4a); color: #fff; font-weight: 900; font-size: 22px; box-shadow: 0 5px 0 rgba(0,0,0,.25); cursor: pointer; }
+.buy:active { transform: scale(.97); }
+.restore { background: none; border: 0; color: #1e88ff; font-weight: 700; font-size: 16px; padding: 12px; cursor: pointer; text-decoration: underline; }
+.gate-msg { min-height: 22px; color: #c0392b; font-weight: 700; margin-top: 4px; }
+
+/* celular deitado: a tela dos pais em duas colunas, sem cortar */
+@media (max-height: 560px) {
+  .gate-card { width: min(96vw, 820px); padding: 12px 84px 12px 18px; border-width: 6px; }
+  .gate-step { display: flex; align-items: center; justify-content: center; gap: 22px; }
+  .gate-left { flex: 1; min-width: 0; }
+  .gate-right { flex: 1; min-width: 0; }
+  .gate-lock { font-size: 34px; }
+  .gate-h { font-size: 24px; margin: 0; }
+  .gate-p { font-size: 15px; }
+  .gate-q { font-size: 30px; margin: 4px 0; }
+  .gate-ans { min-height: 48px; line-height: 40px; font-size: 30px; width: 150px; margin: 0 auto; }
+  .keys { gap: 6px; grid-template-columns: repeat(4, 64px); }
+  .gate-list { font-size: 15px; margin: 6px auto; }
+  .gate-price { font-size: 34px; margin: 0; }
+  .buy { min-height: 56px; font-size: 19px; margin: 8px auto 2px; }
+  .gate-x { top: 4px; right: 4px; }
+}

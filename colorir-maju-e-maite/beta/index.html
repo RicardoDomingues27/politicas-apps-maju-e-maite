@@ -100,6 +100,39 @@
   <div class="rot-txt">Vire o aparelho<br>para o lado 🔄</div>
 </div>
 
+<div id="gate" class="gate" hidden role="dialog" aria-label="Área dos pais">
+  <div class="gate-card">
+    <button class="btn gate-x" id="gateClose" aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18" fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/></svg></button>
+    <div id="gate1" class="gate-step">
+      <div class="gate-left">
+        <div class="gate-lock">🔒</div>
+        <div class="gate-h">Área dos pais</div>
+        <div class="gate-p">Para continuar, responda:</div>
+        <div class="gate-q" id="gateQ"></div>
+        <div class="gate-ans" id="gateAns">&nbsp;</div>
+      </div>
+      <div class="keys" id="gateKeys"></div>
+    </div>
+    <div id="gate2" class="gate-step" hidden>
+      <div class="gate-left">
+        <div class="gate-lock">⭐</div>
+        <div class="gate-h">Desbloquear tudo</div>
+        <ul class="gate-list">
+          <li>As 6 ilhas e os 41 desenhos</li>
+          <li>Pagamento único, sem assinatura</li>
+          <li>Sem anúncios, para sempre</li>
+        </ul>
+      </div>
+      <div class="gate-right">
+        <div class="gate-price" id="gatePrice">R$ 29,90</div>
+        <button class="buy" id="buyBtn">Pagar com a Google Play</button>
+        <button class="restore" id="restoreBtn">Já comprei antes</button>
+        <div class="gate-msg" id="gateMsg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <button id="verBtn" class="ver" aria-label="Versão do aplicativo. Tocar para procurar atualização"><span id="verTxt"></span></button>
 
 <script src="version.js"></script>
