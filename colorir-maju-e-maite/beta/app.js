@@ -328,7 +328,7 @@
     var q = ptrs[e.pointerId]; if (!q) return;
     if (tap && !blocked && e.type === 'pointerup' && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 14) {
       snapshot();
-      if (bucket(tap.px, tap.py, COLORS[colorIdx])) snd.fill(colorIdx); else { undoStack.pop(); refreshUI(); }
+      if (bucket(tap.px, tap.py, COLORS[colorIdx])) { snd.fill(colorIdx); sparkle(tap.x, tap.y); } else { undoStack.pop(); refreshUI(); }
     }
     tap = null; delete ptrs[e.pointerId];
     if (drawing) endStroke();
@@ -338,6 +338,24 @@
   stage.addEventListener('pointerup', up);
   stage.addEventListener('pointercancel', up);
   stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+  /* ---------- faíscas de alegria ---------- */
+  function sparkle(x, y) {
+    var icons = ['✨', '⭐', '💫', '✨', '🌟', '✨'];
+    for (var i = 0; i < 6; i++) {
+      var s = document.createElement('span'), ang = (i / 6) * 6.283 + Math.random() * 0.6, dist = 50 + Math.random() * 40;
+      s.className = 'spark'; s.textContent = icons[i];
+      s.style.left = x + 'px'; s.style.top = y + 'px';
+      s.style.setProperty('--dx', Math.cos(ang) * dist + 'px'); s.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+      document.body.appendChild(s);
+      setTimeout(function (el) { el.remove(); }, 750, s);
+    }
+  }
+  /* título colorido da tela inicial */
+  (function () {
+    var t = 'Colorir e Desenhar', box = $('logo');
+    for (var i = 0; i < t.length; i++) { var s = document.createElement('span'); s.textContent = t[i] === ' ' ? '\u00a0' : t[i]; s.style.setProperty('--i', i); box.appendChild(s); }
+  })();
 
   /* ---------- balde ---------- */
   var THRESH = 25;
@@ -455,8 +473,7 @@
       var t = document.createElement('canvas'); t.width = mem.w; t.height = mem.h; t.getContext('2d').putImageData(mem.d, 0, 0);
       drawScaled(t, mem.w, mem.h);
     }
-    tool = lastTool = (m === 'color') ? 'bucket' : 'pencil';
-    if (m === 'draw' && tool === 'bucket') tool = 'pencil';
+    tool = lastTool = 'pencil';   // sempre começa com o pincel na mão
     resetZoom(); setBar(pseudoFull); refreshUI(); show('editor');
     setLines(page);
   }
@@ -502,6 +519,30 @@
       toast();
     }, 'image/png');
   });
+
+  /* ---------- versão fixa + atualizar ---------- */
+  var VER = window.APP_VERSION || '?', verBtn = $('verBtn'), verTxt = $('verTxt'), newVer = null, verTimer = null;
+  function verLabel() { verBtn.classList.remove('new'); verTxt.textContent = 'Versão ' + VER + ' · 🔄 Atualizar'; }
+  function verSay(t, ms) { verTxt.textContent = t; clearTimeout(verTimer); if (ms) verTimer = setTimeout(function () { newVer ? verNew() : verLabel(); }, ms); }
+  function verNew() { verBtn.classList.add('new'); verTxt.textContent = '🆕 Versão ' + newVer + ' · Toque para instalar'; }
+  function checkVersion(quiet) {
+    if (!/^https?:$/.test(location.protocol)) { if (!quiet) verSay('Abra pelo site para atualizar', 3000); return; }
+    if (!quiet) verSay('Procurando…');
+    fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j && j.versao && j.versao !== VER) { newVer = j.versao; verNew(); }
+      else if (!quiet) verSay('Versão ' + VER + ' · ✓ em dia', 2500);
+    }).catch(function () { if (!quiet) verSay('Sem internet', 2500); });
+  }
+  function installNew() {
+    verSay('Atualizando…');
+    var done = function () { location.reload(); };
+    var p = [];
+    if (navigator.serviceWorker) p.push(navigator.serviceWorker.getRegistrations().then(function (rs) { return Promise.all(rs.map(function (r) { return r.unregister(); })); }));
+    if (window.caches) p.push(caches.keys().then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); }));
+    Promise.all(p).then(done, done);
+  }
+  verBtn.addEventListener('click', function () { if (newVer) installNew(); else checkVersion(false); });
+  verLabel(); checkVersion(true);
 
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     navigator.serviceWorker.register('sw.js').catch(function () {});
