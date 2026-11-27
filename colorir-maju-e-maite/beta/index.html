@@ -88,6 +88,19 @@
   <div id="toast" class="toast" hidden>✅</div>
 </main>
 
+<div id="rotate" class="rotate" role="alert" aria-label="Vire o aparelho para a posição horizontal">
+  <svg class="rot-dev" viewBox="0 0 120 120" aria-hidden="true">
+    <g class="rot-anim">
+      <rect x="36" y="14" width="48" height="92" rx="9" fill="#fff" stroke="#1b3a63" stroke-width="5"/>
+      <rect x="42" y="24" width="36" height="66" rx="3" fill="#ffd60a"/>
+      <circle cx="60" cy="98" r="3.5" fill="#1b3a63"/>
+      <circle cx="60" cy="52" r="9" fill="#ff6b6b"/><path d="M48 76 Q60 64 72 76" fill="none" stroke="#1e88ff" stroke-width="5" stroke-linecap="round"/>
+    </g>
+  </svg>
+  <svg class="rot-arrow" viewBox="0 0 120 60" aria-hidden="true"><path d="M15 50 Q60 -10 105 45" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/><path d="M88 52 L107 47 L102 28" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="rot-txt">Vire o aparelho<br>para o lado 🔄</div>
+</div>
+
 <button id="verBtn" class="ver" aria-label="Versão do aplicativo. Tocar para procurar atualização"><span id="verTxt"></span></button>
 
 <script src="version.js"></script>
