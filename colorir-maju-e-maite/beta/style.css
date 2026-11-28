@@ -334,3 +334,31 @@ html, body {
 #editor { padding-left: 0; padding-right: 0; }
 [data-layout="b"] .bar { padding-left: env(safe-area-inset-left); }
 [data-layout="b"] .floater { width: calc(var(--btn) + 22px + env(safe-area-inset-right)); padding-right: calc(7px + env(safe-area-inset-right)); }
+
+.btn.save { background: linear-gradient(160deg, #5be07f, #1e9e4a); }
+.btn.save svg { width: 36px; height: 36px; filter: drop-shadow(0 2px 0 rgba(0,0,0,.3)); }
+
+/* cadeado grande com correntes (arte gerada) trancando o desenho/ilha */
+.lockbadge { position: absolute; inset: 6% 4%; width: auto; height: auto; border: 0; border-radius: 0; box-shadow: none; background: url(img/cadeado.webp) center / contain no-repeat; font-size: 0; z-index: 20; pointer-events: none; filter: drop-shadow(0 6px 4px rgba(0,0,0,.35)); }
+.lockbadge.isl-lock { inset: auto; left: 14%; right: 14%; top: 10%; bottom: auto; height: 66%; }
+
+.lockbadge { inset: 0; background-size: cover; }
+.lockbadge.isl-lock { inset: auto; left: 6%; right: 6%; top: 10%; height: 68%; }
+.lockbadge.isl-lock { width: auto; }
+.isl.locked { filter: none; }
+.lockbadge.isl-lock { -webkit-mask-image: radial-gradient(ellipse 52% 56% at 50% 50%, #000 62%, transparent 100%); mask-image: radial-gradient(ellipse 52% 56% at 50% 50%, #000 62%, transparent 100%); }
+
+/* logo pequeno do canal, sempre no canto direito */
+.marca { position: fixed; right: max(8px, env(safe-area-inset-right)); bottom: max(6px, env(safe-area-inset-bottom)); width: clamp(44px, 9vmin, 70px); height: auto; z-index: 41; pointer-events: none; filter: drop-shadow(0 2px 3px rgba(0,0,0,.35)); }
+.ver { right: calc(max(8px, env(safe-area-inset-right)) + clamp(44px, 9vmin, 70px) + 8px); }
+[data-layout="b"] .floater { padding-bottom: calc(clamp(44px, 9vmin, 70px) + 14px); }
+
+/* cores brilhantes (purpurina) */
+.sw.glit { background:
+  radial-gradient(circle at 24% 28%, #fff 0 2px, transparent 3px), radial-gradient(circle at 70% 24%, #fff 0 1.6px, transparent 2.6px),
+  radial-gradient(circle at 52% 56%, #fffc 0 2.4px, transparent 3.4px), radial-gradient(circle at 28% 74%, #fff 0 1.6px, transparent 2.6px),
+  radial-gradient(circle at 76% 72%, #fff 0 2px, transparent 3px), linear-gradient(135deg, var(--c), color-mix(in srgb, var(--c) 55%, #fff) 60%, var(--c)); background-size: 100% 100%; animation: glint 2.2s ease-in-out infinite; }
+@keyframes glint { 50% { filter: brightness(1.18) saturate(1.15); } }
+/* cadeado simples, menor, no meio (dá para ver o desenho atrás) */
+.lockbadge { inset: auto; left: 50%; top: 50%; width: 30%; height: 54%; transform: translate(-50%, -50%); background-size: contain; background-position: center; background-repeat: no-repeat; -webkit-mask-image: none; mask-image: none; }
+.lockbadge.isl-lock { left: 50%; top: 40%; right: auto; bottom: auto; width: 17%; height: 36%; transform: translate(-50%, -50%); -webkit-mask-image: none; mask-image: none; }

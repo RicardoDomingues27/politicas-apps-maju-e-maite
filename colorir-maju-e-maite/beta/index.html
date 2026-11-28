@@ -11,7 +11,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <title>Colorir e Desenhar</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -56,9 +56,13 @@
   </div>
   <div class="floater" aria-label="Ações principais">
     <button class="btn exit" id="bBack" aria-label="Sair e guardar o desenho"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18" fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/></svg></button>
-    <button class="btn" data-tool="eraser" aria-label="Borracha">🧽</button>
+    <button class="btn save" id="bSave" aria-label="Salvar imagem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="#fff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <button class="btn" id="bUndo" aria-label="Voltar um passo (desfazer)">↩️</button>
-    <button class="btn" id="bSave" aria-label="Salvar imagem">💾</button>
+    <button class="btn" id="bRedo" aria-label="Refazer">↪️</button>
+    <button class="btn" data-tool="eraser" aria-label="Borracha">🧽</button>
+    <button class="btn" id="bClear" aria-label="Limpar tudo">🗑️</button>
+    <button class="btn" id="bSound" aria-label="Som">🔊</button>
+    <button class="btn" id="bZoom" aria-label="Tamanho normal" hidden>🔎</button>
   </div>
   <nav id="bar" class="bar" aria-label="Ferramentas">
     <div id="strip" class="strip">
@@ -76,10 +80,6 @@
       <button class="btn size" data-s="1" aria-label="Médio"><i class="dot d1"></i></button>
       <button class="btn size" data-s="2" aria-label="Grosso"><i class="dot d2"></i></button>
       <i class="sep"></i>
-      <button class="btn" id="bRedo" aria-label="Refazer">↪️</button>
-      <button class="btn" id="bClear" aria-label="Limpar tudo">🗑️</button>
-      <button class="btn" id="bZoom" aria-label="Tamanho normal" hidden>🔎</button>
-      <button class="btn" id="bSound" aria-label="Som">🔊</button>
       <i class="sep" id="sepColors"></i>
     </div>
     <div id="swatches" class="colors"></div>
@@ -118,7 +118,7 @@
         <div class="gate-lock">⭐</div>
         <div class="gate-h">Desbloquear tudo</div>
         <ul class="gate-list">
-          <li>As 6 ilhas e os 41 desenhos</li>
+          <li>As 6 ilhas e mais de 100 desenhos</li>
           <li>Pagamento único, sem assinatura</li>
           <li>Sem anúncios, para sempre</li>
         </ul>
@@ -133,11 +133,14 @@
   </div>
 </div>
 
+<img class="marca" src="img/logo.webp" alt="Maju e Maitê">
+
 <button id="verBtn" class="ver" aria-label="Versão do aplicativo. Tocar para procurar atualização"><span id="verTxt"></span></button>
 
 <script src="version.js"></script>
 <script src="pages.js"></script>
 <script src="pages2.js"></script>
+<script src="pages3.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

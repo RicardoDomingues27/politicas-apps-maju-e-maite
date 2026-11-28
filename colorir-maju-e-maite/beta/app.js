@@ -3,7 +3,8 @@
   'use strict';
   var LAYOUT = document.body.getAttribute('data-layout') || 'a';
   var NATIVE = !!window.AndroidApp;   // rodando dentro do app Android (Play Store)
-  var FREE_WORLDS = 2, FREE_PER_WORLD = 5;   // versão grátis: 2 ilhas, 5 desenhos em cada
+  var FREE_WORLDS = 2, FREE_PER_WORLD = 5;   // app: versão grátis com 2 ilhas, 5 desenhos em cada
+  if (!NATIVE) { FREE_WORLDS = 5; FREE_PER_WORLD = 999; }   // beta web: só a última ilha fica com cadeado (para testar a tela dos pais)
   var premium = false;
   try {
     if (NATIVE) premium = !!window.AndroidApp.isPremium();
@@ -15,8 +16,27 @@
   var W = 1200, H = 900;
   var COLORS = ['#FF3B30', '#FF9500', '#FFD60A', '#7ED957', '#1E9E4A', '#20C9C9',
                 '#1E88FF', '#8E5CF0', '#FF6FB5', '#8B5A2B', '#222222', '#FFFFFF',
+                '#FFC400', '#FF4FA3', '#C8D2E6', '#2FA8FF', '#A66BFF', '#2FD17F',   // 12 a 17: cores brilhantes (purpurina)
                 '#FFB3C7', '#FFC9A0', '#FFF08A', '#BDF5A0', '#9FE8E0', '#A5D3FF',
                 '#D5B8FF', '#C0392B', '#0B4F9C', '#E6A15B', '#F2D2B0', '#808080'];
+  var GL0 = 12, GL1 = 17;
+  function isGlitter(i) { return i >= GL0 && i <= GL1; }
+  // desenho da purpurina: um ladrilho com pontinhos brilhantes (usado no pincel, nos carimbos e no balde)
+  var TILE = 96, tileCache = {};
+  function glitterTile(i) {
+    if (tileCache[i]) return tileCache[i];
+    var c = document.createElement('canvas'); c.width = c.height = TILE; var x = c.getContext('2d');
+    x.fillStyle = COLORS[i]; x.fillRect(0, 0, TILE, TILE);
+    var seed = 1234 + i * 77; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    for (var k = 0; k < 520; k++) { x.fillStyle = rnd() < 0.5 ? 'rgba(255,255,255,' + (0.25 + rnd() * 0.5) + ')' : 'rgba(0,0,0,' + (0.08 + rnd() * 0.18) + ')'; x.fillRect(rnd() * TILE, rnd() * TILE, 1 + rnd() * 2, 1 + rnd() * 2); }
+    for (var s = 0; s < 14; s++) {   // estrelinhas de brilho
+      var sx = rnd() * TILE, sy = rnd() * TILE, r = 2 + rnd() * 3; x.fillStyle = '#fff';
+      x.beginPath(); x.moveTo(sx, sy - r * 2); x.lineTo(sx + r * 0.5, sy - r * 0.5); x.lineTo(sx + r * 2, sy); x.lineTo(sx + r * 0.5, sy + r * 0.5); x.lineTo(sx, sy + r * 2); x.lineTo(sx - r * 0.5, sy + r * 0.5); x.lineTo(sx - r * 2, sy); x.lineTo(sx - r * 0.5, sy - r * 0.5); x.closePath(); x.fill();
+    }
+    var d = x.getImageData(0, 0, TILE, TILE); tileCache[i] = { cv: c, px: new Uint32Array(d.data.buffer.slice(0)) };
+    return tileCache[i];
+  }
+  function paintStyle(c) { return isGlitter(colorIdx) ? c.createPattern(glitterTile(colorIdx).cv, 'repeat') : COLORS[colorIdx]; }
   var NOTES = [262, 294, 330, 392, 440, 523, 587, 659, 784, 880, 1047, 1175];
   var SIZES = [14, 30, 56];
   var UNDO_MAX = 6;
@@ -45,7 +65,7 @@
   }
   setDims(1200, 900);
 
-  var mode = 'draw', tool = 'pencil', lastTool = 'pencil', colorIdx = 0, sizeIdx = 1, muted = false;
+  var mode = 'draw', tool = 'pencil', lastTool = 'pencil', colorIdx = 0, sizeIdx = 2, muted = false;
   var lineAlpha = null, curPage = null, pageId = 'livre';
   var undoStack = [], redoStack = [], workDirty = false;
 
@@ -65,6 +85,14 @@
     g.gain.setValueAtTime(vol || 0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
     o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + 0.02);
   }
+  /* música de fundo bem baixinha; o botão de volume liga/desliga tudo */
+  var bgm = new Audio('audio/fundo.mp3'); bgm.loop = true; bgm.volume = 0.2; bgm.preload = 'auto';
+  function bgmUpdate() {
+    if (muted || document.hidden) { bgm.pause(); return; }
+    var p = bgm.play(); if (p && p.catch) p.catch(function () {});
+  }
+  document.addEventListener('pointerdown', bgmUpdate);   // começa no primeiro toque (regra dos navegadores)
+  document.addEventListener('visibilitychange', bgmUpdate);
   var snd = {
     tap: function () { tone(660, 0.07, 'sine', 0.12); },
     color: function (i) { tone(NOTES[i % 12], 0.18, 'triangle', 0.18); },
@@ -83,7 +111,7 @@
   var swWrap = $('swatches');
   COLORS.forEach(function (c, i) {
     var b = document.createElement('button');
-    b.className = 'sw'; b.style.background = c; b.setAttribute('aria-label', 'Cor ' + (i + 1));
+    b.className = 'sw' + (isGlitter(i) ? ' glit' : ''); if (isGlitter(i)) b.style.setProperty('--c', c); else b.style.background = c; b.setAttribute('aria-label', 'Cor ' + (i + 1));
     b.addEventListener('click', function () {
       colorIdx = i; if (tool === 'eraser') tool = lastTool;
       refreshUI(); snd.color(i);
@@ -238,7 +266,7 @@
     var c = clipOn ? sctx : pctx, w = SIZES[sizeIdx] * 1.5, p = mkPts;
     if (clipOn) sctx.clearRect(0, 0, W, H);
     c.save(); c.globalAlpha = clipOn ? 1 : 0.55; c.globalCompositeOperation = 'source-over';
-    c.strokeStyle = c.fillStyle = COLORS[colorIdx]; c.lineWidth = w; c.lineCap = c.lineJoin = 'round';
+    c.strokeStyle = c.fillStyle = paintStyle(c); c.lineWidth = w; c.lineCap = c.lineJoin = 'round';
     c.beginPath();
     if (p.length < 2) { c.arc(p[0][0], p[0][1], w / 2, 0, 6.283); c.fill(); }
     else {
@@ -273,7 +301,7 @@
   }
   function setup(c, comp) {
     c.globalCompositeOperation = comp || 'source-over';
-    c.strokeStyle = c.fillStyle = COLORS[colorIdx]; c.lineCap = c.lineJoin = 'round';
+    c.strokeStyle = c.fillStyle = paintStyle(c); c.lineCap = c.lineJoin = 'round';
     c.lineWidth = SIZES[sizeIdx] * (tool === 'eraser' ? 1.6 : tool === 'marker' ? 1.5 : 1);
   }
   function star(c, x, y, r) {
@@ -448,7 +476,7 @@
     hideCursor();
     if (tap && !blocked && e.type === 'pointerup' && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 14) {
       snapshot();
-      if (bucket(tap.px, tap.py, COLORS[colorIdx])) { snd.fill(colorIdx); sparkle(tap.x, tap.y); } else { freeSnap(undoStack.pop()); refreshUI(); }
+      if (bucket(tap.px, tap.py, colorIdx)) { snd.fill(colorIdx); sparkle(tap.x, tap.y); } else { freeSnap(undoStack.pop()); refreshUI(); }
     }
     tap = null; delete ptrs[e.pointerId];
     if (drawing) endStroke();
@@ -480,7 +508,7 @@
   /* ---------- balde ---------- */
   var THRESH = 25;
   function hexToU32(h) { var n = parseInt(h.slice(1), 16); return ((255 << 24) | ((n & 255) << 16) | (((n >> 8) & 255) << 8) | (n >> 16)) >>> 0; }
-  function bucket(x, y, hex) {
+  function bucket(x, y, idx) {
     if (!lineAlpha) return false;
     x = Math.max(0, Math.min(W - 1, Math.round(x))); y = Math.max(0, Math.min(H - 1, Math.round(y)));
     var la = lineAlpha, seed = y * W + x;
@@ -495,7 +523,7 @@
           }
       if (seed < 0) return false;
     }
-    var img = pctx.getImageData(0, 0, W, H), buf = new Uint32Array(img.data.buffer), col = hexToU32(hex);
+    var img = pctx.getImageData(0, 0, W, H), buf = new Uint32Array(img.data.buffer), col = hexToU32(COLORS[idx]), gt = isGlitter(idx) ? glitterTile(idx).px : null;
     var vis = new Uint8Array(W * H), stack = [seed];
     while (stack.length) {
       var p = stack.pop();
@@ -503,7 +531,8 @@
       var row = p - (p % W), px = p - row, l = px, r = px;
       while (l > 0 && !vis[row + l - 1] && la[row + l - 1] <= THRESH) l--;
       while (r < W - 1 && !vis[row + r + 1] && la[row + r + 1] <= THRESH) r++;
-      for (var i = l; i <= r; i++) { vis[row + i] = 1; buf[row + i] = col; }
+      if (gt) { var ty = ((row / W) | 0) % TILE * TILE; for (var i = l; i <= r; i++) { vis[row + i] = 1; buf[row + i] = gt[ty + (i % TILE)]; } }
+      else for (var i2 = l; i2 <= r; i2++) { vis[row + i2] = 1; buf[row + i2] = col; }
       for (var d = -1; d <= 1; d += 2) {
         var nr = row + d * W; if (nr < 0 || nr >= W * H) continue;
         var inSpan = false;
@@ -573,6 +602,7 @@
 
   /* ---------- páginas ---------- */
   function svgUrl(svg) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }
+  function pageSrc(p) { return p.url || svgUrl(p.svg); }   // páginas desenhadas à mão (SVG) ou geradas (imagem)
   function setLines(page, done) {
     lctx.clearRect(0, 0, W, H); labels = null;
     if (!page) { lineAlpha = null; done && done(); return; }
@@ -587,7 +617,7 @@
       for (var i = 0, n = W * H; i < n; i++) { var v = 255 - src[i * 4]; a[i] = v; out.data[i * 4 + 3] = v; }
       lctx.putImageData(out, 0, 0); lineAlpha = a; labels = labelRegions(a); maskId = -1; done && done();
     };
-    img.src = svgUrl(page.svg);
+    img.src = pageSrc(page);
   }
 
   /* ---------- guardar o desenho no aparelho (nunca sai do aparelho) ---------- */
@@ -610,7 +640,7 @@
     } catch (e) { done(); }
   }
   function refreshThumbs() {
-    window.PAGES.forEach(function (p) { var ims = cardImgs[p.id]; if (ims) { var u = saved[p.id] ? saved[p.id].thumb : svgUrl(p.svg); ims.forEach(function (im) { im.src = u; }); } });
+    window.PAGES.forEach(function (p) { var ims = cardImgs[p.id]; if (ims) { var u = saved[p.id] ? saved[p.id].thumb : pageSrc(p); ims.forEach(function (im) { im.src = u; }); } });
     var dt = $('drawThumb'); if (saved.livre) { dt.src = saved.livre.thumb; dt.hidden = false; } else dt.hidden = true;
   }
   function saveWork(cb) {
@@ -704,7 +734,7 @@
   $('bRedo').addEventListener('click', redo);
   $('bClear').addEventListener('click', function () { snapshot(); pctx.clearRect(0, 0, W, H); snd.clear(); });
   $('bZoom').addEventListener('click', function () { snd.tap(); resetZoom(); });
-  $('bSound').addEventListener('click', function () { muted = !muted; refreshUI(); snd.tap(); });
+  $('bSound').addEventListener('click', function () { muted = !muted; refreshUI(); bgmUpdate(); snd.tap(); });
 
   /* ---------- salvar (no celular abre "Salvar imagem" para a galeria) ---------- */
   function toast() { var t = $('toast'); t.hidden = true; void t.offsetWidth; t.hidden = false; setTimeout(function () { t.hidden = true; }, 1000); }
@@ -719,11 +749,6 @@
     }
     c.toBlob(function (blob) {
       if (!blob) return;
-      var file = null;
-      try { file = new File([blob], 'meu-desenho.png', { type: 'image/png' }); } catch (e) {}
-      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-        navigator.share({ files: [file] }).then(toast, function () {}); return;
-      }
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob); a.download = 'meu-desenho.png';
       document.body.appendChild(a); a.click(); a.remove();

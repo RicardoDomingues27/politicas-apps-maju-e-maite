@@ -273,12 +273,12 @@
     { id: 'casas', pasta: '#8bd04a', nome: 'Casinhas', emoji: ['🏠', '🏰', '🏢', '🌳'], cima: '#b6e86a', baixo: '#7fcb4a', terra: '#b5804a',
       paginas: ['casa', 'predio', 'castelo', 'celeiro', 'barraca'] },
     { id: 'autos', pasta: '#6e8fb8', nome: 'Automóveis', emoji: ['🚗', '🚌', '🚚', '✈️'], cima: '#9aa7b8', baixo: '#6e7c91', terra: '#4a5568',
-      paginas: ['carro', 'onibus', 'caminhao', 'trem', 'aviao'] },
+      paginas: ['carro', 'onibus', 'caminhao'] },
     { id: 'dinos', pasta: '#f0a040', nome: 'Dinossauros', emoji: ['🦖', '🦕', '🥚', '🌋'], cima: '#ffcf70', baixo: '#f0a040', terra: '#9c5a2b',
       paginas: ['trex', 'tricera', 'bronto', 'estego', 'ptero', 'ovodino'] },
     { id: 'plantas', pasta: '#2fa866', nome: 'Plantas', emoji: ['🌻', '🌵', '🍄', '🌴'], cima: '#5fd08a', baixo: '#2fa866', terra: '#7a4f2a',
       paginas: ['flor', 'arvore', 'girassol', 'cacto', 'cogumelo', 'palmeira', 'pinheiro'] },
     { id: 'ceu', pasta: '#5fb4f0', nome: 'Céu e Mar', emoji: ['🌈', '🐳', '🚀', '⭐'], cima: '#ffffff', baixo: '#cfeaff', terra: '#8fc8f5',
-      paginas: ['arcoiris', 'estrela', 'balao', 'barco', 'peixe', 'baleia', 'foguete'] }
+      paginas: ['arcoiris', 'estrela', 'balao', 'barco', 'peixe', 'baleia'] }
   ];
 })();
