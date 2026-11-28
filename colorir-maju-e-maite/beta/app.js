@@ -4,7 +4,7 @@
   var LAYOUT = document.body.getAttribute('data-layout') || 'a';
   var NATIVE = !!window.AndroidApp;   // rodando dentro do app Android (Play Store)
   var FREE_WORLDS = 2, FREE_PER_WORLD = 5;   // app: versão grátis com 2 ilhas, 5 desenhos em cada
-  if (!NATIVE) { FREE_WORLDS = 5; FREE_PER_WORLD = 999; }   // beta web: só a última ilha fica com cadeado (para testar a tela dos pais)
+  if (!NATIVE) { FREE_WORLDS = 6; FREE_PER_WORLD = 999; }   // beta web: só a última ilha fica com cadeado (para testar a tela dos pais)
   var premium = false;
   try {
     if (NATIVE) premium = !!window.AndroidApp.isPremium();
@@ -138,7 +138,7 @@
     $('bUndo').disabled = !undoStack.length; $('bRedo').disabled = !redoStack.length;
     $('bZoom').hidden = zs <= 1.02;
     $('bSound').textContent = muted ? '🔇' : '🔊';
-    var fs = fsOn(); $('bFull').innerHTML = $('hFull').innerHTML = fs ? ICON_EXIT : ICON_FULL;
+    var fs = fsOn(); $('bFull').innerHTML = fs ? ICON_EXIT : ICON_FULL;
   }
 
   /* ---------- tela cheia e barra de ferramentas ---------- */
@@ -173,7 +173,6 @@
   document.addEventListener('fullscreenchange', onFsChange);
   document.addEventListener('webkitfullscreenchange', onFsChange);
   $('bFull').addEventListener('click', function () { snd.tap(); toggleFull(); });
-  $('hFull').addEventListener('click', function () { snd.tap(); toggleFull(); });
 
   /* ---------- tamanho do desenho (ocupa o máximo da tela) ---------- */
   var zs = 1, zx = 0, zy = 0;
@@ -641,7 +640,6 @@
   }
   function refreshThumbs() {
     window.PAGES.forEach(function (p) { var ims = cardImgs[p.id]; if (ims) { var u = saved[p.id] ? saved[p.id].thumb : pageSrc(p); ims.forEach(function (im) { im.src = u; }); } });
-    var dt = $('drawThumb'); if (saved.livre) { dt.src = saved.livre.thumb; dt.hidden = false; } else dt.hidden = true;
   }
   function saveWork(cb) {
     if (!workDirty) { cb && cb(); return; }
@@ -677,7 +675,7 @@
   var curWorld = null, galScroll = 0, islScroll = 0;
   function leaveEditor() {
     saveWork();
-    if (mode === 'color') { show('gallery'); $('grid').scrollTop = galScroll; } else show('home');
+    if (mode === 'color') { show('gallery'); $('grid').scrollTop = galScroll; } else show('worlds');
   }
   function regImg(id, im) { (cardImgs[id] = cardImgs[id] || []).push(im); }
 
@@ -725,9 +723,7 @@
   dbOpen(function () { dbLoadAll(refreshThumbs); });
 
   /* ---------- botões ---------- */
-  $('goDraw').addEventListener('click', function () { snd.tap(); openEditor('draw', null); });
-  $('goColor').addEventListener('click', function () { snd.tap(); show('worlds'); });
-  $('worldsBack').addEventListener('click', function () { snd.tap(); show('home'); });
+  setTimeout(function () { if (current === 'home') show('worlds'); }, 2600);   // abertura (splash) e cai direto nas ilhas
   $('galBack').addEventListener('click', function () { snd.tap(); show('worlds'); $('islands').scrollLeft = islScroll; });
   $('bBack').addEventListener('click', function () { snd.tap(); leaveEditor(); });
   $('bUndo').addEventListener('click', undo);
@@ -838,7 +834,6 @@
     if (!gate.hidden) { closeGate(); return true; }
     if (current === 'editor') { leaveEditor(); return true; }
     if (current === 'gallery') { show('worlds'); $('islands').scrollLeft = islScroll; return true; }
-    if (current === 'worlds') { show('home'); return true; }
     return false;
   };
   window.__androidPause = function () { if (current === 'editor') saveWork(); };

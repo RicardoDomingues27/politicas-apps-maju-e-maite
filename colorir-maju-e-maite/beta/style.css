@@ -362,3 +362,9 @@ html, body {
 /* cadeado simples, menor, no meio (dá para ver o desenho atrás) */
 .lockbadge { inset: auto; left: 50%; top: 50%; width: 30%; height: 54%; transform: translate(-50%, -50%); background-size: contain; background-position: center; background-repeat: no-repeat; -webkit-mask-image: none; mask-image: none; }
 .lockbadge.isl-lock { left: 50%; top: 40%; right: auto; bottom: auto; width: 17%; height: 36%; transform: translate(-50%, -50%); -webkit-mask-image: none; mask-image: none; }
+
+/* abertura (splash) */
+.splash-logo { position: relative; z-index: 2; width: min(46vmin, 320px); height: auto; filter: drop-shadow(0 8px 6px rgba(0,0,0,.25)); animation: pulse 2.2s ease-in-out infinite; }
+.card img { border-radius: 14% / 18%; }
+.mini img { border-radius: 12% / 16%; }
+.card img, .mini img { object-fit: contain; background: #fff; }

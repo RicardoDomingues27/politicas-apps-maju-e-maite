@@ -275,10 +275,12 @@
     { id: 'autos', pasta: '#6e8fb8', nome: 'Automóveis', emoji: ['🚗', '🚌', '🚚', '✈️'], cima: '#9aa7b8', baixo: '#6e7c91', terra: '#4a5568',
       paginas: ['carro', 'onibus', 'caminhao'] },
     { id: 'dinos', pasta: '#f0a040', nome: 'Dinossauros', emoji: ['🦖', '🦕', '🥚', '🌋'], cima: '#ffcf70', baixo: '#f0a040', terra: '#9c5a2b',
-      paginas: ['trex', 'tricera', 'bronto', 'estego', 'ptero', 'ovodino'] },
+      paginas: [] },
     { id: 'plantas', pasta: '#2fa866', nome: 'Plantas', emoji: ['🌻', '🌵', '🍄', '🌴'], cima: '#5fd08a', baixo: '#2fa866', terra: '#7a4f2a',
       paginas: ['flor', 'arvore', 'girassol', 'cacto', 'cogumelo', 'palmeira', 'pinheiro'] },
     { id: 'ceu', pasta: '#5fb4f0', nome: 'Céu e Mar', emoji: ['🌈', '🐳', '🚀', '⭐'], cima: '#ffffff', baixo: '#cfeaff', terra: '#8fc8f5',
-      paginas: ['arcoiris', 'estrela', 'balao', 'barco', 'peixe', 'baleia'] }
+      paginas: ['arcoiris', 'estrela', 'balao', 'barco', 'peixe', 'baleia'] },
+    { id: 'princesas', pasta: '#ff6fb5', nome: 'Princesas', emoji: ['👸', '🏰', '🦄', '👑'], cima: '#ffc2e6', baixo: '#ff8fcf', terra: '#b05a95',
+      paginas: [] }
   ];
 })();
