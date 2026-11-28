@@ -700,12 +700,14 @@
     });
     refreshThumbs(); grid.scrollTop = 0; show('gallery');
   }
+  var ILHA_IMG = { bichos: 1, casas: 2, autos: 3, dinos: 4, plantas: 5, ceu: 6, princesas: 7 };
   (function buildIslands() {
     var box = $('islands');
-    (window.WORLDS || []).forEach(function (w, i) {
+    var ORDEM = ['bichos', 'princesas', 'casas', 'autos', 'dinos', 'plantas', 'ceu'];
+    (window.WORLDS || []).slice().sort(function (x, y) { return ORDEM.indexOf(x.id) - ORDEM.indexOf(y.id); }).forEach(function (w, i) {
       var b = document.createElement('button');
       b.className = 'isl'; b.setAttribute('aria-label', w.nome);
-      b.style.setProperty('--img', 'url(img/ilha-' + (i + 1) + '.webp)'); b.style.setProperty('--d', (-i * 1.1) + 's'); b.style.setProperty('--c', w.pasta || '#4cc15f');
+      b.style.setProperty('--img', 'url(img/ilha-' + (ILHA_IMG[w.id] || (i + 1)) + '.webp)'); b.style.setProperty('--d', (-i * 1.1) + 's'); b.style.setProperty('--c', w.pasta || '#4cc15f');
       w.paginas.slice(0, 6).forEach(function (id, k) {
         var p = pageById[id]; if (!p) return;
         var L = LAYOUT7[k], m = document.createElement('span'), im = new Image();
